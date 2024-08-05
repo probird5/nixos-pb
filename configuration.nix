@@ -49,7 +49,8 @@
   };
 
   programs.steam.enable = true;
-
+  programs.steam.gamescopeSession.enable = true;
+  programs.gamemode.enable = true;
 
   # Fonts
 
@@ -156,6 +157,11 @@ services.pipewire = {
     vim # Do not forget to add an editor to edit configuration.nix! The Nano editor is also installed by default.
     wget
     virt-manager
+    egl-wayland
+    cifs-utils
+    xfce.thunar-volman
+    xfce.thunar-archive-plugin
+    xfce.thunar-media-tags-plugin
     qemu
     alacritty
     pavucontrol
@@ -220,6 +226,17 @@ services.pipewire = {
   ### Home manager 
   programs.zsh.enable = true;
   users.users.probird5.shell = pkgs.zsh;
+
+  # slstatus
+
+  nixpkgs.overlays = [
+  (final: prev: {
+    slstatus = prev.slstatus.overrideAttrs (old: { 
+      src = /home/probird5/slstatus;  # Update with path to your slstatus folder
+    });
+  })
+];
+
 
 
   # Some programs need SUID wrappers, can be configured further or are
