@@ -1,5 +1,6 @@
 { config, pkgs, ... }:
 
+
 {
   # TODO please change the username & home directory to your own
   home.username = "probird5";
@@ -20,16 +21,52 @@
   #     xxx
   # '';
 
-    programs.zsh = {
+    imports =
+    [ # Include the results of the hardware scan.
+      ./config/starship.nix
+    ];
+
+
+  programs.zsh = {
     enable = true;
     enableCompletion = true;
-    # Optional: Specify a custom .zshrc file or include additional configurations
+
+    initExtra = ''
+      autoload -Uz compinit
+      compinit -d ~/.cache/zcompdump
+      zstyle ":completion:*:*:*:*:*" menu select
+      zstyle ":completion:*" auto-description "specify: %d"
+      zstyle ":completion:*" completer _expand _complete
+      zstyle ":completion:*" format "Completing %d"
+      zstyle ":completion:*" group-name ""
+      zstyle ":completion:*" list-colors "no=00;37:fi=00;37:di=01;34:ln=01;36:pi=40;33:so=01;35:bd=40;33;01:cd=40;33;01:or=40;31;01:mi=00;05;37;41:ex=01;32"
+      zstyle ":completion:*" list-prompt "%SAt %p: Hit TAB for more, or the character to insert%s"
+      zstyle ":completion:*" matcher-list "m:{a-zA-Z}={A-Za-z}"
+      zstyle ":completion:*" rehash true
+      zstyle ":completion:*" select-prompt "%SScrolling active: current selection at %p%s"
+      zstyle ":completion:*" use-compctl false
+      zstyle ":completion:*" verbose true
+      zstyle ":completion:*:kill:*" command "ps -u $USER -o pid,%cpu,tty,cputime,cmd"
+    '';
+
+    syntaxHighlighting.enable = true;
+    oh-my-zsh.enable = true;
+
+    zplug = {
+      enable = true;
+      plugins = [
+     #   { name = "zsh-users/zsh-autosuggestions"; }
+        { name = "zsh-users/zsh-syntax-highlighting"; }
+      ];
     };
+};
+    # Additional Zsh configuration
+    programs.hyprlock.enable = true;
 
   # set cursor size and dpi for 4k monitor
   xresources.properties = {
     "Xcursor.size" = 16;
-    "Xft.dpi" = 168;
+    "Xft.dpi" = 120;
   };
 
 gtk = {
@@ -52,9 +89,23 @@ gtk = {
     };
   };
 
+  # fzf
+
+
+  programs.fzf = {
+    enable = true;
+    enableZshIntegration = true;
+    historyWidgetOptions = [
+      "--height" "40%"
+      "--layout=reverse"
+      "--border"
+    ];
+  };
+
   # Packages that should be installed to the user profile.
   home.packages = with pkgs; [
     sysstat
+    brave
     lm_sensors # for `sensors` command
     ethtool
     pciutils # lspci
@@ -62,6 +113,45 @@ gtk = {
     p7zip
     steam
     lutris
+    brave
+    remmina
+    gnomeExtensions.remmina-search-provider
+    teams-for-linux
+    tmux
+    xprintidle
+    fzf
+    go
+    unzip
+    stylua
+    lua
+    luajitPackages.luarocks
+    ripgrep
+    neovim
+    wdisplays
+    nwg-displays
+    alsa-utils
+    protonup-qt
+    qt6.qtbase
+    qt6.qtwayland
+    xorg.libxcb
+    xorg.xcbutil
+    xorg.xcbutilimage
+    xorg.xcbutilkeysyms
+    xorg.xcbutilrenderutil
+    xorg.xcbutilwm
+    picom
+    nerdfonts
+    pulsemixer
+    cargo
+    python3
+    nodejs_22
+    clang-tools
+    fd
+    luajitPackages.jsregexp
+    fastfetch
+    obsidian
+    flameshot 
+    starship
   ];
 
   # basic configuration of git, please change to your own
@@ -74,89 +164,21 @@ gtk = {
   # starship - an customizable prompt for any shell
   programs.starship = {
    enable = true;
-    # custom settings
-  #  settings = {
-   #   add_newline = false;
-    #  aws.disabled = true;
-     # gcloud.disabled = true;
-      #line_break.disabled = true;
     };
   #};
+# testing
 
+  xdg = {
+    enable = true;
+    userDirs = {
+      enable = true;
+      createDirectories = true;
+    };
+  };
   
 
 
 
-  home.file = {
-    ".config/starship.toml" = {
-      text = ''
-        format = """
-        [░▒▓](#a3aed2)\
-        [ \ue77d ](bg:#a3aed2 fg:#090c0c)\
-        [](bg:#769ff0 fg:#a3aed2)\
-        $directory\
-        [](fg:#769ff0 bg:#394260)\
-        $git_branch\
-        $git_status\
-        [](fg:#394260 bg:#212736)\
-        $nodejs\
-        $rust\
-        $golang\
-        $php\
-        [](fg:#212736 bg:#1d2230)\
-        $time\
-        [ ](fg:#1d2230)\
-        \n$character"""
-
-        [directory]
-        style = "fg:#e3e5e5 bg:#769ff0"
-        format = "[ $path ]($style)"
-        truncation_length = 3
-        truncation_symbol = "…/"
-
-        [directory.substitutions]
-        "Documents" = "󰈙 "
-        "Downloads" = " "
-        "Music" = " "
-        "Pictures" = " "
-
-        [git_branch]
-        symbol = ""
-        style = "bg:#394260"
-        format = '[[ $symbol $branch ](fg:#769ff0 bg:#394260)]($style)'
-
-        [git_status]
-        style = "bg:#394260"
-        format = '[[($all_status$ahead_behind )](fg:#769ff0 bg:#394260)]($style)'
-
-        [nodejs]
-        symbol = ""
-        style = "bg:#212736"
-        format = '[[ $symbol ($version) ](fg:#769ff0 bg:#212736)]($style)'
-
-        [rust]
-        symbol = ""
-        style = "bg:#212736"
-        format = '[[ $symbol ($version) ](fg:#769ff0 bg:#212736)]($style)'
-
-        [golang]
-        symbol = ""
-        style = "bg:#212736"
-        format = '[[ $symbol ($version) ](fg:#769ff0 bg:#212736)]($style)'
-
-        [php]
-        symbol = ""
-        style = "bg:#212736"
-        format = '[[ $symbol ($version) ](fg:#769ff0 bg:#212736)]($style)'
-
-        [time]
-        disabled = false
-        time_format = "%R" # Hour:Minute Format
-        style = "bg:#1d2230"
-        format = '[[  $time ](fg:#a0a9cb bg:#1d2230)]($style)'
-      '';
-    };
-  };
 
 
 
