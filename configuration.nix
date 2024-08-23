@@ -11,18 +11,35 @@
     ];
 
   # Bootloader.
-  boot.loader.systemd-boot.enable = true;
+  #boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
   boot.blacklistedKernelModules = [ "nouveau" ];
   boot.supportedFilesystems = [ "btrfs" "reiserfs" "vfat" "f2fs" "xfs" "ntfs" "cifs" ];
-
+boot.loader.systemd-boot.enable = false;
+boot.loader.grub.enable = true;
+boot.loader.grub.device = "nodev";
+boot.loader.grub.useOSProber = true;
+boot.loader.grub.efiSupport = true;
+boot.loader.efi.efiSysMountPoint = "/boot";
+hardware.nvidia.package = config.boot.kernelPackages.nvidiaPackages.latest;
 
 #  suspend to RAM (deep) rather than `s2idle`
-  boot.kernelParams = [ "mem_sleep_default=deep" ];
-  # suspend-then-hibernate
-  systemd.sleep.extraConfig = ''
-    SuspendState=mem
-  '';
+#  boot.kernelParams = [ "mem_sleep_default=deep" ];
+#  # suspend-then-hibernate
+#  systemd.sleep.extraConfig = ''
+#    SuspendState=mem
+#  '';
+
+# Testing this
+
+boot.kernelParams = [ "nvidia.NVreg_PreserveVideoMemoryAllocations=1" ];
+
+hardware.nvidia.powerManagement.enable = true;
+
+# Making sure to use the proprietary drivers until the issue above is fixed upstream
+hardware.nvidia.open = false;
+
+
 
  # Setting up virtualization
  virtualisation.libvirtd.enable = true;
@@ -137,22 +154,24 @@
 
   # Configure Nvidia unstable nixos branch
 
-#    hardware.graphics = {
-#    enable = true;
-#    enable32Bit = true;
-#    extraPackages = with pkgs; [
-#      libGL
-#      libGLU
-      # Add more libraries as needed
-#    ];
-#  };
+    hardware.graphics = {
+    enable = true;
+    enable32Bit = true;
+    extraPackages = with pkgs; [
+      libGL
+      libGLU
+     # Add more libraries as needed
+    ];
+  };
 
- hardware.opengl = {
-   enable = true;
-   driSupport = true;
-   driSupport32Bit = true;
+# stable config
 
-};
+# hardware.opengl = {
+#   enable = true;
+#   driSupport = true;
+#   driSupport32Bit = true;
+
+#};
 
   hardware.nvidia.modesetting.enable = true;
 
@@ -264,6 +283,7 @@
     polkit
     spice
     ntfs3g
+    seatd
   ];
 
   ### Home manager 

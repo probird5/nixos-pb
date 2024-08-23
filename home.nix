@@ -65,7 +65,7 @@
 
   # set cursor size and dpi for 4k monitor
   xresources.properties = {
-    "Xcursor.size" = 16;
+    "Xcursor.size" = 24;
     "Xft.dpi" = 120;
   };
 
@@ -152,6 +152,12 @@ gtk = {
     obsidian
     flameshot 
     starship
+    lf
+    trash-cli
+    swww
+    lz4
+    swayidle
+    swaylock
   ];
 
   # basic configuration of git, please change to your own
