@@ -26,12 +26,18 @@
       ./config/starship.nix
     ];
 
+  # firefox crashing on wayland
+   home.sessionVariables = {
+    GBM_BACKEND = "";
+  };
+
 
   programs.zsh = {
     enable = true;
     enableCompletion = true;
 
     initExtra = ''
+      export PATH="$HOME/.local/bin:$PATH"
       autoload -Uz compinit
       compinit -d ~/.cache/zcompdump
       zstyle ":completion:*:*:*:*:*" menu select
@@ -67,6 +73,7 @@
   xresources.properties = {
     "Xcursor.size" = 24;
     "Xft.dpi" = 120;
+    "Xcursor.theme" = "Nordzy-cursors";
   };
 
 gtk = {
@@ -88,6 +95,7 @@ gtk = {
       configLocation = "${config.home.homeDirectory}/.gtkrc-2.0";
     };
   };
+
 
   # fzf
 
@@ -116,7 +124,6 @@ gtk = {
     brave
     remmina
     gnomeExtensions.remmina-search-provider
-    teams-for-linux
     tmux
     xprintidle
     fzf
@@ -158,6 +165,11 @@ gtk = {
     lz4
     swayidle
     swaylock
+    hyprcursor
+    nwg-look
+    hypridle
+    jq
+    firefox-beta
   ];
 
   # basic configuration of git, please change to your own
@@ -175,15 +187,16 @@ gtk = {
 # testing
 
   xdg = {
-    enable = true;
+    portal = {
+      enable = true;
+      config.common.default = "*";
+      extraPortals = [ pkgs.xdg-desktop-portal-gtk ];
+    };
+
     userDirs = {
       enable = true;
-      createDirectories = true;
     };
-  };
-  
-
-
+};
 
 
 

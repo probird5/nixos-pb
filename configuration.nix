@@ -21,7 +21,7 @@ boot.loader.grub.device = "nodev";
 boot.loader.grub.useOSProber = true;
 boot.loader.grub.efiSupport = true;
 boot.loader.efi.efiSysMountPoint = "/boot";
-hardware.nvidia.package = config.boot.kernelPackages.nvidiaPackages.latest;
+#hardware.nvidia.package = config.boot.kernelPackages.nvidiaPackages.latest;
 
 #  suspend to RAM (deep) rather than `s2idle`
 #  boot.kernelParams = [ "mem_sleep_default=deep" ];
@@ -46,6 +46,7 @@ hardware.nvidia.open = false;
 
  # USB passthrough for virt-manager
  virtualisation.spiceUSBRedirection.enable = true;
+
 
  # Enabeling docker
  virtualisation.docker.enable = true;
@@ -111,6 +112,10 @@ hardware.nvidia.open = false;
   hardware.bluetooth.powerOnBoot = true; # powers up the default Bluetooth controller on boot
   services.blueman.enable = true;
 
+ #flatpak
+   services.flatpak.enable = true;
+
+
   # Hyprland
   programs.hyprland = {
     enable = true;
@@ -154,24 +159,24 @@ hardware.nvidia.open = false;
 
   # Configure Nvidia unstable nixos branch
 
-    hardware.graphics = {
-    enable = true;
-    enable32Bit = true;
-    extraPackages = with pkgs; [
-      libGL
-      libGLU
-     # Add more libraries as needed
-    ];
-  };
+#    hardware.graphics = {
+#    enable = true;
+#    enable32Bit = true;
+#    extraPackages = with pkgs; [
+#      libGL
+#      libGLU
+#     # Add more libraries as needed
+#    ];
+#  };
 
 # stable config
 
-# hardware.opengl = {
-#   enable = true;
-#   driSupport = true;
-#   driSupport32Bit = true;
+ hardware.opengl = {
+   enable = true;
+   driSupport = true;
+   driSupport32Bit = true;
 
-#};
+};
 
   hardware.nvidia.modesetting.enable = true;
 
@@ -195,7 +200,7 @@ hardware.nvidia.open = false;
   users.users.probird5 = {
     isNormalUser = true;
     description = "probird5";
-    extraGroups = [ "networkmanager" "wheel" "libvirtd" "kvm" "qemu"];
+    extraGroups = [ "networkmanager" "wheel" "libvirtd" "kvm" "qemu" "flatpak"];
     packages = with pkgs; [];
   };
 
@@ -235,12 +240,12 @@ hardware.nvidia.open = false;
     kitty
     swaycons
     rofi-wayland
-    firefox
     wayland
     xwayland
     discord
     wl-clipboard
     _1password-gui
+    _1password
     neofetch
     flameshot
     grim
@@ -284,6 +289,9 @@ hardware.nvidia.open = false;
     spice
     ntfs3g
     seatd
+    qt5.qtwayland
+    qt6.qtwayland
+    libsForQt5.polkit-kde-agent
   ];
 
   ### Home manager 
