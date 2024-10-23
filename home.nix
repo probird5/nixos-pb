@@ -27,9 +27,9 @@
     ];
 
   # firefox crashing on wayland
-   home.sessionVariables = {
-    GBM_BACKEND = "";
-  };
+#   home.sessionVariables = {
+#    GBM_BACKEND = "";
+#  };
 
 
   programs.zsh = {
@@ -37,7 +37,6 @@
     enableCompletion = true;
 
     initExtra = ''
-      export PATH="$HOME/.local/bin:$PATH"
       autoload -Uz compinit
       compinit -d ~/.cache/zcompdump
       zstyle ":completion:*:*:*:*:*" menu select
@@ -148,6 +147,7 @@ gtk = {
     xorg.xcbutilwm
     picom
     nerdfonts
+    font-awesome
     pulsemixer
     cargo
     python3
@@ -169,7 +169,16 @@ gtk = {
     nwg-look
     hypridle
     jq
-    firefox-beta
+    firefox
+    spotify
+    swappy
+    wttrbar
+    hashcat
+    tree
+    genymotion
+    android-tools
+    openssl
+    wlogout
   ];
 
   # basic configuration of git, please change to your own

@@ -42,10 +42,20 @@ hardware.nvidia.open = false;
 
 
  # Setting up virtualization
- virtualisation.libvirtd.enable = true;
+   # Manage the virtualisation services
+  virtualisation = {
+    libvirtd = {
+      enable = true;
+      qemu = {
+        swtpm.enable = true;
+        ovmf.enable = true;
+        ovmf.packages = [ pkgs.OVMFFull.fd ];
+      };
+    };
+    spiceUSBRedirection.enable = true;
+  };
+  services.spice-vdagentd.enable = true;
 
- # USB passthrough for virt-manager
- virtualisation.spiceUSBRedirection.enable = true;
 
 
  # Enabeling docker
@@ -60,6 +70,10 @@ hardware.nvidia.open = false;
   
 
   networking.hostName = "nixos-pb"; # Define your hostname.
+
+  ## Virtualization from youtube video https://www.youtube.com/watch?v=rCVW8BGnYIc
+
+  programs.dconf.enable = true;
 
   # Enabeling Flakes
   nix.settings.experimental-features = [ "nix-command" "flakes" ];
@@ -147,15 +161,15 @@ hardware.nvidia.open = false;
  
 
   # Sound
- # sound.enable = true;
-  security.rtkit.enable = true;
-  services.pipewire = {
-    enable = true;
-    alsa.enable = true;
-    alsa.support32Bit = true;
-    pulse.enable = true;
-    jack.enable = true;
-  };
+
+  # Disable PipeWire
+services.pipewire.enable = false;
+
+# Enable PulseAudio
+sound.enable = true;
+
+hardware.pulseaudio.enable = true;
+hardware.pulseaudio.support32Bit = true;
 
   # Configure Nvidia unstable nixos branch
 
@@ -200,7 +214,7 @@ hardware.nvidia.open = false;
   users.users.probird5 = {
     isNormalUser = true;
     description = "probird5";
-    extraGroups = [ "networkmanager" "wheel" "libvirtd" "kvm" "qemu" "flatpak"];
+    extraGroups = [ "networkmanager" "audio" "wheel" "libvirtd" "kvm" "qemu" "flatpak"];
     packages = with pkgs; [];
   };
 
@@ -215,6 +229,9 @@ hardware.nvidia.open = false;
     docker
     udiskie
     virt-manager
+    virt-viewer 
+    win-virtio
+    win-spice
     egl-wayland
     cifs-utils
     xfce.thunar-volman
@@ -244,8 +261,6 @@ hardware.nvidia.open = false;
     xwayland
     discord
     wl-clipboard
-    _1password-gui
-    _1password
     neofetch
     flameshot
     grim
@@ -292,6 +307,14 @@ hardware.nvidia.open = false;
     qt5.qtwayland
     qt6.qtwayland
     libsForQt5.polkit-kde-agent
+    nvidia-vaapi-driver
+    egl-wayland
+    pulseaudioFull
+    vulkan-loader                 # Vulkan support for 64-bit applications
+    pkgs.pkgsi686Linux.vulkan-loader # Vulkan support for 32-bit applications
+    swtpm
+    virtiofsd
+    via
   ];
 
   ### Home manager 
