@@ -94,13 +94,13 @@ hardware.nvidia.open = false;
   };
 
   # Overlay for slstatus
-  nixpkgs.overlays = [
-    (final: prev: {
-      slstatus = prev.slstatus.overrideAttrs (oldAttrs: rec {
-        src = /home/probird5/config/slstatus;  
-      });
-    })
-  ];
+#  nixpkgs.overlays = [
+#    (final: prev: {
+#      slstatus = prev.slstatus.overrideAttrs (oldAttrs: rec {
+#        src = "${config.users.users.probird5.home}/config/slstatus";  
+#      });
+#    })
+#  ];
 
 
   # steam
@@ -142,11 +142,18 @@ hardware.nvidia.open = false;
   services.xserver.displayManager.startx.enable = true;
   services.xserver.videoDrivers = [ "nvidia" ];
 
-  # Custom config
+    # Custom config
 
-  services.xserver.windowManager.dwm.package = pkgs.dwm.overrideAttrs {
-  src = /home/probird5/config/dwm-config;
-};
+#  services.xserver.windowManager.dwm.package = pkgs.dwm.overrideAttrs {
+#  src = "${config.users.users.probird5.home}/dwm-config.tar.gz";
+#};
+
+#services.xserver.windowManager.dwm.package = pkgs.dwm.overrideAttrs (oldAttrs: {
+#  src = builtins.fetchGit {
+#    url = "https://github.com/probird5/dwm-config";
+#    ref = "main";
+#  };
+#});
 
  # May need to edit session variables
   environment.sessionVariables = {
@@ -166,31 +173,32 @@ hardware.nvidia.open = false;
 services.pipewire.enable = false;
 
 # Enable PulseAudio
-sound.enable = true;
+# commented out since unstable doesn't require it
+#sound.enable = true;
 
 hardware.pulseaudio.enable = true;
 hardware.pulseaudio.support32Bit = true;
 
   # Configure Nvidia unstable nixos branch
 
-#    hardware.graphics = {
-#    enable = true;
-#    enable32Bit = true;
-#    extraPackages = with pkgs; [
-#      libGL
-#      libGLU
-#     # Add more libraries as needed
-#    ];
-#  };
+    hardware.graphics = {
+    enable = true;
+    enable32Bit = true;
+    extraPackages = with pkgs; [
+      libGL
+      libGLU
+     # Add more libraries as needed
+    ];
+  };
 
 # stable config
 
- hardware.opengl = {
-   enable = true;
-   driSupport = true;
-   driSupport32Bit = true;
+# hardware.opengl = {
+#   enable = true;
+#   driSupport = true;
+#   driSupport32Bit = true;
 
-};
+#};
 
   hardware.nvidia.modesetting.enable = true;
 
@@ -315,6 +323,8 @@ hardware.pulseaudio.support32Bit = true;
     swtpm
     virtiofsd
     via
+    gamescope-wsi
+    ffmpeg_7
   ];
 
   ### Home manager 
