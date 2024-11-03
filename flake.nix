@@ -5,6 +5,9 @@
     nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable"; #unstable url
     #nixos-hardware.url = "github:NixOS/nixos-hardware/master";
     #nixpkgs.url = "github:nixos/nixpkgs/nixos-24.05";
+    hyprpanel.url = "github:Jas-SinghFSU/HyprPanel";
+    nixos-hardware.url = "github:NixOS/nixos-hardware/master";
+
     # home-manager, used for managing user configuration
     home-manager = {
       url = "github:nix-community/home-manager"; #unstable url
@@ -37,10 +40,11 @@
         ];
       };
       
-      nixos-lt = nixpkgs.lib.nixosSystem {
+      nixos-framework = nixpkgs.lib.nixosSystem {
         system = "x86_64-linux";
         modules = [
-        #  ./configuration.nix
+          ./nixos-framework/nixos-framework.nix
+	  nixos-hardware.nixosModules.framework-13-7040-amd
 
           # make home-manager as a module of nixos
           # so that home-manager configuration will be deployed automatically when executing `nixos-rebuild switch`
@@ -49,8 +53,7 @@
             home-manager.useGlobalPkgs = true;
             home-manager.useUserPackages = true;
 
-            # TODO replace ryan with your own username
-            home-manager.users.probird5 = import ./home.nix;
+            home-manager.users.probird5 = import ./nixos-framework/home.nix;
 
             # Optionally, use home-manager.extraSpecialArgs to pass arguments to home.nix
           }
