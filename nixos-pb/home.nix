@@ -1,4 +1,4 @@
-{ config, pkgs, ... }:
+{ config, pkgs, lib, ... }:
 
 
 {
@@ -32,39 +32,50 @@
 #  };
 
 
-  programs.zsh = {
+
+  programs.bash = {
     enable = true;
-    enableCompletion = true;
 
-    initExtra = ''
-      autoload -Uz compinit
-      compinit -d ~/.cache/zcompdump
-      zstyle ":completion:*:*:*:*:*" menu select
-      zstyle ":completion:*" auto-description "specify: %d"
-      zstyle ":completion:*" completer _expand _complete
-      zstyle ":completion:*" format "Completing %d"
-      zstyle ":completion:*" group-name ""
-      zstyle ":completion:*" list-colors "no=00;37:fi=00;37:di=01;34:ln=01;36:pi=40;33:so=01;35:bd=40;33;01:cd=40;33;01:or=40;31;01:mi=00;05;37;41:ex=01;32"
-      zstyle ":completion:*" list-prompt "%SAt %p: Hit TAB for more, or the character to insert%s"
-      zstyle ":completion:*" matcher-list "m:{a-zA-Z}={A-Za-z}"
-      zstyle ":completion:*" rehash true
-      zstyle ":completion:*" select-prompt "%SScrolling active: current selection at %p%s"
-      zstyle ":completion:*" use-compctl false
-      zstyle ":completion:*" verbose true
-      zstyle ":completion:*:kill:*" command "ps -u $USER -o pid,%cpu,tty,cputime,cmd"
-    '';
+  };
 
-    syntaxHighlighting.enable = true;
-    oh-my-zsh.enable = true;
+home.file.".bashrc".source = lib.mkForce ./bashrc;
 
-    zplug = {
-      enable = true;
-      plugins = [
+  # Set the default shell to Bash
+
+
+#  programs.zsh = {
+#    enable = true;
+#    enableCompletion = true;
+#
+#    initExtra = ''
+#      autoload -Uz compinit
+#      compinit -d ~/.cache/zcompdump
+#      zstyle ":completion:*:*:*:*:*" menu select
+ #     zstyle ":completion:*" auto-description "specify: %d"
+  #    zstyle ":completion:*" completer _expand _complete
+   #   zstyle ":completion:*" format "Completing %d"
+    #  zstyle ":completion:*" group-name ""
+     # zstyle ":completion:*" list-colors "no=00;37:fi=00;37:di=01;34:ln=01;36:pi=40;33:so=01;35:bd=40;33;01:cd=40;33;01:or=40;31;01:mi=00;05;37;41:ex=01;32"
+      #zstyle ":completion:*" list-prompt "%SAt %p: Hit TAB for more, or the character to insert%s"
+      #zstyle ":completion:*" matcher-list "m:{a-zA-Z}={A-Za-z}"
+      #zstyle ":completion:*" rehash true
+      #zstyle ":completion:*" select-prompt "%SScrolling active: current selection at %p%s"
+      #zstyle ":completion:*" use-compctl false
+      #zstyle ":completion:*" verbose true
+      #zstyle ":completion:*:kill:*" command "ps -u $USER -o pid,%cpu,tty,cputime,cmd"
+    #'';
+
+    #syntaxHighlighting.enable = true;
+    #oh-my-zsh.enable = true;
+
+    #zplug = {
+    #  enable = true;
+    #  plugins = [
      #   { name = "zsh-users/zsh-autosuggestions"; }
-        { name = "zsh-users/zsh-syntax-highlighting"; }
-      ];
-    };
-};
+    #    { name = "zsh-users/zsh-syntax-highlighting"; }
+    #  ];
+   # };
+#};
     # Additional Zsh configuration
     programs.hyprlock.enable = true;
 
@@ -179,52 +190,7 @@ gtk = {
     android-tools
     openssl
     wlogout
-    wget
-    docker
-    alacritty
-    pavucontrol
-    waybar
-    brightnessctl
-    zsh
-    hyprpaper
-    mpv
-    feh
-    swaycons
-    rofi-wayland
-    wayland
-    xwayland
-    discord
-    wl-clipboard
-    gcc
-    flameshot
-    grim
-    slurp
-    btop
-    gotop
-    lxappearance
-    nordic
-    wlr-randr
-    wayland-utils
-    gamescope
-    git
-    gnumake
-    gcc
-    linux-firmware
-    microcodeAmd
-    hyprlock
-    blueman
-    spice-gtk
-    polkit
-    spice
-    ntfs3g
-    seatd
-    qt5.qtwayland
-    qt6.qtwayland
-    libsForQt5.polkit-kde-agent
-    egl-wayland
-    pulseaudioFull
-    virtiofsd
-    pamixer
+    bash-completion
   ];
 
   # basic configuration of git, please change to your own

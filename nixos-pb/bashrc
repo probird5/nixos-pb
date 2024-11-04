@@ -1,0 +1,35 @@
+# ~/.bashrc_custom
+
+# Custom PS1 prompt
+export PS1="\u@\h:\w\$ "
+
+# Aliases
+alias ll='ls -la'
+alias gs='git status'
+
+# Other environment variables
+export EDITOR="nvim"
+
+
+# bash completion
+if [ -f /etc/bash_completion ]; then
+    . /etc/bash_completion
+fi
+
+bind "set completion-ignore-case on"
+bind "set show-all-if-ambiguous on"
+
+# Enable menu completion
+bind '"\t": menu-complete'
+
+[ -f ~/.fzf.bash ] && source ~/.fzf.bash
+
+fzf_cd() {
+  local dir
+  dir=$(find . -type d | fzf) && cd "$dir"
+}
+alias fd='fzf_cd'  # Usage: fd to fuzzy find directories and cd
+
+eval "$(starship init bash)"
+
+eval "$(fzf --bash)"

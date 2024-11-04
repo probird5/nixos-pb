@@ -328,8 +328,7 @@ hardware.pulseaudio.support32Bit = true;
   ];
 
   ### Home manager 
-  programs.zsh.enable = true;
-  users.users.probird5.shell = pkgs.zsh;
+#  programs.bash.enable = true;
 
   ## Testing
   services.dbus.enable = true ;
