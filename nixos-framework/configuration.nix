@@ -23,6 +23,13 @@
 
   networking.hostName = "nixos-framework"; # Define your hostname.
 
+  swapDevices = [{
+    device = "/swapfile";
+    size = 64 * 1024; # 64GB in MB
+  }];
+
+boot.kernelParams = [ "resume=/swapfile" ];
+
   # Enable networking
   networking.networkmanager.enable = true;
   networking.networkmanager.wifi.powersave = false;
@@ -185,7 +192,19 @@
     qemu
     gvfs
     home-manager
+    greetd.tuigreet
   ];
+
+      services.greetd = {
+      enable = true;
+      vt = 3;
+      settings = {
+        default_session = {
+          command = "${pkgs.greetd.tuigreet}/bin/tuigreet --time --cmd Hyprland"; # start Hyprland with a TUI login manager
+        };
+      };
+    };
+
 
     ### Home manager 
   programs.zsh.enable = true;

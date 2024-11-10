@@ -6,31 +6,12 @@
   home.username = "probird5";
   home.homeDirectory = "/home/probird5";
 
-  # link the configuration file in current directory to the specified location in home directory
-  # home.file.".config/i3/wallpaper.jpg".source = ./wallpaper.jpg;
-
-  # link all files in `./scripts` to `~/.config/i3/scripts`
-  # home.file.".config/i3/scripts" = {
-  #   source = ./scripts;
-  #   recursive = true;   # link recursively
-  #   executable = true;  # make all files executable
-  # };
-
-  # encode the file content in nix configuration file directly
-  # home.file.".xxx".text = ''
-  #     xxx
-  # '';
-
     imports =
     [ # Include the results of the hardware scan.
       ./starship.nix
       ./hyprland.nix
+      #./nvim.nix
     ];
-
-  # firefox crashing on wayland
-#   home.sessionVariables = {
-#    GBM_BACKEND = "";
-#  };
 
 
   programs.zsh = {
@@ -40,8 +21,8 @@
 
 };
 
-    # Additional Zsh configuration
-    programs.hyprlock.enable = true;
+  # Additional Zsh configuration
+  programs.hyprlock.enable = true;
 
   # set cursor size and dpi for 4k monitor
   xresources.properties = {
@@ -49,6 +30,10 @@
     "Xft.dpi" = 120;
     "Xcursor.theme" = "Nordzy-cursors";
   };
+
+xdg.configFile.nvim.source = ./nvim;
+
+
 
 gtk = {
     enable = true;
@@ -99,15 +84,16 @@ gtk = {
     remmina
     gnomeExtensions.remmina-search-provider
     tmux
+    neovim
+    vim
     xprintidle
     fzf
     go
     unzip
     stylua
     lua
-    luajitPackages.luarocks
+    #luajitPackages.luarocks
     ripgrep
-    neovim
     wdisplays
     nwg-displays
     alsa-utils
@@ -129,7 +115,8 @@ gtk = {
     nodejs_22
     clang-tools
     fd
-    luajitPackages.jsregexp
+    #luajitPackages.jsregexp
+    lua-language-server
     fastfetch
     obsidian
     flameshot 
@@ -198,8 +185,11 @@ gtk = {
     libsForQt5.polkit-kde-agent
     egl-wayland
     pulseaudioFull
+    _1password-gui
     virtiofsd
     pamixer
+    vscodium
+    golangci-lint
   ];
 
   # basic configuration of git, please change to your own

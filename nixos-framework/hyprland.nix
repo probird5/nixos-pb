@@ -173,6 +173,8 @@ in
         bind = $mainMod CTRL, L, resizeactive, 0 -20
         bind = $mainMod CTRL, K, resizeactive, 0 20
         bind = $mainMod CTRL, J, resizeactive, 0 20
+	bind = $mainMod, d, fullscreen
+	bind = $mainMod, M, fullscreen, 1 
 
 
         # Example special workspace
