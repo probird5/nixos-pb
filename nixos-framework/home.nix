@@ -6,8 +6,9 @@
   home.username = "probird5";
   home.homeDirectory = "/home/probird5";
 
-    imports =
-    [ # Include the results of the hardware scan.
+  imports =
+    [
+      # Include the results of the hardware scan.
       ./starship.nix
       ./hyprland.nix
       #./nvim.nix
@@ -18,8 +19,12 @@
     enable = true;
     enableCompletion = true;
     syntaxHighlighting.enable = true;
+    shellAliases = {
+     cd = "z";
+     cdi = "zi";
+    };
 
-};
+  };
 
   # Additional Zsh configuration
   programs.hyprlock.enable = true;
@@ -31,11 +36,12 @@
     "Xcursor.theme" = "Nordzy-cursors";
   };
 
-xdg.configFile.nvim.source = ./nvim;
+  xdg.configFile.nvim.source = ../shared/nvim;
+  programs.zoxide.enable = true;
 
 
 
-gtk = {
+  gtk = {
     enable = true;
     theme = {
       name = "Nordic";
@@ -63,7 +69,8 @@ gtk = {
     enable = true;
     enableZshIntegration = true;
     historyWidgetOptions = [
-      "--height" "40%"
+      "--height"
+      "40%"
       "--layout=reverse"
       "--border"
     ];
@@ -119,7 +126,7 @@ gtk = {
     lua-language-server
     fastfetch
     obsidian
-    flameshot 
+    flameshot
     starship
     lf
     trash-cli
@@ -190,6 +197,7 @@ gtk = {
     pamixer
     vscodium
     golangci-lint
+    nil
   ];
 
   # basic configuration of git, please change to your own
@@ -201,10 +209,10 @@ gtk = {
 
   # starship - an customizable prompt for any shell
   programs.starship = {
-   enable = true;
-    };
+    enable = true;
+  };
   #};
-# testing
+  # testing
 
   xdg = {
     portal = {
@@ -216,7 +224,7 @@ gtk = {
     userDirs = {
       enable = true;
     };
-};
+  };
 
 
 

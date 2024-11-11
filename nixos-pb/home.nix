@@ -40,6 +40,9 @@
 
 home.file.".bashrc".source = lib.mkForce ./bashrc;
 
+
+  xdg.configFile.nvim.source = ../shared/nvim;
+
   # Set the default shell to Bash
 
 

@@ -41,6 +41,3 @@ sudo nixos-rebuild switch --flake .#nixos-pb
     home-manager Integration: This setup assumes home-manager is managed within the flake for user-level configuration.
 
     Reproducibility: The flake.lock file ensures a stable and reproducible setup by locking dependencies.
-
-## Issue with neovim
-I had an issue where installing `lua-language-server` via mason did not work on nixos, had to install it via home-manager which solved the issue
