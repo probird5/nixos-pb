@@ -195,6 +195,10 @@ in
         bind = , XF86AudioNext, exec, playerctl next
         bind = , XF86AudioPrev, exec, playerctl previous
 
+        # Draging stuff
+        bindm = $mainMod, mouse:272, movewindow
+        bindm = $mainMod, mouse:273, resizewindow
+
         ##################
         ### Window Rules ##
         ##################

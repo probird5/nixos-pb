@@ -22,6 +22,7 @@
     shellAliases = {
      cd = "z";
      cdi = "zi";
+     cat ="bat";
     };
 
   };
@@ -198,6 +199,7 @@
     vscodium
     golangci-lint
     nil
+    bat
   ];
 
   # basic configuration of git, please change to your own
