@@ -200,6 +200,8 @@
     golangci-lint
     nil
     bat
+    wlr-randr
+    yazi
   ];
 
   # basic configuration of git, please change to your own

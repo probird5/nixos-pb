@@ -12,15 +12,14 @@ in
     extraConfig = lib.concatStringsSep "" [
       ''
         # Environment Variables
-        env = LIBVA_DRIVER_NAME,nvidia
         env = XDG_SESSION_TYPE,wayland
-        env = __GLX_VENDOR_LIBRARY_NAME,nvidia
         env = ELECTRON_OZONE_PLATFORM_HINT,auto
         env = XDG_CURRENT_DESKTOP, Hyprland
         env = XDG_SESSION_DESKTOP, Hyprland
         env = GDK_BACKEND, wayland, x11
-        env = GBM_BACKEND,nvidia-drm
         env = NVD_BACKEND,direct
+        env = BROWSER, firefox
+        env = QT_QPA_PLATFORM, wayland, steam
 
         #####################
         ### Autostart Apps ##
