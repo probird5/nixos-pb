@@ -118,7 +118,6 @@
     nerdfonts
     font-awesome
     pulsemixer
-    cargo
     python3
     nodejs_22
     clang-tools
@@ -202,6 +201,7 @@
     bat
     wlr-randr
     yazi
+    rustup
   ];
 
   # basic configuration of git, please change to your own
