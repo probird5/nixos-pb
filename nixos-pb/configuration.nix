@@ -32,9 +32,13 @@ boot.loader.efi.efiSysMountPoint = "/boot";
 
 # Testing this
 
-boot.kernelParams = [ "nvidia.NVreg_PreserveVideoMemoryAllocations=1" ];
+boot.kernelParams = [ "nvidia.NVreg_PreserveVideoMemoryAllocations=1" "acpi.power_nocheck=1" "ahci.mobile_lpm_policy=1"  ];
 
 hardware.nvidia.powerManagement.enable = true;
+
+services.udev.extraRules = ''
+  ACTION=="add", SUBSYSTEM=="usb", TEST=="power/wakeup", ATTR{power/wakeup}="disabled"
+'';
 
 # Making sure to use the proprietary drivers until the issue above is fixed upstream
 hardware.nvidia.open = false;
@@ -107,12 +111,16 @@ hardware.nvidia.open = false;
 
     environment.sessionVariables = {
     STEAM_EXTRA_COMPAT_TOOLS_PATHS =
-      "\${HOME}/.steam/root/compatibilitytools.d";
+      "\${HOME}/.local/share/Steam/compatibilitytools.d";
+
   };
 
   programs.steam.enable = true;
   programs.steam.gamescopeSession.enable = true;
   programs.gamemode.enable = true;
+
+
+  services.desktopManager.plasma6.enable = true;
 
   # Fonts
 
@@ -325,6 +333,7 @@ hardware.pulseaudio.support32Bit = true;
     via
     gamescope-wsi
     ffmpeg_7
+    greetd.tuigreet
   ];
 
   ### Home manager 
@@ -333,6 +342,15 @@ hardware.pulseaudio.support32Bit = true;
   programs.zsh.enable = true;
   users.users.probird5.shell = pkgs.zsh;
 
+      services.greetd = {
+      enable = true;
+      vt = 3;
+      settings = {
+        default_session = {
+          command = "${pkgs.greetd.tuigreet}/bin/tuigreet --time --cmd Hyprland"; # start Hyprland with a TUI login manager
+        };
+      };
+    };
 
   ## Testing
   services.dbus.enable = true ;
@@ -347,6 +365,6 @@ hardware.pulseaudio.support32Bit = true;
   };
 
   # (e.g. man configuration.nix or on https://nixos.org/nixos/options.html).
-  system.stateVersion = "24.05"; # Did you read the comment?
+  system.stateVersion = "24.11"; # Did you read the comment?
 }
 

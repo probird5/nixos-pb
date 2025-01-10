@@ -2,9 +2,9 @@
   description = "NixOS configuration";
 
   inputs = {
-    nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable"; #unstable url
+    #nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable"; #unstable url
     #nixos-hardware.url = "github:NixOS/nixos-hardware/master";
-    #nixpkgs.url = "github:nixos/nixpkgs/nixos-24.05";
+    nixpkgs.url = "github:nixos/nixpkgs/nixos-24.11";
     hyprpanel.url = "github:Jas-SinghFSU/HyprPanel";
     nixos-hardware.url = "github:NixOS/nixos-hardware/master";
 

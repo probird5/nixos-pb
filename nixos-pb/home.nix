@@ -42,6 +42,11 @@
     };
 };
 
+home.sessionVariables = {
+  EDITOR = "nvim";
+  VISUAL = "nvim";
+  BROWSER = "firefox";
+};
 
 home.file.".bashrc".source = lib.mkForce ./bashrc;
 
@@ -166,6 +171,12 @@ gtk = {
     bash-completion
     rustup
     zoxide
+    bat
+    yazi
+    shotcut
+    freerdp3
+    bambu-studio
+    ghostty
   ];
 
   # basic configuration of git, please change to your own
@@ -205,7 +216,7 @@ gtk = {
   # You can update home Manager without changing this value. See
   # the home Manager release notes for a list of state version
   # changes in each release.
-  home.stateVersion = "24.05";
+  home.stateVersion = "24.11";
 
   # Let home Manager install and manage itself.
   programs.home-manager.enable = true;
