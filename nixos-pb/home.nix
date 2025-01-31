@@ -1,5 +1,9 @@
-{ config, pkgs, lib, ... }:
-
+{
+  config,
+  pkgs,
+  lib,
+  ...
+}:
 
 {
   # TODO please change the username & home directory to your own
@@ -21,42 +25,45 @@
   #     xxx
   # '';
 
-    imports =
-    [ # Include the results of the hardware scan.
-      ./config/starship.nix
-    ];
+  imports = [
+    # Include the results of the hardware scan.
+    ./config/starship.nix
+  ];
 
   # firefox crashing on wayland
-#   home.sessionVariables = {
-#    GBM_BACKEND = "";
-#  };
-
+  #   home.sessionVariables = {
+  #    GBM_BACKEND = "";
+  #  };
+  wayland.windowManager.hyprland.xwayland.enable = true;
   programs.zsh = {
     enable = true;
     enableCompletion = true;
     syntaxHighlighting.enable = true;
     shellAliases = {
-     cd = "z";
-     cdi = "zi";
-     cat ="bat";
+      cd = "z";
+      cdi = "zi";
+      cat = "bat";
     };
-};
+    # Add custom scripts directory to PATH
+    sessionVariables = {
+      PATH = "${config.home.homeDirectory}/scripts:$PATH";
+    };
+  };
 
-home.sessionVariables = {
-  EDITOR = "nvim";
-  VISUAL = "nvim";
-  BROWSER = "firefox";
-};
+  home.sessionVariables = {
+    EDITOR = "nvim";
+    VISUAL = "nvim";
+    BROWSER = "firefox";
+  };
 
-home.file.".bashrc".source = lib.mkForce ./bashrc;
-
+  home.file.".bashrc".source = lib.mkForce ./bashrc;
 
   xdg.configFile.nvim.source = ../shared/nvim;
 
   programs.zoxide.enable = true;
 
-    # Additional Zsh configuration
-    programs.hyprlock.enable = true;
+  # Additional Zsh configuration
+  programs.hyprlock.enable = true;
 
   # set cursor size and dpi for 4k monitor
   xresources.properties = {
@@ -65,7 +72,7 @@ home.file.".bashrc".source = lib.mkForce ./bashrc;
     "Xcursor.theme" = "Nordzy-cursors";
   };
 
-gtk = {
+  gtk = {
     enable = true;
     theme = {
       name = "Nordic";
@@ -85,15 +92,14 @@ gtk = {
     };
   };
 
-
   # fzf
-
 
   programs.fzf = {
     enable = true;
     enableZshIntegration = true;
     historyWidgetOptions = [
-      "--height" "40%"
+      "--height"
+      "40%"
       "--layout=reverse"
       "--border"
     ];
@@ -102,7 +108,6 @@ gtk = {
   # Packages that should be installed to the user profile.
   home.packages = with pkgs; [
     sysstat
-    brave
     lm_sensors # for `sensors` command
     ethtool
     pciutils # lspci
@@ -110,7 +115,6 @@ gtk = {
     p7zip
     steam
     lutris
-    brave
     remmina
     gnomeExtensions.remmina-search-provider
     tmux
@@ -146,7 +150,7 @@ gtk = {
     luajitPackages.jsregexp
     fastfetch
     obsidian
-    flameshot 
+    flameshot
     starship
     lf
     trash-cli
@@ -177,6 +181,13 @@ gtk = {
     freerdp3
     bambu-studio
     ghostty
+    sshfs
+    webcord
+    killall
+    swaynotificationcenter
+    golangci-lint
+    goimports-reviser
+    swayimg
   ];
 
   # basic configuration of git, please change to your own
@@ -188,23 +199,25 @@ gtk = {
 
   # starship - an customizable prompt for any shell
   programs.starship = {
-   enable = true;
-    };
+    enable = true;
+  };
   #};
-# testing
+  # testing
 
   xdg = {
     portal = {
       enable = true;
       config.common.default = "*";
-      extraPortals = [ pkgs.xdg-desktop-portal-gtk ];
+      extraPortals = [
+        pkgs.xdg-desktop-portal-gtk
+        pkgs.xdg-desktop-portal-hyprland
+      ];
     };
 
     userDirs = {
       enable = true;
     };
-};
-
+  };
 
 
 

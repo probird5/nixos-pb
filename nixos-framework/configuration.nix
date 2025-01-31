@@ -195,7 +195,7 @@ boot.kernelParams = [ "resume=/swapfile" ];
     greetd.tuigreet
   ];
 
-      services.greetd = {
+  services.greetd = {
       enable = true;
       vt = 3;
       settings = {

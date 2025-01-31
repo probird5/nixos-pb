@@ -2,51 +2,72 @@
 # your system.  Help is available in the configuration.nix(5) man page
 # and in the NixOS manual (accessible by running ‘nixos-help’).
 
-{ config, pkgs, lib, ... }:
+{
+  config,
+  pkgs,
+  lib,
+  inputs,
+  ...
+}:
 
 {
-  imports =
-    [ # Include the results of the hardware scan.
-      ./hardware-configuration.nix
-    ];
+  imports = [
+    ./hardware-configuration.nix
+    inputs.sops-nix.nixosModules.sops
+  ];
 
   # Bootloader.
-  #boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
   boot.blacklistedKernelModules = [ "nouveau" ];
-  boot.supportedFilesystems = [ "btrfs" "reiserfs" "vfat" "f2fs" "xfs" "ntfs" "cifs" ];
-boot.loader.systemd-boot.enable = false;
-boot.loader.grub.enable = true;
-boot.loader.grub.device = "nodev";
-boot.loader.grub.useOSProber = true;
-boot.loader.grub.efiSupport = true;
-boot.loader.efi.efiSysMountPoint = "/boot";
-#hardware.nvidia.package = config.boot.kernelPackages.nvidiaPackages.latest;
+  boot.supportedFilesystems = [
+    "btrfs"
+    "reiserfs"
+    "vfat"
+    "f2fs"
+    "xfs"
+    "ntfs"
+    "cifs"
+  ];
+  boot.loader.systemd-boot.enable = false;
+  boot.loader.grub.enable = true;
+  boot.loader.grub.device = "nodev";
+  boot.loader.grub.useOSProber = true;
+  boot.loader.grub.efiSupport = true;
+  boot.loader.efi.efiSysMountPoint = "/boot";
 
-#  suspend to RAM (deep) rather than `s2idle`
-#  boot.kernelParams = [ "mem_sleep_default=deep" ];
-#  # suspend-then-hibernate
-#  systemd.sleep.extraConfig = ''
-#    SuspendState=mem
-#  '';
+  # sops
+  sops.defaultSopsFile = ../secrets/secrets.yaml;
+  sops.defaultSopsFormat = "yaml";
+  sops.age.keyFile = "/home/probird5/.config/sops/age/keys.txt";
 
-# Testing this
+  sops.secrets = {
+    "syncthing_user".owner = "probird5";
+    "syncthing_password".owner = "probird5";
+  };
 
-boot.kernelParams = [ "nvidia.NVreg_PreserveVideoMemoryAllocations=1" "acpi.power_nocheck=1" "ahci.mobile_lpm_policy=1"  ];
+  sops.templates = {
+    "syncuser".content = ''${config.sops.placeholder."syncthing_user"}'';
+    "syncpassword".content = ''${config.sops.placeholder."syncthing_password"}'';
+  };
 
-hardware.nvidia.powerManagement.enable = true;
+  # Testing this
 
-services.udev.extraRules = ''
-  ACTION=="add", SUBSYSTEM=="usb", TEST=="power/wakeup", ATTR{power/wakeup}="disabled"
-'';
+  boot.kernelParams = [
+    "nvidia.NVreg_PreserveVideoMemoryAllocations=1"
+    "acpi.power_nocheck=1"
+    "ahci.mobile_lpm_policy=1"
+  ];
 
-# Making sure to use the proprietary drivers until the issue above is fixed upstream
-hardware.nvidia.open = false;
+  hardware.nvidia.powerManagement.enable = true;
 
+  services.udev.extraRules = ''
+    ACTION=="add", SUBSYSTEM=="usb", TEST=="power/wakeup", ATTR{power/wakeup}="disabled"
+  '';
 
+  # Making sure to use the proprietary drivers until the issue above is fixed upstream
+  hardware.nvidia.open = false;
 
- # Setting up virtualization
-   # Manage the virtualisation services
+  # Setting up virtualization
   virtualisation = {
     libvirtd = {
       enable = true;
@@ -60,18 +81,15 @@ hardware.nvidia.open = false;
   };
   services.spice-vdagentd.enable = true;
 
+  # Enabeling docker
+  virtualisation.docker.enable = true;
 
-
- # Enabeling docker
- virtualisation.docker.enable = true;
-
- # Can't remember why I added this tbh
+  # Can't remember why I added this tbh
   nix = {
     settings = {
       warn-dirty = false;
     };
   };
-  
 
   networking.hostName = "nixos-pb"; # Define your hostname.
 
@@ -80,7 +98,10 @@ hardware.nvidia.open = false;
   programs.dconf.enable = true;
 
   # Enabeling Flakes
-  nix.settings.experimental-features = [ "nix-command" "flakes" ];
+  nix.settings.experimental-features = [
+    "nix-command"
+    "flakes"
+  ];
 
   # Enable networking
   networking.networkmanager.enable = true;
@@ -97,21 +118,10 @@ hardware.nvidia.open = false;
     xkb.variant = "";
   };
 
-  # Overlay for slstatus
-#  nixpkgs.overlays = [
-#    (final: prev: {
-#      slstatus = prev.slstatus.overrideAttrs (oldAttrs: rec {
-#        src = "${config.users.users.probird5.home}/config/slstatus";  
-#      });
-#    })
-#  ];
-
-
   # steam
 
-    environment.sessionVariables = {
-    STEAM_EXTRA_COMPAT_TOOLS_PATHS =
-      "\${HOME}/.local/share/Steam/compatibilitytools.d";
+  environment.sessionVariables = {
+    STEAM_EXTRA_COMPAT_TOOLS_PATHS = "\${HOME}/.local/share/Steam/compatibilitytools.d";
 
   };
 
@@ -119,14 +129,11 @@ hardware.nvidia.open = false;
   programs.steam.gamescopeSession.enable = true;
   programs.gamemode.enable = true;
 
-
-  services.desktopManager.plasma6.enable = true;
-
   # Fonts
 
   fonts.packages = with pkgs; [
-  fira-code-nerdfont
-];
+    fira-code-nerdfont
+  ];
 
   # Bluetooth
 
@@ -134,9 +141,8 @@ hardware.nvidia.open = false;
   hardware.bluetooth.powerOnBoot = true; # powers up the default Bluetooth controller on boot
   services.blueman.enable = true;
 
- #flatpak
-   services.flatpak.enable = true;
-
+  #flatpak
+  services.flatpak.enable = true;
 
   # Hyprland
   programs.hyprland = {
@@ -150,66 +156,45 @@ hardware.nvidia.open = false;
   services.xserver.displayManager.startx.enable = true;
   services.xserver.videoDrivers = [ "nvidia" ];
 
-    # Custom config
-
-#  services.xserver.windowManager.dwm.package = pkgs.dwm.overrideAttrs {
-#  src = "${config.users.users.probird5.home}/dwm-config.tar.gz";
-#};
-
-#services.xserver.windowManager.dwm.package = pkgs.dwm.overrideAttrs (oldAttrs: {
-#  src = builtins.fetchGit {
-#    url = "https://github.com/probird5/dwm-config";
-#    ref = "main";
-#  };
-#});
-
- # May need to edit session variables
+  # May need to edit session variables
   environment.sessionVariables = {
     NIXOS_OZONE_WL = 1;
   };
 
   # Swap
-  swapDevices = [ {
-    device = "/var/lib/swapfile";
-    size = 64 * 1024; # size in MiB, 64 GiB = 64 * 1024 MiB
-  } ];
- 
+  swapDevices = [
+    {
+      device = "/var/lib/swapfile";
+      size = 64 * 1024; # size in MiB, 64 GiB = 64 * 1024 MiB
+    }
+  ];
 
   # Sound
 
-  # Disable PipeWire
-services.pipewire.enable = false;
+  # Enable PipeWire
+  security.rtkit.enable = true;
+  services.pipewire = {
+    enable = true; # if not already enabled
+    alsa.enable = true;
+    alsa.support32Bit = true;
+    pulse.enable = true;
+  };
 
-# Enable PulseAudio
-# commented out since unstable doesn't require it
-#sound.enable = true;
+  # Enable PulseAudio
+  # commented out since unstable doesn't require it
+  #sound.enable = true;
 
-hardware.pulseaudio.enable = true;
-hardware.pulseaudio.support32Bit = true;
-
-  # Configure Nvidia unstable nixos branch
-
-    hardware.graphics = {
+  hardware.graphics = {
     enable = true;
     enable32Bit = true;
     extraPackages = with pkgs; [
       libGL
       libGLU
-     # Add more libraries as needed
+      # Add more libraries as needed
     ];
   };
 
-# stable config
-
-# hardware.opengl = {
-#   enable = true;
-#   driSupport = true;
-#   driSupport32Bit = true;
-
-#};
-
   hardware.nvidia.modesetting.enable = true;
-
 
   # Thunar
   programs.thunar.enable = true;
@@ -217,21 +202,28 @@ hardware.pulseaudio.support32Bit = true;
   services.tumbler.enable = true;
 
   programs.thunar.plugins = with pkgs.xfce; [
-  thunar
-  thunar-archive-plugin
-  thunar-volman
-];
+    thunar
+    thunar-archive-plugin
+    thunar-volman
+  ];
 
   services.udisks2.enable = true;
 
- 
-
-  # Define a user account. Don't forget to set a password with ‘passwd’.
+  # Define a user account.
   users.users.probird5 = {
     isNormalUser = true;
     description = "probird5";
-    extraGroups = [ "networkmanager" "audio" "wheel" "libvirtd" "kvm" "qemu" "flatpak"];
-    packages = with pkgs; [];
+    extraGroups = [
+      "networkmanager"
+      "audio"
+      "wheel"
+      "libvirtd"
+      "kvm"
+      "qemu"
+      "flatpak"
+      "probird5"
+    ];
+    packages = with pkgs; [ ];
   };
 
   # Allow unfree packages
@@ -242,10 +234,13 @@ hardware.pulseaudio.support32Bit = true;
   environment.systemPackages = with pkgs; [
     vim # Do not forget to add an editor to edit configuration.nix! The Nano editor is also installed by default.
     wget
+    pipewire
+    wireplumber
+    xdg-desktop-portal-hyprland
     docker
     udiskie
     virt-manager
-    virt-viewer 
+    virt-viewer
     win-virtio
     win-spice
     egl-wayland
@@ -326,7 +321,7 @@ hardware.pulseaudio.support32Bit = true;
     nvidia-vaapi-driver
     egl-wayland
     pulseaudioFull
-    vulkan-loader                 # Vulkan support for 64-bit applications
+    vulkan-loader # Vulkan support for 64-bit applications
     pkgs.pkgsi686Linux.vulkan-loader # Vulkan support for 32-bit applications
     swtpm
     virtiofsd
@@ -334,37 +329,69 @@ hardware.pulseaudio.support32Bit = true;
     gamescope-wsi
     ffmpeg_7
     greetd.tuigreet
+    syncthing
+    nixfmt-rfc-style
+    sops
   ];
 
-  ### Home manager 
-#  programs.bash.enable = true;
-    ### Home manager 
+  ### Home manager
   programs.zsh.enable = true;
   users.users.probird5.shell = pkgs.zsh;
 
-      services.greetd = {
-      enable = true;
-      vt = 3;
-      settings = {
-        default_session = {
-          command = "${pkgs.greetd.tuigreet}/bin/tuigreet --time --cmd Hyprland"; # start Hyprland with a TUI login manager
-        };
+  services.greetd = {
+    enable = true;
+    vt = 3;
+    settings = {
+      default_session = {
+        command = "${pkgs.greetd.tuigreet}/bin/tuigreet --time --cmd Hyprland"; # start Hyprland with a TUI login manager
       };
     };
+  };
 
   ## Testing
-  services.dbus.enable = true ;
+  services.dbus.enable = true;
 
-
-    xdg.portal = {
+  xdg.portal = {
     enable = true;
     extraPortals = [
       pkgs.xdg-desktop-portal-gtk
       pkgs.xdg-desktop-portal-gnome
+      pkgs.xdg-desktop-portal-hyprland
     ];
   };
+
+  ## Syncthing
+
+services.syncthing = {
+  enable = true;
+  dataDir = "/home/probird5/Documents";
+  openDefaultPorts = true;
+  configDir = "/home/probird5/.config/syncthing";
+  user = "probird5";
+  group = "users";
+  guiAddress = "127.0.0.1:8384";
+  settings = {
+    devices = {
+      "nixos-framework" = {
+        id = "W5FDVW4-VY4EMJF-QMDEBMI-TK32XMP-3B657BF-KXO4GQF-PXVH5HD-EP6PWQR";
+      };
+    };
+    folders = {
+      "Documents" = {
+        path = "/home/probird5/Documents";
+        devices = [ "nixos-framework" ]; # Link folder to the defined device
+        versioning = {
+          type = "staggered";
+          params = {
+            cleanInterval = "3600";
+            maxAge = "15768000";
+          };
+        };
+      };
+    };
+  };
+};
 
   # (e.g. man configuration.nix or on https://nixos.org/nixos/options.html).
   system.stateVersion = "24.11"; # Did you read the comment?
 }
-
