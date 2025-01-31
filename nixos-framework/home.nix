@@ -202,6 +202,11 @@
     wlr-randr
     yazi
     rustup
+    shotcut
+    bambu-studio
+    openssl
+    pkg-config
+    bind
   ];
 
   # basic configuration of git, please change to your own

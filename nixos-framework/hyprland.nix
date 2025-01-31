@@ -19,7 +19,8 @@ in
         env = GDK_BACKEND, wayland, x11
         env = NVD_BACKEND,direct
         env = BROWSER, firefox
-        env = QT_QPA_PLATFORM, wayland, steam
+        #env = QT_QPA_PLATFORM, wayland, steam
+        env = QT_QPA_PLATFORM, wayland
 
         #####################
         ### Autostart Apps ##

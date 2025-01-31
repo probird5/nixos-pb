@@ -10,6 +10,8 @@
       ./hardware-configuration.nix
     ];
 
+hardware.cpu.amd.updateMicrocode = true;
+
   # Bootloader.
   boot.loader.efi.canTouchEfiVariables = true;
   boot.supportedFilesystems = [ "btrfs" "reiserfs" "vfat" "f2fs" "xfs" "ntfs" "cifs" ];
@@ -138,8 +140,12 @@ boot.kernelParams = [ "resume=/swapfile" ];
 
 
 
-  # Enable CUPS to print documents.
-  services.printing.enable = true;
+
+  services.printing = {
+    # run on first setup: sudo hp-setup -i -a
+    enable  =  true;
+    drivers = [ pkgs.hplipWithPlugin ];
+};
 
   # Enable sound with pipewire.
   hardware.pulseaudio.enable = false;
@@ -193,9 +199,13 @@ boot.kernelParams = [ "resume=/swapfile" ];
     gvfs
     home-manager
     greetd.tuigreet
+    ryzenadj
+    vulkan-tools
+    mesa
+    hplipWithPlugin
   ];
 
-  services.greetd = {
+      services.greetd = {
       enable = true;
       vt = 3;
       settings = {
@@ -204,6 +214,20 @@ boot.kernelParams = [ "resume=/swapfile" ];
         };
       };
     };
+
+ services.xserver.videoDrivers = ["amdgpu"];
+    hardware.graphics = {
+    enable = true;
+    enable32Bit = true;
+    extraPackages = with pkgs; [
+      libGL
+      libGLU
+     # Add more libraries as needed
+    ];
+  };
+hardware.steam-hardware = {
+  enable = true;
+};
 
 
     ### Home manager 
@@ -222,6 +246,16 @@ boot.kernelParams = [ "resume=/swapfile" ];
       pkgs.xdg-desktop-portal-gnome
     ];
   };
+
+  services = {
+    syncthing = {
+        enable = true;
+        group = "users";
+        user = "probird5";
+        dataDir = "/home/probird5/test_syncthing";    # Default folder for new synced folders
+        configDir = "/home/probird5/test_syncthing/.config/syncthing";   # Folder for Syncthing's settings and keys
+    };
+};
 
   system.stateVersion = "24.05"; # Did you read the comment?
 
