@@ -14,6 +14,7 @@
   imports = [
     ./hardware-configuration.nix
     inputs.sops-nix.nixosModules.sops
+    ../shared/shares.nix
   ];
 
   # Bootloader.
@@ -50,7 +51,7 @@
     "syncpassword".content = ''${config.sops.placeholder."syncthing_password"}'';
   };
 
-  # Testing this
+  # Needed this to fix a sleep bug.
 
   boot.kernelParams = [
     "nvidia.NVreg_PreserveVideoMemoryAllocations=1"
@@ -64,6 +65,9 @@
     ACTION=="add", SUBSYSTEM=="usb", TEST=="power/wakeup", ATTR{power/wakeup}="disabled"
   '';
 
+  # Firewall configuration
+
+  networking.firewall.allowedTCPPorts = [22];
   # Making sure to use the proprietary drivers until the issue above is fixed upstream
   hardware.nvidia.open = false;
 
@@ -128,12 +132,7 @@
   programs.steam.enable = true;
   programs.steam.gamescopeSession.enable = true;
   programs.gamemode.enable = true;
-
-  # Fonts
-
-  fonts.packages = with pkgs; [
-    fira-code-nerdfont
-  ];
+  programs.steam.remotePlay.openFirewall = true; # Open ports in the firewall for Steam Remote Play
 
   # Bluetooth
 
@@ -195,6 +194,7 @@
   };
 
   hardware.nvidia.modesetting.enable = true;
+  hardware.nvidia.package = config.boot.kernelPackages.nvidiaPackages.beta;
 
   # Thunar
   programs.thunar.enable = true;
@@ -263,7 +263,10 @@
     libnotify
     hyprpaper
     mpv
-    nerdfonts
+    nerd-fonts.fira-code
+    nerd-fonts.fira-mono
+    nerd-fonts.jetbrains-mono
+    nerd-fonts.symbols-only
     feh
     kitty
     swaycons
@@ -301,7 +304,7 @@
     pkg-config
     freetype
     linux-firmware
-    linuxPackages.nvidiaPackages.latest
+    #linuxPackages.nvidiaPackages.latest
     libGL
     libglvnd
     xclip
@@ -348,7 +351,22 @@
     };
   };
 
-  ## Testing
+### Enable ssh
+
+services.openssh = {
+  enable = true;
+  ports = [ 22 ];
+  settings = {
+    PasswordAuthentication = true;
+    AllowUsers = ["probird5"]; # Allows all users by default. Can be [ "user1" "user2" ]
+    UseDns = true;
+    X11Forwarding = true;
+    PermitRootLogin = "no"; # "yes", "without-password", "prohibit-password", "forced-commands-only", "no"
+  };
+};
+
+
+  ## Needed for screenshare
   services.dbus.enable = true;
 
   xdg.portal = {
@@ -393,5 +411,5 @@ services.syncthing = {
 };
 
   # (e.g. man configuration.nix or on https://nixos.org/nixos/options.html).
-  system.stateVersion = "24.11"; # Did you read the comment?
+  system.stateVersion = "25.05"; # Did you read the comment?
 }

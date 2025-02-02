@@ -58,6 +58,7 @@
 
   home.file.".bashrc".source = lib.mkForce ./bashrc;
 
+
   xdg.configFile.nvim.source = ../shared/nvim;
 
   programs.zoxide.enable = true;
@@ -140,8 +141,11 @@
     xorg.xcbutilrenderutil
     xorg.xcbutilwm
     picom
-    nerdfonts
     font-awesome
+    nerd-fonts.fira-code
+    nerd-fonts.fira-mono
+    nerd-fonts.jetbrains-mono
+    nerd-fonts.symbols-only
     pulsemixer
     python3
     nodejs_22
@@ -179,7 +183,6 @@
     yazi
     shotcut
     freerdp3
-    bambu-studio
     ghostty
     sshfs
     webcord
@@ -216,6 +219,9 @@
 
     userDirs = {
       enable = true;
+      extraConfig = {
+        XDG_EMULATION_DIR = "${config.home.homeDirectory}/Documents/emulation";
+      };
     };
   };
 
@@ -229,7 +235,7 @@
   # You can update home Manager without changing this value. See
   # the home Manager release notes for a list of state version
   # changes in each release.
-  home.stateVersion = "24.11";
+  home.stateVersion = "25.05";
 
   # Let home Manager install and manage itself.
   programs.home-manager.enable = true;
