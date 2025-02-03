@@ -28,6 +28,7 @@
   imports = [
     # Include the results of the hardware scan.
     ./config/starship.nix
+    ./config/rofi.nix
   ];
 
   # firefox crashing on wayland
