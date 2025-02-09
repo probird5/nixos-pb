@@ -2,6 +2,7 @@
   config,
   pkgs,
   lib,
+  inputs,
   ...
 }:
 
@@ -55,6 +56,8 @@
     EDITOR = "nvim";
     VISUAL = "nvim";
     BROWSER = "firefox";
+    TERMINAL = "alacritty";
+    FILEMANAGER = "thunar";
   };
 
   home.file.".bashrc".source = lib.mkForce ./bashrc;

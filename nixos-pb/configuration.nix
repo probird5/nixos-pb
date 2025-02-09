@@ -36,6 +36,10 @@
   boot.loader.grub.efiSupport = true;
   boot.loader.efi.efiSysMountPoint = "/boot";
 
+# Name servers
+networking.nameservers = [ "100.100.100.100" "1.1.1.1" ];
+networking.search = [ "tail339015.ts.net"];
+
   # sops
   sops.defaultSopsFile = ../secrets/secrets.yaml;
   sops.defaultSopsFormat = "yaml";
@@ -335,6 +339,7 @@
     syncthing
     nixfmt-rfc-style
     sops
+    nfs-utils
   ];
 
   ### Home manager
@@ -377,6 +382,9 @@ services.openssh = {
       pkgs.xdg-desktop-portal-hyprland
     ];
   };
+
+  ## Tailscale
+  services.tailscale.enable = true;
 
   ## Syncthing
 
