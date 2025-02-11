@@ -287,7 +287,7 @@ networking.search = [ "tail339015.ts.net"];
     gotop
     lxappearance
     dmenu
-    nordic
+    #nordic
     slstatus
     wlr-randr
     wayland-utils

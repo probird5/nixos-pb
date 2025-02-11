@@ -80,8 +80,8 @@
   gtk = {
     enable = true;
     theme = {
-      name = "Nordic";
-      package = pkgs.nordic;
+      name = "Dracula";
+      package = pkgs.dracula-theme;
     };
     iconTheme = {
       name = "Nordzy";
@@ -96,6 +96,10 @@
       configLocation = "${config.home.homeDirectory}/.gtkrc-2.0";
     };
   };
+  qt.enable = true;
+
+# platform theme "gtk" or "gnome"
+qt.platformTheme = "gtk";
 
   # fzf
 
@@ -133,7 +137,6 @@
     ripgrep
     neovim
     wdisplays
-    nwg-displays
     alsa-utils
     protonup-qt
     qt6.qtbase
