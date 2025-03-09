@@ -40,8 +40,8 @@ in
         #################
         $terminal = alacritty
         $fileManager = thunar
-        $menu = rofi -show drun -show-icons -theme /home/${username}/.config/rofi/theme.rasi
-
+        $menu = rofi -show drun -theme ~/.config/rofi/config/launcher.rasi
+ 
         ######################
         ### Look and Feel ###
         ######################
@@ -60,10 +60,10 @@ in
           rounding = 10
           active_opacity = 1.0
           inactive_opacity = 1.0
-          drop_shadow = true
-          shadow_range = 4
-          shadow_render_power = 3
-          col.shadow = rgba(1a1a1aee)
+         # drop_shadow = true
+         # shadow_range = 4
+         # shadow_render_power = 3
+         # col.shadow = rgba(1a1a1aee)
           blur {
             enabled = true
             size = 3

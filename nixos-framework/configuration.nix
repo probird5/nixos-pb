@@ -8,6 +8,9 @@
   imports =
     [ # Include the results of the hardware scan.
       ./hardware-configuration.nix
+      ../shared/shares.nix
+      ./wireguard.nix
+      ./tailscale.nix
     ];
 
 hardware.cpu.amd.updateMicrocode = true;
@@ -101,7 +104,9 @@ boot.kernelParams = [ "resume=/swapfile" ];
   # Fonts
 
   fonts.packages = with pkgs; [
-  fira-code-nerdfont
+  nerd-fonts.fira-code
+  nerd-fonts.droid-sans-mono
+  nerd-fonts.symbols-only  #This one
 ];
 
   # Bluetooth
@@ -203,6 +208,7 @@ boot.kernelParams = [ "resume=/swapfile" ];
     vulkan-tools
     mesa
     hplipWithPlugin
+    openresolv
   ];
 
       services.greetd = {
@@ -257,6 +263,6 @@ hardware.steam-hardware = {
     };
 };
 
-  system.stateVersion = "24.05"; # Did you read the comment?
+  system.stateVersion = "24.11"; # Did you read the comment?
 
 }

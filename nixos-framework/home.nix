@@ -40,13 +40,11 @@
   xdg.configFile.nvim.source = ../shared/nvim;
   programs.zoxide.enable = true;
 
-
-
   gtk = {
     enable = true;
     theme = {
-      name = "Nordic";
-      package = pkgs.nordic;
+      name = "Dracula";
+      package = pkgs.dracula-theme;
     };
     iconTheme = {
       name = "Nordzy";
@@ -61,7 +59,10 @@
       configLocation = "${config.home.homeDirectory}/.gtkrc-2.0";
     };
   };
+  qt.enable = true;
 
+# platform theme "gtk" or "gnome"
+qt.platformTheme = "gtk";
 
   # fzf
 
@@ -115,7 +116,10 @@
     xorg.xcbutilrenderutil
     xorg.xcbutilwm
     picom
-    nerdfonts
+    nerd-fonts.fira-code
+    nerd-fonts.fira-mono
+    nerd-fonts.symbols-only
+    nerd-fonts.jetbrains-mono
     font-awesome
     pulsemixer
     python3
@@ -203,10 +207,10 @@
     yazi
     rustup
     shotcut
-    bambu-studio
     openssl
     pkg-config
     bind
+    wireguard-ui
   ];
 
   # basic configuration of git, please change to your own
@@ -215,6 +219,8 @@
     userName = "probird5";
     userEmail = "probird5";
   };
+
+
 
   # starship - an customizable prompt for any shell
   programs.starship = {
@@ -246,7 +252,7 @@
   # You can update home Manager without changing this value. See
   # the home Manager release notes for a list of state version
   # changes in each release.
-  home.stateVersion = "24.05";
+  home.stateVersion = "25.05";
 
   # Let home Manager install and manage itself.
   programs.home-manager.enable = true;
