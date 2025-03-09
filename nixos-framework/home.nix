@@ -12,6 +12,7 @@
       ./starship.nix
       ./hyprland.nix
       #./nvim.nix
+
     ];
 
 
