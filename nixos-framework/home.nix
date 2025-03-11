@@ -212,6 +212,7 @@ qt.platformTheme = "gtk";
     pkg-config
     bind
     wireguard-ui
+    libreoffice
   ];
 
   # basic configuration of git, please change to your own
