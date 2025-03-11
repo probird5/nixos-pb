@@ -15,6 +15,7 @@
     ./hardware-configuration.nix
     inputs.sops-nix.nixosModules.sops
     ../shared/shares.nix
+#    ./ollama.nix
   ];
 
   # Bootloader.
@@ -340,6 +341,8 @@ networking.search = [ "tail339015.ts.net"];
     nixfmt-rfc-style
     sops
     nfs-utils
+    appimage-run
+    (callPackage ./packages/zen.nix {})
   ];
 
   ### Home manager

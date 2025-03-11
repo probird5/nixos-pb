@@ -55,7 +55,7 @@
   home.sessionVariables = {
     EDITOR = "nvim";
     VISUAL = "nvim";
-    BROWSER = "firefox";
+    BROWSER = "librewolf";
     TERMINAL = "alacritty";
     FILEMANAGER = "thunar";
   };
@@ -174,6 +174,7 @@ qt.platformTheme = "gtk";
     hypridle
     jq
     firefox
+    librewolf
     spotify
     swappy
     wttrbar
@@ -190,14 +191,12 @@ qt.platformTheme = "gtk";
     yazi
     shotcut
     freerdp3
-    ghostty
     sshfs
-    webcord
     killall
     swaynotificationcenter
     golangci-lint
     goimports-reviser
-    swayimg
+    libreoffice
   ];
 
   # basic configuration of git, please change to your own
