@@ -15,6 +15,7 @@
     ./hardware-configuration.nix
     inputs.sops-nix.nixosModules.sops
     ../shared/shares.nix
+    ./config/gnome.nix
 #    ./ollama.nix
   ];
 
