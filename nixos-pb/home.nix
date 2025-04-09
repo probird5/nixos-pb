@@ -46,11 +46,12 @@
       cdi = "zi";
       cat = "bat";
     };
-    # Add custom scripts directory to PATH
-    sessionVariables = {
-      PATH = "${config.home.homeDirectory}/scripts:$PATH";
-    };
+
+    {
+  home.sessionVariables = {
+    PATH = "${config.home.homeDirectory}/.config/emacs/bin:${config.home.homeDirectory}/scripts:$PATH";
   };
+}
 
   home.sessionVariables = {
     EDITOR = "nvim";
