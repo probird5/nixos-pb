@@ -46,14 +46,10 @@
       cdi = "zi";
       cat = "bat";
     };
+  };
 
-    {
   home.sessionVariables = {
     PATH = "${config.home.homeDirectory}/.config/emacs/bin:${config.home.homeDirectory}/scripts:$PATH";
-  };
-}
-
-  home.sessionVariables = {
     EDITOR = "nvim";
     VISUAL = "nvim";
     BROWSER = "librewolf";
