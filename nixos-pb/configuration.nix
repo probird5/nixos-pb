@@ -343,6 +343,8 @@ networking.search = [ "tail339015.ts.net"];
     sops
     nfs-utils
     appimage-run
+    cmake
+    libtool
     (callPackage ./packages/zen.nix {})
   ];
 
