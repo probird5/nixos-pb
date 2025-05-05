@@ -345,7 +345,7 @@ networking.search = [ "tail339015.ts.net"];
     appimage-run
     cmake
     libtool
-    (callPackage ./packages/zen.nix {})
+  #  (callPackage ./packages/zen.nix {})
   ];
 
   ### Home manager

@@ -200,7 +200,7 @@ qt.platformTheme = "gtk";
   programs.git = {
     enable = true;
     userName = "probird5";
-    userEmail = "probird5";
+    userEmail = "52969604+probird5@users.noreply.github.com";
   };
 
   # starship - an customizable prompt for any shell
