@@ -345,6 +345,8 @@ networking.search = [ "tail339015.ts.net"];
     appimage-run
     cmake
     libtool
+    imagemagick 
+    libheif
   #  (callPackage ./packages/zen.nix {})
   ];
 
