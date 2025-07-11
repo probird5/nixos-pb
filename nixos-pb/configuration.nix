@@ -347,6 +347,7 @@ networking.search = [ "tail339015.ts.net"];
     libtool
     imagemagick 
     libheif
+    xfce.exo
   #  (callPackage ./packages/zen.nix {})
   ];
 
