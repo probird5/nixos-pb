@@ -1,5 +1,5 @@
- {
- home.file = {
+{
+  home.file = {
     ".config/starship.toml" = {
       text = ''
         format = """
@@ -69,5 +69,4 @@
       '';
     };
   };
-  }
-
+}
