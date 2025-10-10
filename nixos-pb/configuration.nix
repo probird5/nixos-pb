@@ -13,10 +13,7 @@
 {
   imports = [
     ./hardware-configuration.nix
-    inputs.sops-nix.nixosModules.sops
     ../shared/shares.nix
-#    ./config/gnome.nix
-#    ./ollama.nix
   ];
 
   # Bootloader.
@@ -38,24 +35,12 @@
   boot.loader.grub.efiSupport = true;
   boot.loader.efi.efiSysMountPoint = "/boot";
 
-# Name servers
-networking.nameservers = [ "100.100.100.100" "1.1.1.1" ];
-networking.search = [ "tail339015.ts.net"];
-
-  # sops
-  sops.defaultSopsFile = ../secrets/secrets.yaml;
-  sops.defaultSopsFormat = "yaml";
-  sops.age.keyFile = "/home/probird5/.config/sops/age/keys.txt";
-
-  sops.secrets = {
-    "syncthing_user".owner = "probird5";
-    "syncthing_password".owner = "probird5";
-  };
-
-  sops.templates = {
-    "syncuser".content = ''${config.sops.placeholder."syncthing_user"}'';
-    "syncpassword".content = ''${config.sops.placeholder."syncthing_password"}'';
-  };
+  # Name servers
+  networking.nameservers = [
+    "100.100.100.100"
+    "1.1.1.1"
+  ];
+  networking.search = [ "tail339015.ts.net" ];
 
   # Needed this to fix a sleep bug.
 
@@ -73,7 +58,7 @@ networking.search = [ "tail339015.ts.net"];
 
   # Firewall configuration
 
-  networking.firewall.allowedTCPPorts = [22];
+  networking.firewall.allowedTCPPorts = [ 22 ];
   # Making sure to use the proprietary drivers until the issue above is fixed upstream
   hardware.nvidia.open = false;
 
@@ -155,13 +140,6 @@ networking.search = [ "tail339015.ts.net"];
     xwayland.enable = true;
   };
 
-  # DWM
-  services.xserver.enable = true;
-  services.xserver.windowManager.dwm.enable = true;
-  services.xserver.displayManager.startx.enable = true;
-  services.xserver.videoDrivers = [ "nvidia" ];
-
-  # May need to edit session variables
   environment.sessionVariables = {
     NIXOS_OZONE_WL = 1;
   };
@@ -345,10 +323,10 @@ networking.search = [ "tail339015.ts.net"];
     appimage-run
     cmake
     libtool
-    imagemagick 
+    imagemagick
     libheif
     xfce.exo
-  #  (callPackage ./packages/zen.nix {})
+    #  (callPackage ./packages/zen.nix {})
   ];
 
   ### Home manager
@@ -365,20 +343,19 @@ networking.search = [ "tail339015.ts.net"];
     };
   };
 
-### Enable ssh
+  ### Enable ssh
 
-services.openssh = {
-  enable = true;
-  ports = [ 22 ];
-  settings = {
-    PasswordAuthentication = true;
-    AllowUsers = ["probird5"]; # Allows all users by default. Can be [ "user1" "user2" ]
-    UseDns = true;
-    X11Forwarding = true;
-    PermitRootLogin = "no"; # "yes", "without-password", "prohibit-password", "forced-commands-only", "no"
+  services.openssh = {
+    enable = true;
+    ports = [ 22 ];
+    settings = {
+      PasswordAuthentication = true;
+      AllowUsers = [ "probird5" ]; # Allows all users by default. Can be [ "user1" "user2" ]
+      UseDns = true;
+      X11Forwarding = true;
+      PermitRootLogin = "no"; # "yes", "without-password", "prohibit-password", "forced-commands-only", "no"
+    };
   };
-};
-
 
   ## Needed for screenshare
   services.dbus.enable = true;
@@ -400,38 +377,6 @@ services.openssh = {
     package = pkgs.emacs; # replace with emacs-gtk, or a version provided by the community overlay if desired.
   };
 
-
-  ## Syncthing
-
-services.syncthing = {
-  enable = true;
-  dataDir = "/home/probird5/Documents";
-  openDefaultPorts = true;
-  configDir = "/home/probird5/.config/syncthing";
-  user = "probird5";
-  group = "users";
-  guiAddress = "127.0.0.1:8384";
-  settings = {
-    devices = {
-      "nixos-framework" = {
-        id = "W5FDVW4-VY4EMJF-QMDEBMI-TK32XMP-3B657BF-KXO4GQF-PXVH5HD-EP6PWQR";
-      };
-    };
-    folders = {
-      "Documents" = {
-        path = "/home/probird5/Documents";
-        devices = [ "nixos-framework" ]; # Link folder to the defined device
-        versioning = {
-          type = "staggered";
-          params = {
-            cleanInterval = "3600";
-            maxAge = "15768000";
-          };
-        };
-      };
-    };
-  };
-};
 
   # (e.g. man configuration.nix or on https://nixos.org/nixos/options.html).
   system.stateVersion = "25.05"; # Did you read the comment?
