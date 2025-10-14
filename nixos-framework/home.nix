@@ -8,8 +8,6 @@
   home.homeDirectory = "/home/probird5";
 
   imports = [
-    ./starship.nix
-    ./hyprland.nix
     # ./nvim.nix
   ];
 
@@ -89,6 +87,19 @@
   # Editors / Config
   ########################
   xdg.configFile.nvim.source = ../shared/nvim;
+
+  ########################
+  # Homefile Override 
+  ########################
+  home.file.".config/hypr".source = ../config/hypr;
+  home.file.".config/waybar".source = ../config/waybar;
+  home.file.".config/alacritty".source = ../config/alacritty;
+  home.file.".config/btop".source = ../config/btop;
+  home.file.".config/rofi".source = ../config/rofi;
+  home.file.".config/ghostty".source = ../config/ghostty;
+  home.file.".config/starship".source = ../config/starship;
+  home.file."Pictures/backgrounds".source = ../config/backgrounds;
+
 
   ########################
   # XDG Portals & User Dirs
