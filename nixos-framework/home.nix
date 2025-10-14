@@ -1,72 +1,31 @@
 { config, pkgs, ... }:
 
-
 {
-  # TODO please change the username & home directory to your own
+  ########################
+  # Home / Imports
+  ########################
   home.username = "probird5";
   home.homeDirectory = "/home/probird5";
 
-  imports =
-    [
-      # Include the results of the hardware scan.
-      ./starship.nix
-      ./hyprland.nix
-      #./nvim.nix
+  imports = [
+    ./starship.nix
+    ./hyprland.nix
+    # ./nvim.nix
+  ];
 
-    ];
-
-
+  ########################
+  # Shells & CLI
+  ########################
   programs.zsh = {
     enable = true;
     enableCompletion = true;
     syntaxHighlighting.enable = true;
     shellAliases = {
-     cd = "z";
-     cdi = "zi";
-     cat ="bat";
-    };
-
-  };
-
-  # Additional Zsh configuration
-  programs.hyprlock.enable = true;
-
-  # set cursor size and dpi for 4k monitor
-  xresources.properties = {
-    "Xcursor.size" = 24;
-    "Xft.dpi" = 120;
-    "Xcursor.theme" = "Nordzy-cursors";
-  };
-
-  xdg.configFile.nvim.source = ../shared/nvim;
-  programs.zoxide.enable = true;
-
-  gtk = {
-    enable = true;
-    theme = {
-      name = "Dracula";
-      package = pkgs.dracula-theme;
-    };
-    iconTheme = {
-      name = "Nordzy";
-      package = pkgs.nordzy-icon-theme;
-    };
-    cursorTheme = {
-      name = "Nordzy-cursors";
-      package = pkgs.nordzy-cursor-theme;
-      size = 32;
-    };
-    gtk2 = {
-      configLocation = "${config.home.homeDirectory}/.gtkrc-2.0";
+      cd  = "z";
+      cdi = "zi";
+      cat = "bat";
     };
   };
-  qt.enable = true;
-
-# platform theme "gtk" or "gnome"
-qt.platformTheme = "gtk";
-
-  # fzf
-
 
   programs.fzf = {
     enable = true;
@@ -79,183 +38,216 @@ qt.platformTheme = "gtk";
     ];
   };
 
-  # Packages that should be installed to the user profile.
+  programs.zoxide.enable = true;
+
+  programs.git = {
+    enable = true;
+    userName  = "probird5";
+    userEmail = "probird5";
+  };
+
+  programs.starship.enable = true;
+
+  ########################
+  # Hyprland helpers
+  ########################
+  programs.hyprlock.enable = true;
+
+  ########################
+  # Theming / Fonts / DPI
+  ########################
+  xresources.properties = {
+    "Xcursor.size" = 24;
+    "Xft.dpi"      = 120;
+    "Xcursor.theme" = "Nordzy-cursors";
+  };
+
+  gtk = {
+    enable = true;
+    theme = {
+      name    = "Dracula";
+      package = pkgs.dracula-theme;
+    };
+    iconTheme = {
+      name    = "Nordzy";
+      package = pkgs.nordzy-icon-theme;
+    };
+    cursorTheme = {
+      name    = "Nordzy-cursors";
+      package = pkgs.nordzy-cursor-theme;
+      size    = 32;
+    };
+    gtk2.configLocation = "${config.home.homeDirectory}/.gtkrc-2.0";
+  };
+
+  qt = {
+    enable = true;
+    platformTheme = "gtk";
+  };
+
+  ########################
+  # Editors / Config
+  ########################
+  xdg.configFile.nvim.source = ../shared/nvim;
+
+  ########################
+  # XDG Portals & User Dirs
+  ########################
+  xdg = {
+    portal = {
+      enable = true;
+      config.common.default = "*";
+      extraPortals = [ pkgs.xdg-desktop-portal-hyprland ];
+    };
+    userDirs.enable = true;
+  };
+
+  ########################
+  # User Packages
+  ########################
   home.packages = with pkgs; [
+    # System / Monitoring
     sysstat
-    brave
-    lm_sensors # for `sensors` command
+    lm_sensors
     ethtool
-    pciutils # lspci
-    usbutils # lsusb
+    pciutils
+    usbutils
     p7zip
-    steam
-    lutris
-    brave
-    remmina
-    gnomeExtensions.remmina-search-provider
-    tmux
-    neovim
-    vim
-    xprintidle
-    fzf
-    go
     unzip
-    stylua
-    lua
-    #luajitPackages.luarocks
+    lz4
+    jq
+    tree
+    fastfetch
     ripgrep
+    fd
+    bat
+    btop
+    gotop
+    wl-clipboard
+    wget
+    openssl
+    pkg-config
+    bind
+
+    # Development
+    go
+    rustup
+    golangci-lint
+    nil
+    nodejs_22
+    python3
+    clang-tools
+    lua
+    lua-language-server
+    gnumake
+    gcc
+
+    # Wayland / Desktop
+    wayland
+    xwayland
+    wayland-utils
+    wlr-randr
     wdisplays
     nwg-displays
-    alsa-utils
+    hyprcursor
+    hypridle
+    hyprlock
+    hyprpaper
+    swayidle
+    swaylock
+    swaycons
+    grim
+    slurp
+    swappy
+    wttrbar
+    picom
+    alacritty
+    lf
+    trash-cli
+    nwg-look
+    lxappearance
+    brightnessctl
+    rofi-wayland
+    waybar
+
+    # Audio / Bluetooth
+    pulsemixer
+    pavucontrol
+    pamixer
+
+    # Networking / VM
+    docker
+    spice-gtk
+    spice
+    ntfs3g
+    seatd
+    virtiofsd
+
+    # Applications
+    firefox
+    brave
+    obsidian
+    vscodium
+    spotify
+    libreoffice
+    _1password-gui
+    remmina
+    gnomeExtensions.remmina-search-provider
+    discord
+    mpv
+    feh
+    shotcut
+
+    # Gaming
+    steam
+    lutris
+    gamescope
     protonup-qt
+
+    # Fonts / Themes
+    nerd-fonts.fira-code
+    nerd-fonts.fira-mono
+    nerd-fonts.symbols-only
+    nerd-fonts.jetbrains-mono
+    font-awesome
+    nordic
+
+    # Miscellaneous utilities
+    xprintidle
+    wttrbar
+    genymotion
+    android-tools
+    hashcat
+    yazi
+
+    # Low-level (system-level; included per your list)
+    linux-firmware
+    microcodeAmd
+
+    # Qt / Xorg Libraries
     qt6.qtbase
     qt6.qtwayland
+    qt5.qtwayland
+    egl-wayland
     xorg.libxcb
     xorg.xcbutil
     xorg.xcbutilimage
     xorg.xcbutilkeysyms
     xorg.xcbutilrenderutil
     xorg.xcbutilwm
-    picom
-    nerd-fonts.fira-code
-    nerd-fonts.fira-mono
-    nerd-fonts.symbols-only
-    nerd-fonts.jetbrains-mono
-    font-awesome
-    pulsemixer
-    python3
-    nodejs_22
-    clang-tools
-    fd
-    #luajitPackages.jsregexp
-    lua-language-server
-    fastfetch
-    obsidian
-    flameshot
-    starship
-    lf
-    trash-cli
-    swww
-    lz4
-    swayidle
-    swaylock
-    hyprcursor
-    nwg-look
-    hypridle
-    jq
-    firefox
-    spotify
-    swappy
-    wttrbar
-    hashcat
-    tree
-    genymotion
-    android-tools
-    openssl
-    wlogout
-    wget
-    docker
-    alacritty
-    pavucontrol
-    waybar
-    brightnessctl
-    zsh
-    hyprpaper
-    mpv
-    feh
-    swaycons
-    rofi-wayland
-    wayland
-    xwayland
-    discord
-    wl-clipboard
-    gcc
-    flameshot
-    grim
-    slurp
-    btop
-    gotop
-    lxappearance
-    nordic
-    wlr-randr
-    wayland-utils
-    gamescope
-    git
-    gnumake
-    gcc
-    linux-firmware
-    microcodeAmd
-    hyprlock
-    blueman
-    spice-gtk
-    polkit
-    spice
-    ntfs3g
-    seatd
-    qt5.qtwayland
-    qt6.qtwayland
+
+    # Polkit Agent
     libsForQt5.polkit-kde-agent
-    egl-wayland
-    pulseaudioFull
-    _1password-gui
-    virtiofsd
-    pamixer
-    vscodium
-    golangci-lint
-    nil
-    bat
-    wlr-randr
-    yazi
-    rustup
-    shotcut
-    openssl
-    pkg-config
-    bind
-    wireguard-ui
-    libreoffice
   ];
 
-  # basic configuration of git, please change to your own
-  programs.git = {
-    enable = true;
-    userName = "probird5";
-    userEmail = "probird5";
-  };
-
-
-
-  # starship - an customizable prompt for any shell
-  programs.starship = {
-    enable = true;
-  };
-  #};
-  # testing
-
-  xdg = {
-    portal = {
-      enable = true;
-      config.common.default = "*";
-      extraPortals = [ pkgs.xdg-desktop-portal-gtk ];
-    };
-
-    userDirs = {
-      enable = true;
-    };
-  };
-
-
-
-
-  # This value determines the home Manager release that your
-  # configuration is compatible with. This helps avoid breakage
-  # when a new home Manager release introduces backwards
-  # incompatible changes.
-  #
-  # You can update home Manager without changing this value. See
-  # the home Manager release notes for a list of state version
-  # changes in each release.
-  home.stateVersion = "25.05";
-
-  # Let home Manager install and manage itself.
+  ########################
+  # Home Manager
+  ########################
   programs.home-manager.enable = true;
+
+  ########################
+  # Compatibility / State
+  ########################
+  home.stateVersion = "25.05";
 }
+

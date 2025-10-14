@@ -1,268 +1,255 @@
-# Edit this configuration file to define what should be installed on
-# your system.  Help is available in the configuration.nix(5) man page
-# and in the NixOS manual (accessible by running ‘nixos-help’).
-
+# NixOS configuration
 { config, pkgs, ... }:
 
 {
-  imports =
-    [ # Include the results of the hardware scan.
-      ./hardware-configuration.nix
-      ../shared/shares.nix
-      ./wireguard.nix
-      ./tailscale.nix
-    ];
+  ###############
+  # Imports
+  ###############
+  imports = [
+    ./hardware-configuration.nix
+    ../shared/shares.nix
+    ./wireguard.nix
+    ./tailscale.nix
+  ];
 
-hardware.cpu.amd.updateMicrocode = true;
+  ###############
+  # Nix / Nixpkgs
+  ###############
+  nix.settings.experimental-features = [ "nix-command" "flakes" ];
+  nixpkgs.config.allowUnfree = true;
 
-  # Bootloader.
-  boot.loader.efi.canTouchEfiVariables = true;
-  boot.supportedFilesystems = [ "btrfs" "reiserfs" "vfat" "f2fs" "xfs" "ntfs" "cifs" ];
-  boot.loader.systemd-boot.enable = false;
-  boot.loader.grub.enable = true;
-  boot.loader.grub.device = "nodev";
-  boot.loader.grub.useOSProber = true;
-  boot.loader.grub.efiSupport = true;
-  boot.loader.efi.efiSysMountPoint = "/boot";
+  ###############
+  # Host & Locale
+  ###############
+  networking.hostName = "nixos-framework";
+  time.timeZone = "America/Toronto";
+  i18n.defaultLocale = "en_CA.UTF-8";
 
+  ###############
+  # Boot
+  ###############
+  boot = {
+    loader = {
+      efi.canTouchEfiVariables = true;
+      systemd-boot.enable = false;
+      grub = {
+        enable = true;
+        device = "nodev";
+        efiSupport = true;
+        useOSProber = true;
+      };
+      efi.efiSysMountPoint = "/boot";
+    };
 
-  networking.hostName = "nixos-framework"; # Define your hostname.
+    supportedFilesystems = [ "btrfs" "reiserfs" "vfat" "f2fs" "xfs" "ntfs" "cifs" ];
+    kernelParams = [ "resume=/swapfile" ];
+  };
 
   swapDevices = [{
     device = "/swapfile";
-    size = 64 * 1024; # 64GB in MB
+    size = 64 * 1024; # 64GiB in MiB
   }];
 
-boot.kernelParams = [ "resume=/swapfile" ];
+  ###############
+  # Hardware
+  ###############
+  hardware = {
+    cpu.amd.updateMicrocode = true;
 
-  # Enable networking
-  networking.networkmanager.enable = true;
-  networking.networkmanager.wifi.powersave = false;
+    bluetooth = {
+      enable = true;
+      powerOnBoot = true;
+    };
 
-  # Set your time zone.
-  time.timeZone = "America/Toronto";
+    pulseaudio.enable = false; # PipeWire instead
 
-  # Select internationalisation properties.
-  i18n.defaultLocale = "en_CA.UTF-8";
+    steam-hardware.enable = true;
 
-  # Setting up virtualization
-  # Manage the virtualisation services
+    graphics = {
+      enable = true;
+      enable32Bit = true;
+      extraPackages = with pkgs; [ libGL libGLU ];
+    };
+
+    framework.amd-7040.preventWakeOnAC = true;
+  };
+
+  services.fwupd.enable = true;
+
+  ###############
+  # Networking
+  ###############
+  networking.networkmanager = {
+    enable = true;
+    wifi.powersave = false;
+  };
+
+  ###############
+  # Virtualization
+  ###############
   virtualisation = {
+    docker.enable = true;
+
     libvirtd = {
       enable = true;
       qemu = {
         swtpm.enable = true;
-        ovmf.enable = true;
-        ovmf.packages = [ pkgs.OVMFFull.fd ];
+        ovmf = {
+          enable = true;
+          packages = [ pkgs.OVMFFull.fd ];
+        };
       };
     };
+
     spiceUSBRedirection.enable = true;
   };
+
   services.spice-vdagentd.enable = true;
 
-  ## Virtualization from youtube video https://www.youtube.com/watch?v=rCVW8BGnYIc
+  ###############
+  # Display / Desktop
+  ###############
+  services = {
+    xserver = {
+      enable = true;
+      videoDrivers = [ "amdgpu" ];
+      xkb = {
+        layout = "us";
+        variant = "";
+      };
+    };
 
-  programs.dconf.enable = true;
+    # Printing (run once: sudo hp-setup -i -a)
+    printing = {
+      enable = true;
+      drivers = [ pkgs.hplipWithPlugin ];
+    };
 
+    # Flatpak
+    flatpak.enable = true;
 
- # Enabeling docker
- virtualisation.docker.enable = true;
+    # File management helpers
+    gvfs.enable = true;
+    tumbler.enable = true;
 
-  # Enabeling Flakes
-  nix.settings.experimental-features = [ "nix-command" "flakes" ];
+    # Disks
+    udisks2.enable = true;
 
-  # specific to framework
-  services.fwupd.enable = true;
+    # DBus (useful for a bunch of desktop services)
+    dbus.enable = true;
 
-  hardware.framework.amd-7040.preventWakeOnAC = true;
-
-  # Enable the X11 windowing system.
-  # You can disable this if you're only using the Wayland session.
-  services.xserver.enable = true;
-
-  # Enable the KDE Plasma Desktop Environment.
-#  services.displayManager.sddm.enable = true;
-  services.desktopManager.plasma6.enable = true;
-
-  # Configure keymap in X11
-  services.xserver.xkb = {
-    layout = "us";
-    variant = "";
+    # Login manager -> Hyprland
+    greetd = {
+      enable = true;
+      vt = 3;
+      settings.default_session.command =
+        "${pkgs.greetd.tuigreet}/bin/tuigreet --time --cmd Hyprland";
+    };
   };
 
-    # steam
+  programs = {
+    # Wayland compositor
+    hyprland = {
+      enable = true;
+      xwayland.enable = true;
+    };
 
-    environment.sessionVariables = {
-    STEAM_EXTRA_COMPAT_TOOLS_PATHS =
-      "\${HOME}/.steam/root/compatibilitytools.d";
+    # Thunar + plugins
+    thunar = {
+      enable = true;
+      plugins = with pkgs.xfce; [ thunar thunar-archive-plugin thunar-volman ];
+    };
+
+    # Steam / Gaming
+    steam = {
+      enable = true;
+      gamescopeSession.enable = true;
+    };
+    gamemode.enable = true;
+
+    # Desktop bits
+    dconf.enable = true;
+    firefox.enable = true;
+
+    # Shell
+    zsh.enable = true;
   };
 
-  programs.steam.enable = true;
-  programs.steam.gamescopeSession.enable = true;
-  programs.gamemode.enable = true;
-
-  # Fonts
-
-  fonts.packages = with pkgs; [
-  nerd-fonts.fira-code
-  nerd-fonts.droid-sans-mono
-  nerd-fonts.symbols-only  #This one
-];
-
-  # Bluetooth
-
-  hardware.bluetooth.enable = true; # enables support for Bluetooth
-  hardware.bluetooth.powerOnBoot = true; # powers up the default Bluetooth controller on boot
-  services.blueman.enable = true;
-
- #flatpak
-   services.flatpak.enable = true;
-
-
-  # Hyprland
-  programs.hyprland = {
-    enable = true;
-    xwayland.enable = true;
-  };
-
-  # May need to edit session variables
-  environment.sessionVariables = {
-    NIXOS_OZONE_WL = 1;
-  };
-
-    # Thunar
-  programs.thunar.enable = true;
-  services.gvfs.enable = true;
-  services.tumbler.enable = true;
-
-  programs.thunar.plugins = with pkgs.xfce; [
-  thunar
-  thunar-archive-plugin
-  thunar-volman
-];
-
-  services.udisks2.enable = true;
-
-
-
-
-  services.printing = {
-    # run on first setup: sudo hp-setup -i -a
-    enable  =  true;
-    drivers = [ pkgs.hplipWithPlugin ];
-};
-
-  # Enable sound with pipewire.
-  hardware.pulseaudio.enable = false;
+  ###############
+  # Audio (PipeWire)
+  ###############
   security.rtkit.enable = true;
   services.pipewire = {
     enable = true;
     alsa.enable = true;
     alsa.support32Bit = true;
     pulse.enable = true;
-    # If you want to use JACK applications, uncomment this
-    #jack.enable = true;
-
-    # use the example session manager (no others are packaged yet so this is enabled by default,
-    # no need to redefine it in your config for now)
-    #media-session.enable = true;
+    # jack.enable = true; # Uncomment if needed
   };
 
-  # Enable touchpad support (enabled default in most desktopManager).
-  # services.xserver.libinput.enable = true;
+  ###############
+  # XDG Portals
+  ###############
+  xdg.portal = {
+    enable = true;
+    extraPortals = [ pkgs.xdg-desktop-portal-hyprland ];
+  };
 
-  # Define a user account. Don't forget to set a password with ‘passwd’.
+  ###############
+  # Fonts
+  ###############
+  fonts.packages = with pkgs; [
+    nerd-fonts.fira-code
+    nerd-fonts.droid-sans-mono
+    nerd-fonts.symbols-only
+  ];
+
+  ###############
+  # Users
+  ###############
   users.users.probird5 = {
     isNormalUser = true;
     description = "probird5";
-    extraGroups = [ "networkmanager" "audio" "wheel" "libvirtd" "kvm" "qemu" "flatpak"];
+    shell = pkgs.zsh;
+    extraGroups = [ "networkmanager" "audio" "wheel" "libvirtd" "kvm" "qemu" "flatpak" ];
     packages = with pkgs; [
       kdePackages.kate
-    #  thunderbird
+      # thunderbird
     ];
   };
 
-  # Install firefox.
-  programs.firefox.enable = true;
+  ###############
+  # Environment
+  ###############
+  environment = {
+    systemPackages = with pkgs; [
+      wl-clipboard
+      xclip
+      virt-manager
+      virt-viewer
+      win-virtio
+      win-spice
+      cifs-utils
+      qemu
+      gvfs
+      home-manager
+      greetd.tuigreet
+      ryzenadj
+      vulkan-tools
+      mesa
+      hplipWithPlugin
+      openresolv
+    ];
 
-  # Allow unfree packages
-  nixpkgs.config.allowUnfree = true;
-
-  # List packages installed in system profile. To search, run:
-  # $ nix search wget
-  environment.systemPackages = with pkgs; [
-  #  vim # Do not forget to add an editor to edit configuration.nix! The Nano editor is also installed by default.
-  #  wget
-    wl-clipboard
-    xclip
-    virt-manager
-    virt-viewer
-    win-virtio
-    win-spice
-    cifs-utils
-    qemu
-    gvfs
-    home-manager
-    greetd.tuigreet
-    ryzenadj
-    vulkan-tools
-    mesa
-    hplipWithPlugin
-    openresolv
-  ];
-
-      services.greetd = {
-      enable = true;
-      vt = 3;
-      settings = {
-        default_session = {
-          command = "${pkgs.greetd.tuigreet}/bin/tuigreet --time --cmd Hyprland"; # start Hyprland with a TUI login manager
-        };
-      };
+    sessionVariables = {
+      NIXOS_OZONE_WL = 1;
+      STEAM_EXTRA_COMPAT_TOOLS_PATHS = "\${HOME}/.steam/root/compatibilitytools.d";
     };
-
- services.xserver.videoDrivers = ["amdgpu"];
-    hardware.graphics = {
-    enable = true;
-    enable32Bit = true;
-    extraPackages = with pkgs; [
-      libGL
-      libGLU
-     # Add more libraries as needed
-    ];
-  };
-hardware.steam-hardware = {
-  enable = true;
-};
-
-
-    ### Home manager 
-  programs.zsh.enable = true;
-  users.users.probird5.shell = pkgs.zsh;
-
-
-  ## Testing
-  services.dbus.enable = true ;
-
-
-    xdg.portal = {
-    enable = true;
-    extraPortals = [
-      pkgs.xdg-desktop-portal-gtk
-      pkgs.xdg-desktop-portal-gnome
-    ];
   };
 
-  services = {
-    syncthing = {
-        enable = true;
-        group = "users";
-        user = "probird5";
-        dataDir = "/home/probird5/test_syncthing";    # Default folder for new synced folders
-        configDir = "/home/probird5/test_syncthing/.config/syncthing";   # Folder for Syncthing's settings and keys
-    };
-};
-
-  system.stateVersion = "24.11"; # Did you read the comment?
-
+  ###############
+  # State Version
+  ###############
+  system.stateVersion = "24.11";
 }
+
