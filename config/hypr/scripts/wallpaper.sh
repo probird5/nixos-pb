@@ -1,14 +1,10 @@
 #!/usr/bin/env bash
 # Directory containing your wallpapers
 WALLPAPER_DIR="$HOME/Pictures/backgrounds"
+CURRENT_WALL=$(hyprctl hyprpaper listloaded)
 
-if ! pgrep -x "swww-daemon" > /dev/null; then
-    swww-daemon
-fi
+# Get a random wallpaper that is not the current one
+WALLPAPER=$(find "$WALLPAPER_DIR" -type f ! -name "$(basename "$CURRENT_WALL")" | shuf -n 1)
 
-sleep 3
-
-RANDOM_WALLPAPER=$(find "$WALLPAPER_DIR" -type f | shuf -n 1)
-
-# Set a random wallpaper from the directory using swww
-swww img "$RANDOM_WALLPAPER" --transition-type wipe --transition-angle 30 --transition-fps 255 --transition-duration 2
+# Apply the selected wallpaper
+hyprctl hyprpaper reload ,"$WALLPAPER"

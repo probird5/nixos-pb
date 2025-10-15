@@ -182,6 +182,7 @@
     brightnessctl
     rofi-wayland
     waybar
+    hyprpaper
 
     # Audio / Bluetooth
     pulsemixer
