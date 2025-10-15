@@ -97,6 +97,7 @@
   home.file.".config/rofi".source = ../config/rofi;
   home.file.".config/ghostty".source = ../config/ghostty;
   home.file.".config/starship".source = ../config/starship;
+  home.file.".zshrc".source = ../config/zsh/.zshrc;
   home.file."Pictures/backgrounds".source = ../config/backgrounds;
 
 
@@ -151,6 +152,7 @@
     lua-language-server
     gnumake
     gcc
+    neovim
 
     # Wayland / Desktop
     wayland

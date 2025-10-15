@@ -6,7 +6,6 @@
     #nixos-hardware.url = "github:NixOS/nixos-hardware/master";
     nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
     nixos-hardware.url = "github:NixOS/nixos-hardware/master";
-    sops-nix.url = "github:Mic92/sops-nix";
 
     # home-manager, used for managing user configuration
     home-manager = {
@@ -54,6 +53,7 @@
           {
             home-manager.useGlobalPkgs = true;
             home-manager.useUserPackages = true;
+	    home-manager.backupFileExtension = "backup";
 
             home-manager.users.probird5 = import ./nixos-framework/home.nix;
 
