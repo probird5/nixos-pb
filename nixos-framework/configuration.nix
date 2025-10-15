@@ -7,7 +7,7 @@
   ###############
   imports = [
     ./hardware-configuration.nix
-    ../shared/shares.nix
+#    ../shared/shares.nix
     ./wireguard.nix
     ./tailscale.nix
   ];

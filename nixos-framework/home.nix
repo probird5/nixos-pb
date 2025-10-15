@@ -41,7 +41,7 @@
   programs.git = {
     enable = true;
     userName  = "probird5";
-    userEmail = "probird5";
+    userEmail = "52969604+probird5@users.noreply.github.com";
   };
 
   programs.starship.enable = true;
@@ -86,7 +86,6 @@
   ########################
   # Editors / Config
   ########################
-  xdg.configFile.nvim.source = ../shared/nvim;
 
   ########################
   # Homefile Override 
@@ -173,6 +172,7 @@
     wttrbar
     picom
     alacritty
+    ghostty
     lf
     trash-cli
     nwg-look
