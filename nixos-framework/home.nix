@@ -210,6 +210,7 @@
     mpv
     feh
     shotcut
+    swww
 
     # Gaming
     steam
