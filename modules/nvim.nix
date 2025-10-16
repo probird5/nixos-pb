@@ -3,6 +3,7 @@
 {
   programs.neovim = {
     enable = true;
+
     extraPackages = with pkgs; [
       # LazyVim
       lua-language-server
@@ -97,8 +98,14 @@
             { "williamboman/mason.nvim", enabled = false },
             -- import/override with your plugins
             { import = "plugins" },
-            -- treesitter handled by xdg.configFile."nvim/parser", put this line at the end of spec to clear ensure_installed
-            { "nvim-treesitter/nvim-treesitter", opts = { ensure_installed = {} } },
+
+            -- treesitter handled by xdg.configFile."nvim/parser"
+            -- this must stay at the end so it overrides LazyVim defaults
+            { "nvim-treesitter/nvim-treesitter",
+              opts = function(_, opts)
+                opts.ensure_installed = {}
+              end,
+            },
           },
         })
       '';
@@ -120,3 +127,4 @@
   # Normal LazyVim config here, see https://github.com/LazyVim/starter/tree/main/lua
   xdg.configFile."nvim/lua".source = ./lua;
 }
+
