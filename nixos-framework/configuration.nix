@@ -223,6 +223,7 @@
   ###############
   environment = {
     systemPackages = with pkgs; [
+      bluez
       wl-clipboard
       xclip
       virt-manager
