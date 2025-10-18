@@ -186,6 +186,7 @@
 
     # Audio / Bluetooth
     pulsemixer
+    bluez
     pavucontrol
     pamixer
 
