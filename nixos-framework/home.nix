@@ -187,6 +187,7 @@
     # Audio / Bluetooth
     pulsemixer
     bluez
+    blueman
     pavucontrol
     pamixer
 
