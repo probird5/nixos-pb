@@ -36,7 +36,7 @@
       "--border"
     ];
   };
-
+  services.swww.enable = true;
   programs.zoxide.enable = true;
 
   programs.git = {
@@ -182,6 +182,7 @@
     brightnessctl
     rofi-wayland
     waybar
+    mako
     hyprpaper
 
     # Audio / Bluetooth
@@ -232,7 +233,6 @@
     # Miscellaneous utilities
     xprintidle
     wttrbar
-    genymotion
     android-tools
     hashcat
     yazi
