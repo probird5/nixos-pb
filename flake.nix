@@ -9,8 +9,8 @@
 
     # home-manager, used for managing user configuration
     home-manager = {
-      url = "github:nix-community/home-manager"; #unstable url
-     #url = "github:nix-community/home-manager/release-24.05";
+      url = "github:nix-community/home-manager"; # unstable url
+      #url = "github:nix-community/home-manager/release-24.05";
       # The `follows` keyword in inputs is used for inheritance.
       # Here, `inputs.nixpkgs` of home-manager is kept consistent with
       # the `inputs.nixpkgs` of the current flake,
@@ -23,7 +23,7 @@
     nixosConfigurations = {
       # TODO please change the hostname to your own
       nixos-pb = nixpkgs.lib.nixosSystem {
-      specialArgs = { inherit inputs; };
+        specialArgs = { inherit inputs; };
         system = "x86_64-linux";
         modules = [
           ./nixos-pb/nixos-pb.nix
@@ -39,12 +39,12 @@
           }
         ];
       };
-      
+
       nixos-framework = nixpkgs.lib.nixosSystem {
         system = "x86_64-linux";
         modules = [
           ./nixos-framework/nixos-framework.nix
-	  nixos-hardware.nixosModules.framework-13-7040-amd
+          nixos-hardware.nixosModules.framework-13-7040-amd
 
           # make home-manager as a module of nixos
           # so that home-manager configuration will be deployed automatically when executing `nixos-rebuild switch`
@@ -52,7 +52,7 @@
           {
             home-manager.useGlobalPkgs = true;
             home-manager.useUserPackages = true;
-	    home-manager.backupFileExtension = "backup";
+            home-manager.backupFileExtension = "backup";
 
             home-manager.users.probird5 = import ./nixos-framework/home.nix;
 
