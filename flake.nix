@@ -19,7 +19,7 @@
     };
   };
 
-  outputs = inputs@{ nixpkgs, home-manager, nixos-hardware, sops-nix, ... }: {
+  outputs = inputs@{ nixpkgs, home-manager, nixos-hardware, ... }: {
     nixosConfigurations = {
       # TODO please change the hostname to your own
       nixos-pb = nixpkgs.lib.nixosSystem {
@@ -27,7 +27,6 @@
         system = "x86_64-linux";
         modules = [
           ./nixos-pb/nixos-pb.nix
-          sops-nix.nixosModules.sops
           # make home-manager as a module of nixos
           # so that home-manager configuration will be deployed automatically when executing `nixos-rebuild switch`
           home-manager.nixosModules.home-manager
