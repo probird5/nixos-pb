@@ -15,16 +15,16 @@
   ########################
   # Shells & CLI
   ########################
-  programs.zsh = {
-    enable = true;
-    enableCompletion = true;
-    syntaxHighlighting.enable = true;
-    shellAliases = {
-      cd  = "z";
-      cdi = "zi";
-      cat = "bat";
-    };
-  };
+#  programs.zsh = {
+#    enable = true;
+#    enableCompletion = true;
+#    syntaxHighlighting.enable = true;
+#    shellAliases = {
+#      cd  = "z";
+#      cdi = "zi";
+#      cat = "bat";
+#    };
+#  };
 
   programs.fzf = {
     enable = true;
@@ -180,7 +180,7 @@
     nwg-look
     lxappearance
     brightnessctl
-    rofi-wayland
+    rofi
     waybar
     mako
     hyprpaper
@@ -254,7 +254,7 @@
     xorg.xcbutilwm
 
     # Polkit Agent
-    libsForQt5.polkit-kde-agent
+    kdePackages.polkit-kde-agent-1
   ];
 
   ########################

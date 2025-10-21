@@ -7,7 +7,7 @@
   ###############
   imports = [
     ./hardware-configuration.nix
-#    ../shared/shares.nix
+    # ../shared/shares.nix
     ./wireguard.nix
     ./tailscale.nix
   ];
@@ -62,7 +62,6 @@
     };
 
     pulseaudio.enable = false; # PipeWire instead
-
     steam-hardware.enable = true;
 
     graphics = {
@@ -94,20 +93,14 @@
       enable = true;
       qemu = {
         swtpm.enable = true;
-        ovmf = {
-          enable = true;
-          packages = [ pkgs.OVMFFull.fd ];
-        };
       };
     };
 
     spiceUSBRedirection.enable = true;
   };
 
-  services.spice-vdagentd.enable = true;
-
   ###############
-  # Display / Desktop
+  # Display / Desktop & Services
   ###############
   services = {
     xserver = {
@@ -138,12 +131,16 @@
     # DBus (useful for a bunch of desktop services)
     dbus.enable = true;
 
-    # Login manager -> Hyprland
+    # Spice guest agent (for VMs)
+    spice-vdagentd.enable = true;
+
+    # Login manager -> tuigreet launching Hyprland
     greetd = {
       enable = true;
-      vt = 3;
-      settings.default_session.command =
-        "${pkgs.greetd.tuigreet}/bin/tuigreet --time --cmd Hyprland";
+      settings.default_session = {
+        command = "${pkgs.tuigreet}/bin/tuigreet --time --cmd Hyprland";
+        user = "probird5";
+      };
     };
   };
 
@@ -234,7 +231,6 @@
       qemu
       gvfs
       home-manager
-      greetd.tuigreet
       ryzenadj
       vulkan-tools
       mesa
