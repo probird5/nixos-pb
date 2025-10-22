@@ -4,7 +4,7 @@
   programs.ghostty = {
     enable = true;
     settings = {
-        theme = "TokyoNight";
+        theme = "TokyoNight Night";
       };
   };
 }
