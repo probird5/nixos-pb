@@ -2,6 +2,10 @@
 
 {
   programs.ghostty = {
-    enable = true
+    enable = true;
+    settings = {
+        #theme = "tokyonight_night";
+      };
+  };
 }
 
