@@ -10,6 +10,7 @@
   imports = [
     # ./nvim.nix
     ../modules/nvim.nix
+    ../modules/ghostty.nix
   ];
 
   ########################
@@ -96,7 +97,6 @@
   home.file.".config/alacritty".source = ../config/alacritty;
   home.file.".config/btop".source = ../config/btop;
   home.file.".config/rofi".source = ../config/rofi;
-  home.file.".config/ghostty".source = ../config/ghostty;
   home.file.".config/starship".source = ../config/starship;
   home.file.".zshrc".source = ../config/zsh/.zshrc;
   home.file."Pictures/backgrounds".source = ../config/backgrounds;
