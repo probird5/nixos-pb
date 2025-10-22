@@ -1,7 +1,7 @@
 { config, lib, pkgs, ... }:
 
 {
-  programs.ghostty {
+  programs.ghostty = {
     enable = true
 }
 
