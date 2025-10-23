@@ -3,10 +3,11 @@
 
 {
 vim = {
+lsp.enable = true;
 theme = {
   enable = true;
-  name = "gruvbox";
-  style = "dark";
+  name = "tokyonight";
+  style = "night";
 
  };
 
@@ -14,7 +15,6 @@ theme = {
  telescope.enable = true;
  autocomplete.nvim-cmp.enable = true;
   languages = {
-    enableLSP = true;
     enableTreesitter = true;
     nix.enable = true;
     rust.enable = true;
