@@ -7,7 +7,6 @@
     vimAlias = true;
     defaultEditor = true;
 
-    # Tools lazy and your plugins commonly need
     extraPackages = with pkgs; [
       git curl wget unzip gnumake gcc
       ripgrep fd tree-sitter
@@ -16,15 +15,23 @@
     ];
   };
 
-  # Point HM at your *writable* repo folder (not the Nix store).
-  # This should be a path in your home checkout, e.g., ../shared/nvim
+  # Make ~/.config/nvim a *writable* out-of-store symlink
   xdg.configFile."nvim".source =
-  lib.file.mkOutOfStoreSymlink "../config/nvim";
+    config.lib.file.mkOutOfStoreSymlink "~/.config/nvim";
 
-  # Optional: after switching, auto-sync plugins headlessly
+  # Optional one-time cleanup if ~/.config/nvim pointed into /nix/store before
+  home.activation.nvimFixReadonly = lib.hm.dag.entryBefore [ "writeBoundary" ] ''
+    if [ -L "$HOME/.config/nvim" ]; then
+      target="$(readlink -f "$HOME/.config/nvim" || true)"
+      case "$target" in
+        /nix/store/*) rm -f "$HOME/.config/nvim" ;;
+      esac
+    fi
+  '';
+
+  # Optional: auto-sync plugins after switch
   home.activation.nvimLazySync = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
     if command -v nvim >/dev/null 2>&1; then
-      # Sync once after deploy; comment this out if you prefer manual control
       nvim --headless "+Lazy! sync" +qa || true
     fi
   '';
