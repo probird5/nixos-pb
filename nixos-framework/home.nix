@@ -152,7 +152,6 @@
     lua-language-server
     gnumake
     gcc
-    neovim
 
     # Wayland / Desktop
     wayland

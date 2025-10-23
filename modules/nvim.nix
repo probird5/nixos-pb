@@ -1,4 +1,4 @@
-{ config, pkgs, ... }:
+{ config, pkgs, lib, ... }:
 
 {
   programs.neovim = {
@@ -18,10 +18,8 @@
 
   # Point HM at your *writable* repo folder (not the Nix store).
   # This should be a path in your home checkout, e.g., ../shared/nvim
-  xdg.configFile."nvim" = {
-    source = ../config/nvim;   # <- your repo path
-    recursive = true;
-  };
+  xdg.configFile."nvim".source =
+  lib.file.mkOutOfStoreSymlink "../config/nvim";
 
   # Optional: after switching, auto-sync plugins headlessly
   home.activation.nvimLazySync = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
