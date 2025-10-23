@@ -6,7 +6,9 @@
     viAlias = true; vimAlias = true; defaultEditor = true;
     extraPackages = with pkgs; [
       git curl wget unzip gnumake gcc ripgrep fd tree-sitter
-      nodejs python3 lua-language-server stylua
+      nodejs python3 
+      lua-language-server 
+      stylua
     ];
   };
 
