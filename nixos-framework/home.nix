@@ -8,7 +8,7 @@
   home.homeDirectory = "/home/probird5";
 
   imports = [
-    # ./nvim.nix
+    ../modules/nvim.nix
     ../modules/ghostty.nix
   ];
 
