@@ -6,20 +6,24 @@
     #nixos-hardware.url = "github:NixOS/nixos-hardware/master";
     nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
     nixos-hardware.url = "github:NixOS/nixos-hardware/master";
+    nvf.url = "github:notashelf/nvf";
 
     # home-manager, used for managing user configuration
     home-manager = {
       url = "github:nix-community/home-manager"; # unstable url
-      #url = "github:nix-community/home-manager/release-24.05";
-      # The `follows` keyword in inputs is used for inheritance.
-      # Here, `inputs.nixpkgs` of home-manager is kept consistent with
-      # the `inputs.nixpkgs` of the current flake,
-      # to avoid problems caused by different versions of nixpkgs.
       inputs.nixpkgs.follows = "nixpkgs";
     };
   };
 
-  outputs = inputs@{ nixpkgs, home-manager, nixos-hardware, ... }: {
+  outputs = inputs@{ nixpkgs, home-manager, nixos-hardware, nvf, ... }: {
+
+  packages."x86_64-linux".default =
+    (nvf.lib.neovimConfiguration {
+      pkgs = nixpkgs.legacyPackages."x86_64-linux";
+      modules = [ ./modules/nvim-nvf.nix ];
+      }).neovim;
+
+
     nixosConfigurations = {
       # TODO please change the hostname to your own
       nixos-pb = nixpkgs.lib.nixosSystem {

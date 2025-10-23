@@ -9,7 +9,6 @@
 
   imports = [
     # ./nvim.nix
-    ../modules/nvim.nix
     ../modules/ghostty.nix
   ];
 
@@ -153,6 +152,7 @@
     lua-language-server
     gnumake
     gcc
+    neovim
 
     # Wayland / Desktop
     wayland
