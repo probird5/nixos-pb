@@ -17,6 +17,6 @@ vim.o.termguicolors = true
 
 
 require("vim-options")
-require("config.nvim.lua.lsp.lua_ls")
+require("lsp.lsp")
 require("lazy").setup("plugins")
 

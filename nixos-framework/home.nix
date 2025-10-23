@@ -147,11 +147,7 @@
     nil
     nodejs_22
     python3
-    clang-tools
     lua
-    lua-language-server
-    gnumake
-    gcc
 
     # Wayland / Desktop
     wayland
