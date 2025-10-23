@@ -9,14 +9,6 @@ return {
     "williamboman/mason-lspconfig.nvim",
     config = function()
       require("mason-lspconfig").setup({
-        ensure_installed = {
-          "gopls",
-          "arduino_language_server",
-          "clangd",
-          "marksman",
-          "jedi_language_server",
-          "htmx",
-          "html",
         },
       })
     end,

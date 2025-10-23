@@ -3,36 +3,22 @@
 {
   programs.neovim = {
     enable = true;
-    viAlias = true;
-    vimAlias = true;
-    defaultEditor = true;
-
+    viAlias = true; vimAlias = true; defaultEditor = true;
     extraPackages = with pkgs; [
-      git curl wget unzip gnumake gcc
-      ripgrep fd tree-sitter
-      nodejs python3
-      lua-language-server stylua
+      git curl wget unzip gnumake gcc ripgrep fd tree-sitter
+      nodejs python3 lua-language-server stylua
     ];
   };
 
-  # Make ~/.config/nvim a *writable* out-of-store symlink
+  # Ensure ~/.config/nvim → /home/probird5/nixos-pb/config/nvim (writable)
   xdg.configFile."nvim".source =
-    config.lib.file.mkOutOfStoreSymlink "~/.config/nvim";
+    config.lib.file.mkOutOfStoreSymlink "/home/probird5/nixos-pb/config/nvim";
 
-  # Optional one-time cleanup if ~/.config/nvim pointed into /nix/store before
-  home.activation.nvimFixReadonly = lib.hm.dag.entryBefore [ "writeBoundary" ] ''
-    if [ -L "$HOME/.config/nvim" ]; then
+  # Remove any old /nix/store symlink first (prevents the “file exists” mess)
+  home.activation.nvimFix = lib.hm.dag.entryBefore [ "writeBoundary" ] ''
+    if [ -e "$HOME/.config/nvim" ]; then
       target="$(readlink -f "$HOME/.config/nvim" || true)"
-      case "$target" in
-        /nix/store/*) rm -f "$HOME/.config/nvim" ;;
-      esac
-    fi
-  '';
-
-  # Optional: auto-sync plugins after switch
-  home.activation.nvimLazySync = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
-    if command -v nvim >/dev/null 2>&1; then
-      nvim --headless "+Lazy! sync" +qa || true
+      case "$target" in /nix/store/*) rm -f "$HOME/.config/nvim" ;; esac
     fi
   '';
 }
