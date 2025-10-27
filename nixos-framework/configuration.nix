@@ -11,7 +11,17 @@
     ./wireguard.nix
     ./tailscale.nix
   ];
-
+  programs.nix-ld.enable = true;
+  programs.nix-ld.libraries = with pkgs; [
+    stdenv.cc.cc
+    libglvnd libdrm
+    xorg.libX11 xorg.libXext xorg.libXrandr xorg.libXrender
+    xorg.libXcursor xorg.libXi xorg.libXxf86vm xorg.libXinerama
+    libxkbcommon wayland
+    freetype fontconfig
+    zlib openssl curl
+    alsa-lib pulseaudio
+  ];
   ###############
   # Nix / Nixpkgs
   ###############

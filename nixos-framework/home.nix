@@ -26,6 +26,8 @@
 #    };
 #  };
 
+  wayland.windowManager.hyprland.xwayland.enable = true;
+
   programs.fzf = {
     enable = true;
     enableZshIntegration = true;
@@ -134,6 +136,7 @@
     bat
     btop
     gotop
+    steam-run
     wl-clipboard
     wget
     openssl
@@ -222,6 +225,7 @@
     nerd-fonts.fira-mono
     nerd-fonts.symbols-only
     nerd-fonts.jetbrains-mono
+    inter
     font-awesome
     nordic
 

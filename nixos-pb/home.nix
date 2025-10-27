@@ -114,6 +114,7 @@
     go
     unzip
     stylua
+    steam-run
     lua
     luajitPackages.luarocks
     ripgrep
