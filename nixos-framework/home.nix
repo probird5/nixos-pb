@@ -142,6 +142,9 @@
     openssl
     pkg-config
     bind
+    freerdp3
+    xfce.exo
+    power-profiles-daemon
 
     # Development
     go
