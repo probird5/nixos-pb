@@ -71,7 +71,6 @@
       powerOnBoot = true;
     };
 
-    pulseaudio.enable = false; # PipeWire instead
     steam-hardware.enable = true;
 
     graphics = {
@@ -83,7 +82,10 @@
     framework.amd-7040.preventWakeOnAC = true;
   };
 
+
+
   services.fwupd.enable = true;
+  services.pulseaudio.enable = false;
 
   ###############
   # Networking

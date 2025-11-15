@@ -41,10 +41,13 @@
   services.swww.enable = true;
   programs.zoxide.enable = true;
 
+
   programs.git = {
     enable = true;
-    userName  = "probird5";
-    userEmail = "52969604+probird5@users.noreply.github.com";
+    settings = {
+    user.name  = "probird5";
+    user.email = "52969604+probird5@users.noreply.github.com";
+    };
   };
 
   programs.starship.enable = true;
@@ -83,7 +86,7 @@
 
   qt = {
     enable = true;
-    platformTheme = "gtk";
+    platformTheme.name = "gtk";
   };
 
   ########################
