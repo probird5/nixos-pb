@@ -44,10 +44,10 @@
         ];
       };
 
-      nixos-framework = nixpkgs.lib.nixosSystem {
+      framework = nixpkgs.lib.nixosSystem {
         system = "x86_64-linux";
         modules = [
-          ./nixos-framework/nixos-framework.nix
+          ./framework/nixos-framework.nix
           nixos-hardware.nixosModules.framework-13-7040-amd
 
           # make home-manager as a module of nixos
@@ -58,7 +58,7 @@
             home-manager.useUserPackages = true;
             home-manager.backupFileExtension = "backup";
 
-            home-manager.users.probird5 = import ./nixos-framework/home.nix;
+            home-manager.users.probird5 = import ./framework/home.nix;
 
             # Optionally, use home-manager.extraSpecialArgs to pass arguments to home.nix
           }
