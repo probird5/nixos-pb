@@ -237,7 +237,7 @@
       xclip
       virt-manager
       virt-viewer
-      win-virtio
+      virtio-win
       win-spice
       cifs-utils
       qemu

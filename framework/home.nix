@@ -145,7 +145,7 @@
     openssl
     pkg-config
     bind
-    freerdp3
+    freerdp
     xfce.exo
     power-profiles-daemon
 
@@ -244,7 +244,7 @@
 
     # Low-level (system-level; included per your list)
     linux-firmware
-    microcodeAmd
+    microcode-amd
 
     # Qt / Xorg Libraries
     qt6.qtbase
