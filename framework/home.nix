@@ -147,7 +147,9 @@
     bind
     freerdp
     xfce.exo
+    xfce.thunar-archive-plugin
     power-profiles-daemon
+    xarchiver
 
     # Development
     go
@@ -261,6 +263,35 @@
     # Polkit Agent
     kdePackages.polkit-kde-agent-1
   ];
+    xdg.mimeApps = {
+    enable = true;
+    defaultApplications = {
+      "text/html" = "firefox.desktop";
+      "x-scheme-handler/http" = "firefox.desktop";
+      "x-scheme-handler/https" = "firefox.desktop";
+      "x-scheme-handler/about" = "firefox.desktop";
+      "x-scheme-handler/unknown" = "firefox.desktop";
+      "application/pdf" = "firefox.desktop"; # or "firefox.desktop"
+      "text/plain" = "nvim.desktop";
+      "text/markdown" = "nvim.desktop";
+      "application/json" = "nvim.desktop";
+      "application/xml" = "nvim.desktop";
+      "image/png" = "feh.desktop";   # or "feh.desktop"
+      "image/jpeg" = "feh.desktop";
+      "image/webp" = "feh.desktop";
+      "image/gif" = "feh.desktop";
+      "video/mp4" = "mpv.desktop";
+      "video/x-matroska" = "mpv.desktop";  # .mkv
+      "video/webm" = "mpv.desktop";
+      "audio/mpeg" = "mpv.desktop";        # .mp3
+      "audio/flac" = "mpv.desktop";
+      "audio/ogg" = "mpv.desktop";
+      "application/zip" = "xarchiver.desktop";
+      "application/x-tar" = "xarchiver.desktop";
+      "application/x-7z-compressed" = "xarchiver.desktop";
+      "application/x-rar" = "xarchiver.desktop";
+    };
+  };
 
 
 

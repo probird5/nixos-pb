@@ -248,6 +248,7 @@
       mesa
       hplipWithPlugin
       openresolv
+      xfce.thunar-archive-plugin
     ];
 
     sessionVariables = {
