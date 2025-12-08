@@ -43,6 +43,19 @@
           }
         ];
       };
+      messmer = nixpkgs.lib.nixosSystem {
+        specialArgs = { inherit inputs; };
+        system = "x86_64-linux";
+        modules = [
+          ./messmer/messmer.nix
+          home-manager.nixosModules.home-manager
+          {
+            home-manager.useGlobalPkgs = true;
+            home-manager.useUserPackages = true;
+            home-manager.users.probird5 = import ./messmer/home.nix;
+          }
+        ];
+      };
 
       framework = nixpkgs.lib.nixosSystem {
         system = "x86_64-linux";
