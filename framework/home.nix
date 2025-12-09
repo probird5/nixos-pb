@@ -10,6 +10,7 @@
   imports = [
     ../modules/nvim.nix
     ../modules/ghostty.nix
+    ../modules/tmux.nix
   ];
 
   ########################
