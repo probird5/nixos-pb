@@ -7,20 +7,6 @@
   ###############
   imports = [
     ./hardware-configuration.nix
-    # ../shared/shares.nix
-    ./wireguard.nix
-    ./tailscale.nix
-  ];
-  programs.nix-ld.enable = true;
-  programs.nix-ld.libraries = with pkgs; [
-    stdenv.cc.cc
-    libglvnd libdrm
-    xorg.libX11 xorg.libXext xorg.libXrandr xorg.libXrender
-    xorg.libXcursor xorg.libXi xorg.libXxf86vm xorg.libXinerama
-    libxkbcommon wayland
-    freetype fontconfig
-    zlib openssl curl
-    alsa-lib pulseaudio
   ];
   ###############
   # Nix / Nixpkgs
@@ -31,7 +17,7 @@
   ###############
   # Host & Locale
   ###############
-  networking.hostName = "nixos-framework";
+  networking.hostName = "messmer";
   time.timeZone = "America/Toronto";
   i18n.defaultLocale = "en_CA.UTF-8";
 
@@ -65,24 +51,17 @@
   ###############
   hardware = {
     cpu.amd.updateMicrocode = true;
-
     bluetooth = {
       enable = true;
       powerOnBoot = true;
     };
-
     steam-hardware.enable = true;
-
     graphics = {
       enable = true;
       enable32Bit = true;
       extraPackages = with pkgs; [ libGL libGLU ];
     };
-
-    framework.amd-7040.preventWakeOnAC = true;
   };
-
-
 
   services.fwupd.enable = true;
   services.pulseaudio.enable = false;
@@ -100,14 +79,12 @@
   ###############
   virtualisation = {
     docker.enable = true;
-
     libvirtd = {
       enable = true;
       qemu = {
         swtpm.enable = true;
       };
     };
-
     spiceUSBRedirection.enable = true;
   };
 
@@ -123,13 +100,6 @@
         variant = "";
       };
     };
-
-    # Printing (run once: sudo hp-setup -i -a)
-    printing = {
-      enable = true;
-      drivers = [ pkgs.hplipWithPlugin ];
-    };
-
     # Flatpak
     flatpak.enable = true;
 
@@ -157,17 +127,12 @@
   };
 
   programs = {
-    # Wayland compositor
-    hyprland = {
-      enable = true;
-      xwayland.enable = true;
-    };
-
     # Thunar + plugins
     thunar = {
       enable = true;
       plugins = with pkgs.xfce; [ thunar thunar-archive-plugin thunar-volman ];
     };
+    niri.enable = true;
 
     # Steam / Gaming
     steam = {
@@ -201,7 +166,6 @@
   ###############
   xdg.portal = {
     enable = true;
-    extraPortals = [ pkgs.xdg-desktop-portal-hyprland ];
   };
 
   ###############
@@ -223,7 +187,6 @@
     extraGroups = [ "networkmanager" "audio" "wheel" "libvirtd" "kvm" "qemu" "flatpak" ];
     packages = with pkgs; [
       kdePackages.kate
-      # thunderbird
     ];
   };
 
@@ -249,13 +212,14 @@
       hplipWithPlugin
       openresolv
       xfce.thunar-archive-plugin
+      xwayland-satellite
     ];
-
     sessionVariables = {
       NIXOS_OZONE_WL = 1;
       STEAM_EXTRA_COMPAT_TOOLS_PATHS = "\${HOME}/.steam/root/compatibilitytools.d";
     };
   };
+
 
   ###############
   # State Version

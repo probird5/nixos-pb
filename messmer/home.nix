@@ -26,8 +26,6 @@
 #    };
 #  };
 
-  wayland.windowManager.hyprland.xwayland.enable = true;
-
   programs.fzf = {
     enable = true;
     enableZshIntegration = true;
@@ -40,8 +38,6 @@
   };
   services.swww.enable = true;
   programs.zoxide.enable = true;
-
-
   programs.git = {
     enable = true;
     settings = {
@@ -49,14 +45,7 @@
     user.email = "52969604+probird5@users.noreply.github.com";
     };
   };
-
   programs.starship.enable = true;
-
-  ########################
-  # Hyprland helpers
-  ########################
-  programs.hyprlock.enable = true;
-
   ########################
   # Theming / Fonts / DPI
   ########################
@@ -113,7 +102,7 @@
     portal = {
       enable = true;
       config.common.default = "*";
-      extraPortals = [ pkgs.xdg-desktop-portal-hyprland ];
+      extraPortals = [ pkgs.xdg-desktop-portal-gnome ];
     };
     userDirs.enable = true;
   };
