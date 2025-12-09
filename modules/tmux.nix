@@ -12,6 +12,10 @@
         plugin = tmuxPlugins.vim-tmux-navigator;
         extraConfig = "";
       }
+      {
+        plugin = tmuxPlugins.tokyo-night-tmux;
+        extraConfig = "";
+      }
       tmuxPlugins.better-mouse-mode
     ];
 
@@ -35,6 +39,12 @@
       bind -n M-Right select-pane -R
       bind -n M-Up select-pane -U
       bind -n M-Down select-pane -D
+
+      bind -n M-h select-pane -L
+      bind -n M-j select-pane -D
+      bind -n M-k select-pane -U
+      bind -n M-l select-pane -R
+
 
       # Shift arrow to switch windows
       bind -n S-Left  previous-window
