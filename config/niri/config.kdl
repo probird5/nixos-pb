@@ -38,11 +38,8 @@ input {
         // dwtp
         // drag false
         // drag-lock
-        natural-scroll
-        // accel-speed 0.2
-        // accel-profile "flat"
-        // scroll-method "two-finger"
-        // disabled-on-external-mouse
+        click-method "clickfinger"      // use # of fingers instead of button areas
+        tap-button-map "left-right-middle"  // 1-finge      natural-scroll
         middle-emulation
     }
 
