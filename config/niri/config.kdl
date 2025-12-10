@@ -7,12 +7,6 @@
 // Find the full list of options on the wiki:
 // https://yalter.github.io/niri/Configuration:-Input
 prefer-no-csd
-environment {
-   GDK_BACKEND "wayland,x11"
-// XDG_SESSION_TYPE "wayland"
-// GDK_BACKEND "wayland" "x11"
-// NVD_BACKEND "direct"
-}
 input 
     keyboard {
         repeat-delay 200
@@ -271,6 +265,12 @@ window-rule {
 /-window-rule {
     geometry-corner-radius 12
     clip-to-geometry true
+}
+environment {
+   GDK_BACKEND "wayland,x11"
+// XDG_SESSION_TYPE "wayland"
+// GDK_BACKEND "wayland" "x11"
+// NVD_BACKEND "direct"
 }
 
 binds {
