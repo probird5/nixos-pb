@@ -90,6 +90,8 @@
     platformTheme.name = "gtk";
   };
 
+
+# added this for niri since theming didn't work
     dconf.settings = {
     "org/gnome/desktop/interface" = {
       color-scheme = "prefer-dark";
