@@ -96,6 +96,7 @@
       gtk-theme = "Dracula";
       icon-theme = "Nordzy";
     };
+  };
 
   ########################
   # Editors / Config
