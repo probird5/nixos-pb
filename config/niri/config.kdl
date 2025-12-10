@@ -7,7 +7,7 @@
 // Find the full list of options on the wiki:
 // https://yalter.github.io/niri/Configuration:-Input
 prefer-no-csd
-input 
+input {
     keyboard {
         repeat-delay 200
         repeat-rate 35
