@@ -163,6 +163,8 @@
       xwayland.enable = true;
     };
 
+    niri.enable = true;
+
     # Thunar + plugins
     thunar = {
       enable = true;
