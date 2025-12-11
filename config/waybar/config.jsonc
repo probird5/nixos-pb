@@ -8,6 +8,8 @@
     // Choose the order of the modules
     "modules-left": [
         "hyprland/workspaces",
+        "niri/workspaces",
+        "niri/window",
         "hyprland/mode",
         "network",
     ],
@@ -31,7 +33,19 @@
         //   "blueman": "bluetooth",
         //   "TelegramDesktop": "$HOME/.local/share/icons/hicolor/16x16/apps/telegram.png"
         // }
-    },
+   "niri/workspaces": {
+    // show numbers 1,2,3,... instead of names/icons
+    "format": "{index}",
+
+    // show workspaces from all monitors, or only this one
+    "all-outputs": false,
+
+    // allow clicking to switch workspaces
+    "disable-click": false,
+
+    // optional: only show the current workspace
+    // "current-only": true
+  }   },
     "clock": {
         // "timezone": "America/New_York",
         "tooltip-format": "<big>{:%Y %B}</big>\n<tt><small>{calendar}</small></tt>",
