@@ -3,13 +3,12 @@
 {
   imports = [
     ./hardware-configuration.nix
-    ../shared/shares.nix
   ];
 
   ############################################################
   # System identity / locale
   ############################################################
-  networking.hostName = "nixos-pb";
+  networking.hostName = "bayle";
   time.timeZone = "America/Toronto";
   i18n.defaultLocale = "en_CA.UTF-8";
 
@@ -346,12 +345,6 @@
     vulkan-loader
     pkgs.pkgsi686Linux.vulkan-loader
 
-    # Fonts
-    nerd-fonts.fira-code
-    nerd-fonts.fira-mono
-    nerd-fonts.jetbrains-mono
-    nerd-fonts.symbols-only
-
     # Media
     mpv
     ffmpeg_7
@@ -406,6 +399,15 @@
     lxappearance
     swaycons
   ];
+
+    fonts.packages = with pkgs; [
+    nerd-fonts.fira-code
+    nerd-fonts.droid-sans-mono
+    nerd-fonts.symbols-only
+  ];
+
+
+
 
   ############################################################
   # NixOS release compatibility
