@@ -1,14 +1,4 @@
-# Edit this configuration file to define what should be installed on
-# your system.  Help is available in the configuration.nix(5) man page
-# and in the NixOS manual (accessible by running ‘nixos-help’).
-
-{
-  config,
-  pkgs,
-  lib,
-  inputs,
-  ...
-}:
+{ config, pkgs, lib, inputs, ... }:
 
 {
   imports = [
@@ -16,187 +6,255 @@
     ../shared/shares.nix
   ];
 
-  # Bootloader.
-  boot.loader.efi.canTouchEfiVariables = true;
-  boot.blacklistedKernelModules = [ "nouveau" ];
-  boot.supportedFilesystems = [
-    "btrfs"
-    "reiserfs"
-    "vfat"
-    "f2fs"
-    "xfs"
-    "ntfs"
-    "cifs"
-  ];
-  boot.loader.systemd-boot.enable = false;
-  boot.loader.grub.enable = true;
-  boot.loader.grub.device = "nodev";
-  boot.loader.grub.useOSProber = true;
-  boot.loader.grub.efiSupport = true;
-  boot.loader.efi.efiSysMountPoint = "/boot";
-
-  # Name servers
-  networking.nameservers = [
-    "100.100.100.100"
-    "1.1.1.1"
-  ];
-  networking.search = [ "tail339015.ts.net" ];
-
-  # Needed this to fix a sleep bug.
-
-  boot.kernelParams = [
-    "nvidia.NVreg_PreserveVideoMemoryAllocations=1"
-    "acpi.power_nocheck=1"
-    "ahci.mobile_lpm_policy=1"
-  ];
-
-  hardware.nvidia.powerManagement.enable = true;
-
-  services.udev.extraRules = ''
-    ACTION=="add", SUBSYSTEM=="usb", TEST=="power/wakeup", ATTR{power/wakeup}="disabled"
-  '';
-
-  # Firewall configuration
-
-  networking.firewall.allowedTCPPorts = [ 22 ];
-  # Making sure to use the proprietary drivers until the issue above is fixed upstream
-  hardware.nvidia.open = false;
-
-  # Setting up virtualization
-  virtualisation = {
-    libvirtd = {
-      enable = true;
-      qemu = {
-        swtpm.enable = true;
-        ovmf.enable = true;
-        ovmf.packages = [ pkgs.OVMFFull.fd ];
-      };
-    };
-    spiceUSBRedirection.enable = true;
-  };
-  services.spice-vdagentd.enable = true;
-
-  # Enabeling docker
-  virtualisation.docker.enable = true;
-
-  # Can't remember why I added this tbh
-  nix = {
-    settings = {
-      warn-dirty = false;
-    };
-  };
-
-  networking.hostName = "nixos-pb"; # Define your hostname.
-
-  ## Virtualization from youtube video https://www.youtube.com/watch?v=rCVW8BGnYIc
-
-  programs.dconf.enable = true;
-
-  # Enabeling Flakes
-  nix.settings.experimental-features = [
-    "nix-command"
-    "flakes"
-  ];
-
-  # Enable networking
-  networking.networkmanager.enable = true;
-
-  # Set your time zone.
+  ############################################################
+  # System identity / locale
+  ############################################################
+  networking.hostName = "nixos-pb";
   time.timeZone = "America/Toronto";
-
-  # Select internationalisation properties.
   i18n.defaultLocale = "en_CA.UTF-8";
 
-  # Configure keymap in X11
+  ############################################################
+  # Boot / kernel
+  ############################################################
+  boot = {
+    blacklistedKernelModules = [ "nouveau" ];
+
+    supportedFilesystems = [
+      "btrfs"
+      "reiserfs"
+      "vfat"
+      "f2fs"
+      "xfs"
+      "ntfs"
+      "cifs"
+    ];
+
+    kernelParams = [
+      # Sleep / power quirks
+      "nvidia.NVreg_PreserveVideoMemoryAllocations=1"
+      "acpi.power_nocheck=1"
+      "ahci.mobile_lpm_policy=1"
+    ];
+
+    loader = {
+      efi = {
+        canTouchEfiVariables = true;
+        efiSysMountPoint = "/boot";
+      };
+
+      systemd-boot.enable = false;
+
+      grub = {
+        enable = true;
+        device = "nodev";
+        efiSupport = true;
+        useOSProber = true;
+      };
+    };
+  };
+
+  ############################################################
+  # Networking
+  ############################################################
+  networking = {
+    networkmanager.enable = true;
+
+    nameservers = [
+      "100.100.100.100"
+      "1.1.1.1"
+    ];
+
+    search = [ "tail339015.ts.net" ];
+
+    firewall = {
+      allowedTCPPorts = [ 22 ];
+    };
+  };
+
+  ############################################################
+  # Services / system daemons
+  ############################################################
+  services = {
+    # Needed for screen share portals
+    dbus.enable = true;
+
+    # Disable USB wake to avoid instant-wake-after-suspend
+    udev.extraRules = ''
+      ACTION=="add", SUBSYSTEM=="usb", TEST=="power/wakeup", ATTR{power/wakeup}="disabled"
+    '';
+
+    openssh = {
+      enable = true;
+      ports = [ 22 ];
+      settings = {
+        PasswordAuthentication = true;
+        AllowUsers = [ "probird5" ];
+        UseDns = true;
+        X11Forwarding = true;
+        PermitRootLogin = "no";
+      };
+    };
+
+    tailscale.enable = true;
+
+    flatpak.enable = true;
+
+    gvfs.enable = true;
+    tumbler.enable = true;
+    udisks2.enable = true;
+
+    spice-vdagentd.enable = true;
+
+    greetd = {
+      enable = true;
+      vt = 3;
+      settings.default_session = {
+        command = "${pkgs.greetd.tuigreet}/bin/tuigreet --time --cmd Hyprland";
+      };
+    };
+
+    emacs = {
+      enable = true;
+      package = pkgs.emacs;
+    };
+  };
+
+  ############################################################
+  # X11 input settings (still used by some apps)
+  ############################################################
   services.xserver = {
     xkb.layout = "us";
     xkb.variant = "";
   };
 
-  # steam
+  ############################################################
+  # Graphics / NVIDIA
+  ############################################################
+  hardware = {
+    graphics = {
+      enable = true;
+      enable32Bit = true;
+      extraPackages = with pkgs; [
+        libGL
+        libGLU
+      ];
+    };
 
-  environment.sessionVariables = {
-    STEAM_EXTRA_COMPAT_TOOLS_PATHS = "\${HOME}/.local/share/Steam/compatibilitytools.d";
+    bluetooth = {
+      enable = true;
+      powerOnBoot = true;
+    };
 
+    nvidia = {
+      # Stay proprietary until upstream issue is fixed
+      open = false;
+
+      powerManagement.enable = true;
+      modesetting.enable = true;
+
+      package = config.boot.kernelPackages.nvidiaPackages.beta;
+    };
   };
 
-  programs.steam.enable = true;
-  programs.steam.gamescopeSession.enable = true;
-  programs.gamemode.enable = true;
-  programs.steam.remotePlay.openFirewall = true; # Open ports in the firewall for Steam Remote Play
-
-  # Bluetooth
-
-  hardware.bluetooth.enable = true; # enables support for Bluetooth
-  hardware.bluetooth.powerOnBoot = true; # powers up the default Bluetooth controller on boot
-  services.blueman.enable = true;
-
-  #flatpak
-  services.flatpak.enable = true;
-
-  # Hyprland
-  programs.hyprland = {
-    enable = true;
-    xwayland.enable = true;
-  };
-
-  environment.sessionVariables = {
-    NIXOS_OZONE_WL = 1;
-  };
-
-  # Swap
-  swapDevices = [
-    {
-      device = "/var/lib/swapfile";
-      size = 64 * 1024; # size in MiB, 64 GiB = 64 * 1024 MiB
-    }
-  ];
-
-  # Sound
-
-  # Enable PipeWire
+  ############################################################
+  # Audio (PipeWire)
+  ############################################################
   security.rtkit.enable = true;
   services.pipewire = {
-    enable = true; # if not already enabled
+    enable = true;
     alsa.enable = true;
     alsa.support32Bit = true;
     pulse.enable = true;
   };
 
-  # Enable PulseAudio
-  # commented out since unstable doesn't require it
-  #sound.enable = true;
+  ############################################################
+  # Desktop / Hyprland
+  ############################################################
+  programs = {
+    dconf.enable = true;
 
-  hardware.graphics = {
+    zsh.enable = true;
+
+    hyprland = {
+      enable = true;
+      xwayland.enable = true;
+    };
+
+    thunar = {
+      enable = true;
+      plugins = with pkgs.xfce; [
+        thunar
+        thunar-archive-plugin
+        thunar-volman
+      ];
+    };
+
+    steam = {
+      enable = true;
+      gamescopeSession.enable = true;
+      remotePlay.openFirewall = true;
+    };
+
+    gamemode.enable = true;
+  };
+
+  services.blueman.enable = true;
+
+  xdg.portal = {
     enable = true;
-    enable32Bit = true;
-    extraPackages = with pkgs; [
-      libGL
-      libGLU
-      # Add more libraries as needed
+    extraPortals = with pkgs; [
+      xdg-desktop-portal-gtk
+      xdg-desktop-portal-gnome
+      xdg-desktop-portal-hyprland
     ];
   };
 
-  hardware.nvidia.modesetting.enable = true;
-  hardware.nvidia.package = config.boot.kernelPackages.nvidiaPackages.beta;
+  ############################################################
+  # Virtualization
+  ############################################################
+  virtualisation = {
+    libvirtd = {
+      enable = true;
+      qemu = {
+        swtpm.enable = true;
+        ovmf = {
+          enable = true;
+          packages = [ pkgs.OVMFFull.fd ];
+        };
+      };
+    };
 
-  # Thunar
-  programs.thunar.enable = true;
-  services.gvfs.enable = true;
-  services.tumbler.enable = true;
+    spiceUSBRedirection.enable = true;
 
-  programs.thunar.plugins = with pkgs.xfce; [
-    thunar
-    thunar-archive-plugin
-    thunar-volman
+    docker.enable = true;
+  };
+
+  ############################################################
+  # Swap
+  ############################################################
+  swapDevices = [
+    {
+      device = "/var/lib/swapfile";
+      size = 64 * 1024; # MiB (64 GiB)
+    }
   ];
 
-  services.udisks2.enable = true;
+  ############################################################
+  # Environment variables
+  ############################################################
+  environment.sessionVariables = {
+    NIXOS_OZONE_WL = "1";
+    STEAM_EXTRA_COMPAT_TOOLS_PATHS = "\${HOME}/.local/share/Steam/compatibilitytools.d";
+  };
 
-  # Define a user account.
+  ############################################################
+  # Users
+  ############################################################
   users.users.probird5 = {
     isNormalUser = true;
     description = "probird5";
+    shell = pkgs.zsh;
+
     extraGroups = [
       "networkmanager"
       "audio"
@@ -207,74 +265,121 @@
       "flatpak"
       "probird5"
     ];
+
     packages = with pkgs; [ ];
   };
 
-  # Allow unfree packages
+  ############################################################
+  # Nix
+  ############################################################
+  nix = {
+    settings = {
+      warn-dirty = false;
+      experimental-features = [ "nix-command" "flakes" ];
+    };
+  };
+
   nixpkgs.config.allowUnfree = true;
 
-  # List packages installed in system profile. To search, run:
-  # $ nix search wget
+  ############################################################
+  # Packages
+  ############################################################
   environment.systemPackages = with pkgs; [
-    vim # Do not forget to add an editor to edit configuration.nix! The Nano editor is also installed by default.
+    vim
     wget
-    pipewire
-    wireplumber
+
+    # Wayland / Hyprland
+    wayland
+    xwayland
     xdg-desktop-portal-hyprland
-    docker
-    udiskie
-    virt-manager
-    virt-viewer
-    win-virtio
-    win-spice
-    egl-wayland
-    cifs-utils
+    xdg-desktop-portal-gtk
+    hyprpaper
+    hyprlock
+    waybar
+    rofi-wayland
+    wl-clipboard
+    grim
+    slurp
+    dunst
+    libnotify
+    brightnessctl
+
+    # Terminals / utils
+    alacritty
+    kitty
+    zsh
+    git
+    btop
+    gotop
+    neofetch
+    playerctl
+    pamixer
+    pavucontrol
+    pciutils
+
+    # Thunar stack
+    gvfs
     xfce.thunar-volman
     xfce.thunar-archive-plugin
     xfce.thunar-media-tags-plugin
+    xfce.exo
+
+    # Virtualization
+    virt-manager
+    virt-viewer
     qemu
-    gvfs
-    alacritty
-    pavucontrol
-    home-manager
-    playerctl
-    pamixer
-    waybar
-    brightnessctl
-    zsh
-    pciutils
-    dunst
-    libnotify
-    hyprpaper
-    mpv
+    swtpm
+    virtiofsd
+    win-virtio
+    win-spice
+    spice
+    spice-gtk
+
+    # Filesystems / networking
+    cifs-utils
+    ntfs3g
+    nfs-utils
+
+    # NVIDIA / graphics bits
+    egl-wayland
+    nvidia-vaapi-driver
+    vulkan-loader
+    pkgs.pkgsi686Linux.vulkan-loader
+
+    # Fonts
     nerd-fonts.fira-code
     nerd-fonts.fira-mono
     nerd-fonts.jetbrains-mono
     nerd-fonts.symbols-only
-    feh
-    kitty
-    swaycons
-    rofi-wayland
-    wayland
-    xwayland
-    discord
-    wl-clipboard
-    neofetch
-    flameshot
-    grim
-    slurp
-    btop
-    gotop
-    lxappearance
-    dmenu
-    #nordic
-    slstatus
-    wlr-randr
-    wayland-utils
-    gamescope
-    git
-    gnumake
+
+    # Media
+    mpv
+    ffmpeg_7
+    imagemagick
+    libheif
+
+    # Dev
     gcc
+    gnumake
+    pkg-config
+    freetype
+    cmake
+    libtool
+    nixfmt-rfc-style
+    sops
+
+    # Misc / apps
+    discord
+    syncthing
+    appimage-run
+    home-manager
+    gamescope
+    gamescope-wsi
+    greetd.tuigreet
+    blueman
+
+    # X11 stuff (if you still need it)
+    xclip
     xorg.xorgserver
     xorg.xauth
     xorg.xinit
@@ -284,100 +389,27 @@
     xorg.libXft
     xorg.libXinerama
     xorg.xinput
-    xdg-desktop-portal-gtk
-    pkg-config
-    freetype
-    linux-firmware
-    #linuxPackages.nvidiaPackages.latest
-    libGL
-    libglvnd
-    xclip
-    microcodeAmd
     xss-lock
-    hyprlock
-    blueman
     pmutils
-    spice-gtk
     polkit
-    spice
-    ntfs3g
     seatd
-    qt5.qtwayland
-    qt6.qtwayland
-    libsForQt5.polkit-kde-agent
-    nvidia-vaapi-driver
-    egl-wayland
-    pulseaudioFull
-    vulkan-loader # Vulkan support for 64-bit applications
-    pkgs.pkgsi686Linux.vulkan-loader # Vulkan support for 32-bit applications
-    swtpm
-    virtiofsd
+
+    # Other
     via
-    gamescope-wsi
-    ffmpeg_7
-    greetd.tuigreet
-    syncthing
-    nixfmt-rfc-style
-    sops
-    nfs-utils
-    appimage-run
-    cmake
-    libtool
-    imagemagick
-    libheif
-    xfce.exo
-    #  (callPackage ./packages/zen.nix {})
+    linux-firmware
+    microcodeAmd
+    feh
+    dmenu
+    slstatus
+    wlr-randr
+    wayland-utils
+    lxappearance
+    swaycons
   ];
 
-  ### Home manager
-  programs.zsh.enable = true;
-  users.users.probird5.shell = pkgs.zsh;
-
-  services.greetd = {
-    enable = true;
-    vt = 3;
-    settings = {
-      default_session = {
-        command = "${pkgs.greetd.tuigreet}/bin/tuigreet --time --cmd Hyprland"; # start Hyprland with a TUI login manager
-      };
-    };
-  };
-
-  ### Enable ssh
-
-  services.openssh = {
-    enable = true;
-    ports = [ 22 ];
-    settings = {
-      PasswordAuthentication = true;
-      AllowUsers = [ "probird5" ]; # Allows all users by default. Can be [ "user1" "user2" ]
-      UseDns = true;
-      X11Forwarding = true;
-      PermitRootLogin = "no"; # "yes", "without-password", "prohibit-password", "forced-commands-only", "no"
-    };
-  };
-
-  ## Needed for screenshare
-  services.dbus.enable = true;
-
-  xdg.portal = {
-    enable = true;
-    extraPortals = [
-      pkgs.xdg-desktop-portal-gtk
-      pkgs.xdg-desktop-portal-gnome
-      pkgs.xdg-desktop-portal-hyprland
-    ];
-  };
-
-  ## Tailscale
-  services.tailscale.enable = true;
-
-  services.emacs = {
-    enable = true;
-    package = pkgs.emacs; # replace with emacs-gtk, or a version provided by the community overlay if desired.
-  };
-
-
-  # (e.g. man configuration.nix or on https://nixos.org/nixos/options.html).
-  system.stateVersion = "25.05"; # Did you read the comment?
+  ############################################################
+  # NixOS release compatibility
+  ############################################################
+  system.stateVersion = "25.05";
 }
+
