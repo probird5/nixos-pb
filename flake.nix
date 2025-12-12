@@ -30,14 +30,14 @@
         specialArgs = { inherit inputs; };
         system = "x86_64-linux";
         modules = [
-          ./nixos-pb/nixos-pb.nix
+          ./hosts/nixos-pb/nixos-pb.nix
           # make home-manager as a module of nixos
           # so that home-manager configuration will be deployed automatically when executing `nixos-rebuild switch`
           home-manager.nixosModules.home-manager
           {
             home-manager.useGlobalPkgs = true;
             home-manager.useUserPackages = true;
-            home-manager.users.probird5 = import ./nixos-pb/home.nix;
+            home-manager.users.probird5 = import ./hosts/nixos-pb/home.nix;
 
             # Optionally, use home-manager.extraSpecialArgs to pass arguments to home.nix
           }
@@ -47,12 +47,12 @@
         specialArgs = { inherit inputs; };
         system = "x86_64-linux";
         modules = [
-          ./messmer/messmer.nix
+          ./hosts/messmer/messmer.nix
           home-manager.nixosModules.home-manager
           {
             home-manager.useGlobalPkgs = true;
             home-manager.useUserPackages = true;
-            home-manager.users.probird5 = import ./messmer/home.nix;
+            home-manager.users.probird5 = import ./hosts/smessmer/home.nix;
           }
         ];
       };
@@ -60,7 +60,7 @@
       framework = nixpkgs.lib.nixosSystem {
         system = "x86_64-linux";
         modules = [
-          ./framework/nixos-framework.nix
+          ./hosts/framework/nixos-framework.nix
           nixos-hardware.nixosModules.framework-13-7040-amd
 
           # make home-manager as a module of nixos
@@ -71,7 +71,7 @@
             home-manager.useUserPackages = true;
             home-manager.backupFileExtension = "backup";
 
-            home-manager.users.probird5 = import ./framework/home.nix;
+            home-manager.users.probird5 = import ./hosts/framework/home.nix;
 
             # Optionally, use home-manager.extraSpecialArgs to pass arguments to home.nix
           }
