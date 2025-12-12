@@ -107,15 +107,15 @@
   ########################
   # Homefile Override 
   ########################
-  home.file.".config/hypr".source = ../config/hypr;
-  home.file.".config/waybar".source = ../config/waybar;
-  home.file.".config/alacritty".source = ../config/alacritty;
-  home.file.".config/btop".source = ../config/btop;
-  home.file.".config/rofi".source = ../config/rofi;
-  home.file.".config/starship".source = ../config/starship;
-  home.file.".config/niri".source = ../config/niri;
-  home.file.".zshrc".source = ../config/zsh/.zshrc;
-  home.file."Pictures/backgrounds".source = ../config/backgrounds;
+  home.file.".config/hypr".source = ../../config/hypr;
+  home.file.".config/waybar".source = ../../config/waybar;
+  home.file.".config/alacritty".source = ../../config/alacritty;
+  home.file.".config/btop".source = ../../config/btop;
+  home.file.".config/rofi".source = ../../config/rofi;
+  home.file.".config/starship".source = ../../config/starship;
+  home.file.".config/niri".source = ../../config/niri;
+  home.file.".zshrc".source = ../../config/zsh/.zshrc;
+  home.file."Pictures/backgrounds".source = ../../config/backgrounds;
 
 
   ########################
