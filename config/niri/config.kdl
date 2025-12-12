@@ -40,7 +40,8 @@ input {
         // drag false
         // drag-lock
         click-method "clickfinger"      // use # of fingers instead of button areas
-        tap-button-map "left-right-middle"  // 1-finge      natural-scroll
+        tap-button-map "left-right-middle"  // 1-finge      
+        natural-scroll
         middle-emulation
     }
 
@@ -295,7 +296,7 @@ binds {
     spawn-sh "rofi -show drun -show-icons -theme /home/probird5/.config/rofi/theme.rasi";
 }
 
-    Super+Shift+L hotkey-overlay-title="Lock the Screen: swaylock" { spawn "hyprlock"; }
+    Super+Crtl+L hotkey-overlay-title="Lock the Screen: swaylock" { spawn "hyprlock"; }
 
     // Use spawn-sh to run a shell command. Do this if you need pipes, multiple commands, etc.
     // Note: the entire command goes as a single argument. It's passed verbatim to `sh -c`.
@@ -332,14 +333,14 @@ binds {
     Mod+K     { focus-window-up; }
     Mod+L     { focus-column-right; }
 
-    Mod+Ctrl+Left  { move-column-left; }
-    Mod+Ctrl+Down  { move-window-down; }
-    Mod+Ctrl+Up    { move-window-up; }
-    Mod+Ctrl+Right { move-column-right; }
-    Mod+Ctrl+H     { move-column-left; }
-    Mod+Ctrl+J     { move-window-down; }
-    Mod+Ctrl+K     { move-window-up; }
-    Mod+Ctrl+L     { move-column-right; }
+    Mod+Shift+Left  { move-column-left; }
+    Mod+Shift+Down  { move-window-down; }
+    Mod+Shift+Up    { move-window-up; }
+    Mod+Shift+Right { move-column-right; }
+    Mod+Shift+H     { move-column-left; }
+    Mod+Shift+J     { move-window-down; }
+    Mod+Shift+K     { move-window-up; }
+    Mod+Shift+L     { move-column-right; }
 
     // Alternative commands that move across workspaces when reaching
     // the first or last window in a column.

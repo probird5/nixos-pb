@@ -23,21 +23,21 @@
       modules = [ ./modules/nvim-nvf.nix ];
       }).neovim;
 
-
+# Main Desktop
     nixosConfigurations = {
       # TODO please change the hostname to your own
-      nixos-pb = nixpkgs.lib.nixosSystem {
+      bayle = nixpkgs.lib.nixosSystem {
         specialArgs = { inherit inputs; };
         system = "x86_64-linux";
         modules = [
-          ./hosts/nixos-pb/nixos-pb.nix
+          ./hosts/bayle/bayle.nix
           # make home-manager as a module of nixos
           # so that home-manager configuration will be deployed automatically when executing `nixos-rebuild switch`
           home-manager.nixosModules.home-manager
           {
             home-manager.useGlobalPkgs = true;
             home-manager.useUserPackages = true;
-            home-manager.users.probird5 = import ./hosts/nixos-pb/home.nix;
+            home-manager.users.probird5 = import ./hosts/bayle/home.nix;
 
             # Optionally, use home-manager.extraSpecialArgs to pass arguments to home.nix
           }
