@@ -296,7 +296,7 @@ binds {
     spawn-sh "rofi -show drun -show-icons -theme /home/probird5/.config/rofi/theme.rasi";
 }
 
-    Super+Crtl+L hotkey-overlay-title="Lock the Screen: swaylock" { spawn "hyprlock"; }
+    Super+Ctrl+L hotkey-overlay-title="Lock the Screen: swaylock" { spawn "hyprlock"; }
 
     // Use spawn-sh to run a shell command. Do this if you need pipes, multiple commands, etc.
     // Note: the entire command goes as a single argument. It's passed verbatim to `sh -c`.
