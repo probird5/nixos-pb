@@ -14,76 +14,13 @@
 
   imports = [
     # Include the results of the hardware scan.
-    ./config/starship.nix
-    ./config/rofi.nix
+    ../../modules/nvim.nix
+    ../../modules/ghostty.nix
+    ../../modules/tmux.nix
   ];
 
-  # firefox crashing on wayland
-  #   home.sessionVariables = {
-  #    GBM_BACKEND = "";
-  #  };
   wayland.windowManager.hyprland.xwayland.enable = true;
-  programs.zsh = {
-    enable = true;
-    enableCompletion = true;
-    syntaxHighlighting.enable = true;
-    shellAliases = {
-      cd = "z";
-      cdi = "zi";
-      cat = "bat";
-    };
-  };
 
-  home.sessionVariables = {
-    PATH = "${config.home.homeDirectory}/.config/emacs/bin:${config.home.homeDirectory}/scripts:$PATH";
-    EDITOR = "nvim";
-    VISUAL = "nvim";
-    BROWSER = "librewolf";
-    TERMINAL = "alacritty";
-    FILEMANAGER = "thunar";
-  };
-
-  home.file.".bashrc".source = lib.mkForce ./bashrc;
-
-  xdg.configFile.nvim.source = ../shared/nvim;
-
-  programs.zoxide.enable = true;
-
-  # Additional Zsh configuration
-  programs.hyprlock.enable = true;
-
-  # set cursor size and dpi for 4k monitor
-  xresources.properties = {
-    "Xcursor.size" = 24;
-    "Xft.dpi" = 120;
-    "Xcursor.theme" = "Nordzy-cursors";
-  };
-
-  gtk = {
-    enable = true;
-    theme = {
-      name = "Dracula";
-      package = pkgs.dracula-theme;
-    };
-    iconTheme = {
-      name = "Nordzy";
-      package = pkgs.nordzy-icon-theme;
-    };
-    cursorTheme = {
-      name = "Nordzy-cursors";
-      package = pkgs.nordzy-cursor-theme;
-      size = 32;
-    };
-    gtk2 = {
-      configLocation = "${config.home.homeDirectory}/.gtkrc-2.0";
-    };
-  };
-  qt.enable = true;
-
-  # platform theme "gtk" or "gnome"
-  qt.platformTheme = "gtk";
-
-  # fzf
 
   programs.fzf = {
     enable = true;
@@ -96,115 +33,224 @@
     ];
   };
 
-  # Packages that should be installed to the user profile.
-  home.packages = with pkgs; [
-    sysstat
-    lm_sensors # for `sensors` command
-    ethtool
-    pciutils # lspci
-    usbutils # lsusb
-    p7zip
-    steam
-    lutris
-    remmina
-    gnomeExtensions.remmina-search-provider
-    tmux
-    xprintidle
-    fzf
-    go
-    unzip
-    stylua
-    steam-run
-    lua
-    luajitPackages.luarocks
-    ripgrep
-    neovim
-    wdisplays
-    alsa-utils
-    protonup-qt
-    qt6.qtbase
-    qt6.qtwayland
-    xorg.libxcb
-    xorg.xcbutil
-    xorg.xcbutilimage
-    xorg.xcbutilkeysyms
-    xorg.xcbutilrenderutil
-    xorg.xcbutilwm
-    picom
-    font-awesome
-    nerd-fonts.fira-code
-    nerd-fonts.fira-mono
-    nerd-fonts.jetbrains-mono
-    nerd-fonts.symbols-only
-    pulsemixer
-    python3
-    nodejs_22
-    clang-tools
-    fd
-    luajitPackages.jsregexp
-    fastfetch
-    obsidian
-    flameshot
-    starship
-    lf
-    trash-cli
-    swww
-    lz4
-    swayidle
-    swaylock
-    hyprcursor
-    nwg-look
-    hypridle
-    jq
-    firefox
-    librewolf
-    spotify
-    swappy
-    wttrbar
-    hashcat
-    tree
-    genymotion
-    android-tools
-    openssl
-    wlogout
-    bash-completion
-    rustup
-    zoxide
-    bat
-    yazi
-    shotcut
-    freerdp3
-    sshfs
-    killall
-    swaynotificationcenter
-    golangci-lint
-    goimports-reviser
-    libreoffice
-  ];
 
-  # basic configuration of git
+  home.file.".bashrc".source = lib.mkForce ./bashrc;
+
+  services.swww.enable = true;
+  programs.zoxide.enable = true;
+  programs.starship.enable = true;
+
+
   programs.git = {
     enable = true;
     userName = "probird5";
     userEmail = "52969604+probird5@users.noreply.github.com";
   };
 
-  # starship - an customizable prompt for any shell
-  programs.starship = {
-    enable = true;
-  };
-  #};
-  # testing
+  ########################
+  # Hyprland helpers
+  ########################
+  programs.hyprlock.enable = true;
 
-  xdg = {
-    portal = {
-      enable = true;
-      config.common.default = "*";
-      extraPortals = [
-        pkgs.xdg-desktop-portal-gtk
-        pkgs.xdg-desktop-portal-hyprland
-      ];
+  ########################
+  # Theming / Fonts / DPI
+  ########################
+  xresources.properties = {
+    "Xcursor.size" = 24;
+    "Xft.dpi"      = 120;
+    "Xcursor.theme" = "Nordzy-cursors";
+  };
+
+  gtk = {
+    enable = true;
+    theme = {
+      name    = "Dracula";
+      package = pkgs.dracula-theme;
     };
+    iconTheme = {
+      name    = "Nordzy";
+      package = pkgs.nordzy-icon-theme;
+    };
+    cursorTheme = {
+      name    = "Nordzy-cursors";
+      package = pkgs.nordzy-cursor-theme;
+      size    = 32;
+    };
+    gtk2.configLocation = "${config.home.homeDirectory}/.gtkrc-2.0";
+  };
+
+  qt = {
+    enable = true;
+    platformTheme.name = "gtk";
+  };
+
+# added this for niri since theming didn't work
+    dconf.settings = {
+    "org/gnome/desktop/interface" = {
+      color-scheme = "prefer-dark";
+      gtk-theme = "Dracula";
+      icon-theme = "Nordzy";
+    };
+  };
+  ########################
+  # Homefile Override 
+  ########################
+  home.file.".config/hypr".source = ../../config/hypr;
+  home.file.".config/waybar".source = ../../config/waybar;
+  home.file.".config/alacritty".source = ../../config/alacritty;
+  home.file.".config/btop".source = ../../config/btop;
+  home.file.".config/rofi".source = ../../config/rofi;
+  home.file.".config/starship".source = ../../config/starship;
+  home.file.".config/niri".source = ../../config/niri;
+  home.file.".zshrc".source = ../../config/zsh/.zshrc;
+  home.file."Pictures/backgrounds".source = ../../config/backgrounds;
+
+  # Packages that should be installed to the user profile.
+home.packages = with pkgs; [
+
+  # System / Hardware
+  sysstat
+  lm_sensors
+  ethtool
+  pciutils
+  usbutils
+  alsa-utils
+  killall
+  openssl
+
+  # Archives / Compression
+  p7zip
+  unzip
+  lz4
+
+  # CLI utilities
+  fd
+  fzf
+  ripgrep
+  jq
+  tree
+  fastfetch
+  bat
+  zoxide
+  trash-cli
+  bash-completion
+  wttrbar
+
+  # Shell / Terminal
+  tmux
+  starship
+  lf
+  yazi
+  xprintidle
+
+  # Development
+  go
+  golangci-lint
+  goimports-reviser
+  rustup
+  clang-tools
+  python3
+  nodejs_22
+  lua
+  stylua
+  luajitPackages.luarocks
+  luajitPackages.jsregexp
+  neovim
+
+  # Wayland / Desktop
+  wdisplays
+  swww
+  picom
+  nwg-look
+  hyprcursor
+  hypridle
+  swayidle
+  swaylock
+  swaynotificationcenter
+  wlogout
+  swappy
+  flameshot
+
+  # Fonts / Icons
+  font-awesome
+  nerd-fonts.fira-code
+  nerd-fonts.fira-mono
+  nerd-fonts.jetbrains-mono
+  nerd-fonts.symbols-only
+
+  # Audio / Music
+  pulsemixer
+  spotify
+
+  # Browsers
+  firefox
+  librewolf
+
+  # Applications
+  obsidian
+  shotcut
+  libreoffice
+
+  # Remote / Networking
+  remmina
+  freerdp3
+  sshfs
+  gnomeExtensions.remmina-search-provider
+
+  # Gaming
+  steam
+  steam-run
+  lutris
+  protonup-qt
+
+  # Security / Reversing
+  hashcat
+
+  # Android
+  android-tools
+  genymotion
+
+  # Qt / X11 support
+  qt6.qtbase
+  qt6.qtwayland
+  xorg.libxcb
+  xorg.xcbutil
+  xorg.xcbutilimage
+  xorg.xcbutilkeysyms
+  xorg.xcbutilrenderutil
+  xorg.xcbutilwm
+];
+
+
+    xdg.mimeApps = {
+    enable = true;
+    defaultApplications = {
+      "text/html" = "firefox.desktop";
+      "x-scheme-handler/http" = "firefox.desktop";
+      "x-scheme-handler/https" = "firefox.desktop";
+      "x-scheme-handler/about" = "firefox.desktop";
+      "x-scheme-handler/unknown" = "firefox.desktop";
+      "application/pdf" = "firefox.desktop"; # or "firefox.desktop"
+      "text/plain" = "nvim.desktop";
+      "text/markdown" = "nvim.desktop";
+      "application/json" = "nvim.desktop";
+      "application/xml" = "nvim.desktop";
+      "image/png" = "feh.desktop";   # or "feh.desktop"
+      "image/jpeg" = "feh.desktop";
+      "image/webp" = "feh.desktop";
+      "image/gif" = "feh.desktop";
+      "video/mp4" = "mpv.desktop";
+      "video/x-matroska" = "mpv.desktop";  # .mkv
+      "video/webm" = "mpv.desktop";
+      "audio/mpeg" = "mpv.desktop";        # .mp3
+      "audio/flac" = "mpv.desktop";
+      "audio/ogg" = "mpv.desktop";
+      "application/zip" = "xarchiver.desktop";
+      "application/x-tar" = "xarchiver.desktop";
+      "application/x-7z-compressed" = "xarchiver.desktop";
+      "application/x-rar" = "xarchiver.desktop";
+    };
+  };
 
     userDirs = {
       enable = true;

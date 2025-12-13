@@ -43,6 +43,7 @@
   programs.zoxide.enable = true;
 
 
+
   programs.git = {
     enable = true;
     settings = {
@@ -51,7 +52,6 @@
     };
   };
 
-  programs.starship.enable = true;
 
   ########################
   # Hyprland helpers
