@@ -125,7 +125,7 @@
     portal = {
       enable = true;
       config.common.default = "*";
-      extraPortals = [ pkgs.xdg-desktop-portal-gtk pkgs.xdg-desktop-portal-gnome];
+      extraPortals = [ pkgs.xdg-desktop-portal-gnome];
     };
     userDirs.enable = true;
   };
