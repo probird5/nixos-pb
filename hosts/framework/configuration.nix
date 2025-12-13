@@ -201,10 +201,10 @@
   ###############
   # XDG Portals
   ###############
-  xdg.portal = {
-    enable = true;
-    extraPortals = [ pkgs.xdg-desktop-portal-gnome ];
-  };
+ # xdg.portal = {
+ #   enable = true;
+ #   extraPortals = [ pkgs.xdg-desktop-portal-gnome ];
+ # };
 
   ###############
   # Fonts

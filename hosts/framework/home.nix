@@ -122,11 +122,11 @@
   # XDG Portals & User Dirs
   ########################
   xdg = {
-    portal = {
-      enable = true;
-      config.common.default = "*";
-      extraPortals = [ pkgs.xdg-desktop-portal-gnome];
-    };
+ #   portal = {
+ #     enable = true;
+ #     config.common.default = "*";
+ #     extraPortals = [ pkgs.xdg-desktop-portal-gnome];
+ #   };
     userDirs.enable = true;
   };
 
