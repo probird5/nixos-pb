@@ -104,13 +104,6 @@
 
     spice-vdagentd.enable = true;
 
-    greetd = {
-      enable = true;
-      vt = 3;
-      settings.default_session = {
-        command = "${pkgs.greetd.tuigreet}/bin/tuigreet --time --cmd Hyprland";
-      };
-    };
 
     emacs = {
       enable = true;
@@ -150,8 +143,9 @@
 
       powerManagement.enable = true;
       modesetting.enable = true;
+      Settings = true;
 
-      package = config.boot.kernelPackages.nvidiaPackages.beta;
+      package = config.boot.kernelPackages.nvidiaPackages.production;
     };
   };
 
@@ -211,22 +205,7 @@
   ############################################################
   # Virtualization
   ############################################################
-  virtualisation = {
-    libvirtd = {
-      enable = true;
-      qemu = {
-        swtpm.enable = true;
-        ovmf = {
-          enable = true;
-          packages = [ pkgs.OVMFFull.fd ];
-        };
-      };
-    };
 
-    spiceUSBRedirection.enable = true;
-
-    docker.enable = true;
-  };
 
   ############################################################
   # Swap
@@ -295,7 +274,7 @@
     hyprpaper
     hyprlock
     waybar
-    rofi-wayland
+    rofi
     wl-clipboard
     grim
     slurp
@@ -329,7 +308,7 @@
     qemu
     swtpm
     virtiofsd
-    win-virtio
+    virtio-win
     win-spice
     spice
     spice-gtk
@@ -359,7 +338,6 @@
     cmake
     libtool
     nixfmt-rfc-style
-    sops
 
     # Misc / apps
     discord
@@ -368,7 +346,6 @@
     home-manager
     gamescope
     gamescope-wsi
-    greetd.tuigreet
     blueman
 
     # X11 stuff (if you still need it)
@@ -390,7 +367,7 @@
     # Other
     via
     linux-firmware
-    microcodeAmd
+    microcode-amd
     feh
     dmenu
     slstatus

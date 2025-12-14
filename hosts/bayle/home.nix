@@ -155,7 +155,6 @@ home.packages = with pkgs; [
   stylua
   luajitPackages.luarocks
   luajitPackages.jsregexp
-  neovim
 
   # Wayland / Desktop
   wdisplays
@@ -193,7 +192,7 @@ home.packages = with pkgs; [
 
   # Remote / Networking
   remmina
-  freerdp3
+  freerdp
   sshfs
   gnomeExtensions.remmina-search-provider
 
@@ -252,13 +251,6 @@ home.packages = with pkgs; [
     };
   };
 
-    userDirs = {
-      enable = true;
-      extraConfig = {
-        XDG_EMULATION_DIR = "${config.home.homeDirectory}/Documents/emulation";
-      };
-    };
-  };
 
   home.stateVersion = "25.05";
 
