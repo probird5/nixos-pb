@@ -27,6 +27,7 @@
       "ntfs"
       "cifs"
     ];
+    initrd.kernelModules = [ "nvidia" ];
 
     kernelParams = [
       # Sleep / power quirks
