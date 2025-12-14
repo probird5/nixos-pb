@@ -105,7 +105,13 @@
     udisks2.enable = true;
 
     spice-vdagentd.enable = true;
-
+    greetd = {
+      enable = true;
+      settings.default_session = {
+        command = "${pkgs.tuigreet}/bin/tuigreet --time --cmd Hyprland";
+        user = "probird5";
+      };
+    };
 
     emacs = {
       enable = true;
@@ -113,6 +119,21 @@
     };
   };
 
+  ###############
+  # Virtualization
+  ###############
+  virtualisation = {
+    docker.enable = true;
+
+    libvirtd = {
+      enable = true;
+      qemu = {
+        swtpm.enable = true;
+      };
+    };
+
+    spiceUSBRedirection.enable = true;
+  };
   ############################################################
   # X11 input settings (still used by some apps)
   ############################################################
