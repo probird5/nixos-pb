@@ -4,6 +4,7 @@
   imports = [
     ./hardware-configuration.nix
   ];
+    services.xserver.videoDrivers = ["nvidia"];
 
   ############################################################
   # System identity / locale
