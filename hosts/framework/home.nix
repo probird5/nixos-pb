@@ -171,6 +171,7 @@
     nodejs_22
     python3
     lua
+    starship
 
     # Wayland / Desktop
     wayland
