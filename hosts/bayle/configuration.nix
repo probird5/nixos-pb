@@ -360,6 +360,7 @@
     cmake
     libtool
     nixfmt-rfc-style
+    wineWowPackages.full
 
     # Misc / apps
     discord
