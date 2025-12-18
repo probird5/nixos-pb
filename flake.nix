@@ -52,7 +52,7 @@
           {
             home-manager.useGlobalPkgs = true;
             home-manager.useUserPackages = true;
-            home-manager.users.probird5 = import ./hosts/smessmer/home.nix;
+            home-manager.users.probird5 = import ./hosts/messmer/home.nix;
           }
         ];
       };
