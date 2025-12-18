@@ -116,11 +116,11 @@
     # Spice guest agent (for VMs)
     spice-vdagentd.enable = true;
 
-    # Login manager -> tuigreet launching Hyprland
+    # Login manager -> tuigreet launching niri-session
     greetd = {
       enable = true;
       settings.default_session = {
-        command = "${pkgs.tuigreet}/bin/tuigreet --time --cmd Hyprland";
+        command = "${pkgs.tuigreet}/bin/tuigreet --time --cmd niri-session";
         user = "probird5";
       };
     };
@@ -188,6 +188,17 @@
     packages = with pkgs; [
       kdePackages.kate
     ];
+  };
+  services.openssh = {
+    enable = true;
+    ports = [ 22 ];
+    settings = {
+      PasswordAuthentication = true;
+      AllowUsers = [ "probird5" ]; # Allows all users by default. Can be [ "user1" "user2" ]
+      UseDns = true;
+      X11Forwarding = true;
+      PermitRootLogin = "no"; # "yes", "without-password", "prohibit-password", "forced-commands-only", "no"
+    };
   };
 
   ###############
