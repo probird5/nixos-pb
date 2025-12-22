@@ -258,7 +258,13 @@
       STEAM_EXTRA_COMPAT_TOOLS_PATHS = "\${HOME}/.steam/root/compatibilitytools.d";
     };
   };
+ services.fprintd.enable = true;
+   # Create /etc/pam.d/hyprlock and allow fingerprint auth for it
+  security.pam.services.hyprlock.fprintAuth = true;
 
+  # Optional (nice to have):
+  security.pam.services.login.fprintAuth = true;
+  security.pam.services.sudo.fprintAuth = true;
   ###############
   # State Version
   ###############
