@@ -33,19 +33,20 @@
         //   "blueman": "bluetooth",
         //   "TelegramDesktop": "$HOME/.local/share/icons/hicolor/16x16/apps/telegram.png"
         // }
-   "niri/workspaces": {
-    // show numbers 1,2,3,... instead of names/icons
-    "format": "{index}",
-
-    // show workspaces from all monitors, or only this one
+     },
+    "niri/workspaces": {
+    "format": "{icon}",
     "all-outputs": false,
-
-    // allow clicking to switch workspaces
     "disable-click": false,
-
-    // optional: only show the current workspace
-    // "current-only": true
-  }   },
+    "format-icons": {
+      "1": "",
+      "2": "",
+      "3": "",
+      "4": "",
+      "5": "",
+      "10": "",
+    }
+  },
     "clock": {
         // "timezone": "America/New_York",
         "tooltip-format": "<big>{:%Y %B}</big>\n<tt><small>{calendar}</small></tt>",

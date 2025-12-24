@@ -201,10 +201,10 @@
     brightnessctl
     rofi
     waybar
-    mako
     hyprpaper
     niri
     xwayland-satellite
+    libnotify
 
     # Audio / Bluetooth
     pulsemixer

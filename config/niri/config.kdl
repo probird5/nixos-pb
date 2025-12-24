@@ -13,6 +13,37 @@ gestures {
         off
     }
 }
+workspace "1"
+workspace "2"
+workspace "3"
+workspace "4"
+workspace "10"
+
+window-rule {
+    match app-id="ghostty"
+    open-on-workspace "1"
+}
+
+window-rule {
+    match app-id="firefox"
+    open-on-workspace "2"
+}
+
+window-rule {
+    match app-id="xfreerdp"
+    open-on-workspace "3"
+}
+
+window-rule {
+    match app-id="pavucontrol"
+    open-on-workspace "4"
+}
+window-rule {
+    match app-id=r#"^steam_app_\d+$"#
+    open-on-workspace "10"
+    open-fullscreen true
+}
+
 
 input {
     focus-follows-mouse
@@ -110,6 +141,7 @@ layout {
     //
     // Alternatively, you can override it with a window rule called
     // `draw-border-with-background`.
+
 
     // You can change how the focus ring looks.
     focus-ring {
