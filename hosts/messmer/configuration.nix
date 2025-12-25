@@ -38,7 +38,8 @@
     };
 
     supportedFilesystems = [ "btrfs" "reiserfs" "vfat" "f2fs" "xfs" "ntfs" "cifs" ];
-    kernelParams = [ "resume=/swapfile" ];
+    kernelParams = [ "resume=/swapfile" "mem_sleep_default=deep" ];
+
   };
 
   swapDevices = [{
