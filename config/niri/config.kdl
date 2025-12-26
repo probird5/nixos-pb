@@ -46,7 +46,6 @@ window-rule {
 
 
 input {
-    focus-follows-mouse
     keyboard {
         xkb {
             // localectl set-x11-keymap.
