@@ -172,6 +172,7 @@
     python3
     lua
     starship
+    sshfs
 
     # Wayland / Desktop
     wayland
