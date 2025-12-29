@@ -11,6 +11,7 @@
     ../../modules/nvim.nix
     ../../modules/ghostty.nix
     ../../modules/tmux.nix
+    ../../modules/btop.nix
   ];
 
   ########################
