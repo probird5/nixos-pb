@@ -3,7 +3,7 @@
 {
   programs.btop = {
     enable = true;
-
+    package = pkgs.btop.override { rocmSupport = true; };
     settings = {
       # --- Layout ---
       shown_boxes = "cpu gpu mem net proc";

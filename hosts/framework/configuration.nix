@@ -251,6 +251,8 @@
       hplipWithPlugin
       openresolv
       xfce.thunar-archive-plugin
+      rocmPackages.rocm-smi
+      amdgpu_top
     ];
 
     sessionVariables = {
