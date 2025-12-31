@@ -253,6 +253,7 @@
       xfce.thunar-archive-plugin
       rocmPackages.rocm-smi
       amdgpu_top
+      ffmpeg
     ];
 
     sessionVariables = {
