@@ -153,6 +153,7 @@ home.packages = with pkgs; [
   nodejs_22
   lua
   stylua
+  prettier
   luajitPackages.luarocks
   luajitPackages.jsregexp
 
