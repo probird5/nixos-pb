@@ -173,6 +173,7 @@
     lua
     starship
     sshfs
+    opencode
 
     # Wayland / Desktop
     wayland
