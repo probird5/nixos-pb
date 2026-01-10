@@ -7,13 +7,13 @@
   ###############
   imports = [
     ./hardware-configuration.nix
+    ../../modules/ollama.nix
   ];
   ###############
   # Nix / Nixpkgs
   ###############
   nix.settings.experimental-features = [ "nix-command" "flakes" ];
   nixpkgs.config.allowUnfree = true;
-
   ###############
   # Host & Locale
   ###############
@@ -25,7 +25,8 @@
   # Boot
   ###############
   boot = {
-    loader = {
+  kernelPackages = pkgs.linuxPackages_6_18;
+  loader = {
       efi.canTouchEfiVariables = true;
       systemd-boot.enable = false;
       grub = {
@@ -79,7 +80,12 @@
   # Virtualization
   ###############
   virtualisation = {
-    docker.enable = true;
+    podman = {
+    enable = true;
+    dockerCompat = true;
+    defaultNetwork.settings.dns_enabled = true; # Required for containers under podman-compose to be able to talk to each other.
+  };
+
     libvirtd = {
       enable = true;
       qemu = {
@@ -225,6 +231,7 @@
       openresolv
       xfce.thunar-archive-plugin
       xwayland-satellite
+      toolbox
     ];
     sessionVariables = {
       NIXOS_OZONE_WL = 1;
