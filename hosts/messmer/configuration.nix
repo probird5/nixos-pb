@@ -1,4 +1,4 @@
-# NixOS configuration
+# NixOS configuratioo
 { config, pkgs, ... }:
 
 {
@@ -57,6 +57,7 @@
       enable = true;
       powerOnBoot = true;
     };
+    enableRedistributableFirmware = true;
     steam-hardware.enable = true;
     graphics = {
       enable = true;
@@ -191,7 +192,7 @@
     isNormalUser = true;
     description = "probird5";
     shell = pkgs.zsh;
-    extraGroups = [ "networkmanager" "audio" "wheel" "libvirtd" "kvm" "qemu" "flatpak" ];
+    extraGroups = [ "networkmanager" "audio" "wheel" "libvirtd" "kvm" "qemu" "flatpak" "video" "render" ];
     packages = with pkgs; [
       kdePackages.kate
     ];
@@ -232,12 +233,15 @@
       xfce.thunar-archive-plugin
       xwayland-satellite
       toolbox
+      rocmPackages.rocminfo
+      rocmPackages.rocm-smi
     ];
     sessionVariables = {
       NIXOS_OZONE_WL = 1;
       STEAM_EXTRA_COMPAT_TOOLS_PATHS = "\${HOME}/.steam/root/compatibilitytools.d";
     };
   };
+
 
 
   ###############

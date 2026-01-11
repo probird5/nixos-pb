@@ -17,13 +17,13 @@
 
   outputs = inputs@{ nixpkgs, home-manager, nixos-hardware, nvf, ... }: {
 
-  packages."x86_64-linux".default =
-    (nvf.lib.neovimConfiguration {
-      pkgs = nixpkgs.legacyPackages."x86_64-linux";
-      modules = [ ./modules/nvim-nvf.nix ];
+    packages."x86_64-linux".default =
+      (nvf.lib.neovimConfiguration {
+        pkgs = nixpkgs.legacyPackages."x86_64-linux";
+        modules = [ ./modules/nvim-nvf.nix ];
       }).neovim;
 
-# Main Desktop
+    # Main Desktop
     nixosConfigurations = {
       # TODO please change the hostname to your own
       bayle = nixpkgs.lib.nixosSystem {
@@ -43,6 +43,7 @@
           }
         ];
       };
+
       messmer = nixpkgs.lib.nixosSystem {
         specialArgs = { inherit inputs; };
         system = "x86_64-linux";
@@ -80,3 +81,4 @@
     };
   };
 }
+
