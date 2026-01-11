@@ -174,6 +174,9 @@
     starship
     sshfs
     opencode
+    claude-code
+    lazydocker
+    lazygit
 
     # Wayland / Desktop
     wayland
