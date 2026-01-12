@@ -222,7 +222,7 @@
     isNormalUser = true;
     description = "probird5";
     shell = pkgs.zsh;
-    extraGroups = [ "networkmanager" "audio" "wheel" "libvirtd" "kvm" "qemu" "flatpak" ];
+    extraGroups = [ "networkmanager" "audio" "wheel" "libvirtd" "kvm" "qemu" "flatpak" "docker" ];
     packages = with pkgs; [
       kdePackages.kate
       # thunderbird
