@@ -309,7 +309,6 @@
     kitty
     zsh
     git
-    btop
     gotop
     neofetch
     playerctl

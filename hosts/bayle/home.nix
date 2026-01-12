@@ -17,6 +17,7 @@
     ../../modules/nvim.nix
     ../../modules/ghostty.nix
     ../../modules/tmux.nix
+    ../../modules/btop.nix
   ];
 
   wayland.windowManager.hyprland.xwayland.enable = true;
@@ -98,7 +99,6 @@
   home.file.".config/hypr".source = ../../config/hypr;
   home.file.".config/waybar".source = ../../config/waybar;
   home.file.".config/alacritty".source = ../../config/alacritty;
-  home.file.".config/btop".source = ../../config/btop;
   home.file.".config/rofi".source = ../../config/rofi;
   home.file.".config/starship".source = ../../config/starship;
   home.file.".config/niri".source = ../../config/niri;
