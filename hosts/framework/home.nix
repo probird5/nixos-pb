@@ -177,6 +177,7 @@
     claude-code
     lazydocker
     lazygit
+    bottles
 
     # Wayland / Desktop
     wayland
