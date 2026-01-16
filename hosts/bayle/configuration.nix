@@ -54,6 +54,18 @@
     };
   };
 
+    programs.nix-ld.enable = true;
+
+  # Optional: common runtime libs many binaries expect
+  programs.nix-ld.libraries = with pkgs; [
+    stdenv.cc.cc
+    zlib
+    openssl
+    curl
+    libgcc
+    icu
+  ];
+
   ############################################################
   # Networking
   ############################################################
