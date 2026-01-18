@@ -8,7 +8,7 @@
   imports = [
     ./hardware-configuration.nix
     # ../shared/shares.nix
-    ./wireguard.nix
+    #./wireguard.nix
     ./tailscale.nix
   ];
   programs.nix-ld.enable = true;
@@ -31,9 +31,14 @@
   ###############
   # Host & Locale
   ###############
-  networking.hostName = "nixos-framework";
+  networking = {
+  hostName = "nixos-framework";
+  nameservers = [ "192.168.5.18" "192.168.0.1" ];  
+};
   time.timeZone = "America/Toronto";
   i18n.defaultLocale = "en_CA.UTF-8";
+
+
 
   ###############
   # Boot
