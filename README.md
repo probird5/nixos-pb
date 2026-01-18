@@ -14,28 +14,31 @@ A flake-based NixOS configuration managing three machines with home-manager inte
 
 ```
 nixos-pb/
-├── flake.nix           # Flake inputs and outputs
-├── hosts/              # Per-machine configurations
-│   ├── bayle/          # NVIDIA desktop
-│   ├── messmer/        # AMD desktop
-│   └── framework/      # Framework laptop
-├── modules/            # Reusable NixOS/home-manager modules
-│   ├── nvim.nix        # Neovim configuration
-│   ├── tmux.nix        # Tmux with Tokyo Night theme
-│   ├── ghostty.nix     # Ghostty terminal
-│   ├── btop.nix        # System monitor with ROCm
-│   ├── ollama.nix      # Local LLM service
-│   ├── opencode.nix    # AI code assistant config
-│   └── shares.nix      # SMB/CIFS mounts
-└── config/             # Application configs
-    ├── hypr/           # Hyprland compositor
-    ├── niri/           # Niri compositor
-    ├── waybar/         # Status bar
-    ├── nvim/           # Neovim (Lua)
-    ├── rofi/           # App launcher
-    ├── starship/       # Shell prompt
-    ├── zsh/            # Shell config
-    └── backgrounds/    # Wallpapers
+├── flake.nix
+├── modules/
+│   ├── system/              # System-level modules
+│   │   ├── common.nix       # Shared: nix, locale, audio, bluetooth, fonts
+│   │   ├── desktop.nix      # Shared: greetd, thunar, gaming, virtualization
+│   │   ├── nvidia.nix       # NVIDIA GPU configuration
+│   │   └── amd.nix          # AMD GPU/CPU configuration
+│   ├── home/                # Home-manager modules
+│   │   ├── common.nix       # Shared: git, fzf, zoxide, CLI tools
+│   │   ├── theming.nix      # Shared: GTK, Qt, cursors, fonts
+│   │   ├── desktop.nix      # Shared: config files, MIME apps, desktop packages
+│   │   ├── development.nix  # Shared: languages, dev tools
+│   │   └── packages.nix     # Shared: common applications
+│   ├── nvim.nix             # Neovim configuration
+│   ├── tmux.nix             # Tmux with Tokyo Night
+│   ├── ghostty.nix          # Ghostty terminal
+│   ├── btop.nix             # System monitor
+│   ├── ollama.nix           # Local LLM service
+│   ├── opencode.nix         # AI code assistant
+│   └── shares.nix           # SMB/CIFS mounts
+├── hosts/
+│   ├── bayle/               # ~130 lines (was ~430)
+│   ├── messmer/             # ~75 lines (was ~250)
+│   └── framework/           # ~90 lines (was ~280)
+└── config/                  # Application configs (hypr, waybar, nvim, etc.)
 ```
 
 ## Features
@@ -89,6 +92,36 @@ sudo nixos-rebuild switch --flake .#framework
 nix flake update
 ```
 
+### Verify Configuration
+
+```bash
+nix flake check
+```
+
+## Module System
+
+The configuration uses a layered module approach:
+
+### System Modules (`modules/system/`)
+- **common.nix**: Nix settings, locale, audio, bluetooth, fonts, common services
+- **desktop.nix**: Login manager, file manager, gaming, virtualization (with options)
+- **nvidia.nix**: NVIDIA driver, kernel params, packages
+- **amd.nix**: AMD driver, microcode, ROCm tools (optional)
+
+### Home Modules (`modules/home/`)
+- **common.nix**: Git, shell tools, CLI utilities
+- **theming.nix**: GTK/Qt themes, cursors, dconf settings
+- **desktop.nix**: Config file sources, MIME apps, desktop packages
+- **development.nix**: Languages and dev tools
+- **packages.nix**: Common applications
+
+### Host Files
+Each host only contains host-specific settings:
+- Hostname and networking
+- Hardware-specific options
+- Service toggles
+- Additional packages
+
 ## Flake Inputs
 
 | Input | Source |
@@ -102,25 +135,18 @@ nix flake update
 
 ### bayle (Custom PC)
 - NVIDIA proprietary drivers (production)
-- 64GB swap, GRUB bootloader
-- Emacs server, Flatpak
-- Android tools, Genymotion
+- Hyprland compositor
+- Emacs server, Tailscale
+- SSH enabled
 
 ### messmer (Framework Desktop)
 - AMD GPU with ROCm tools
-- Kernel 6.18
-- Podman with Docker compatibility
-- Ollama LLM server (port 11434)
+- Niri compositor, Kernel 6.18
+- Podman (Docker-compatible)
+- Ollama LLM server
 
 ### framework (Framework 13)
 - nixos-hardware Framework 13 7040 AMD module
-- Fingerprint authentication (fprintd)
-- Hyprlock with fingerprint support
-- Power-optimized configuration
-
-## Notes
-
-- Home-manager is integrated as a NixOS module
-- Neovim config is symlinked writable from this repo
-- All hosts share common modules with machine-specific overrides
-- Tokyo Night theme used consistently across terminal apps
+- Niri + Hyprland (both enabled)
+- Fingerprint authentication
+- Printing support, Tailscale
