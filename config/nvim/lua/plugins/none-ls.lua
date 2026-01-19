@@ -18,9 +18,8 @@ return {
 				formatting.goimports,
 				diagnostics.golangci_lint,
 
-				-- Python
+				-- Python (diagnostics provided by pyright)
 				formatting.ruff,
-				diagnostics.ruff,
 
 				-- Bash (diagnostics provided by bashls)
 				formatting.shfmt.with({
