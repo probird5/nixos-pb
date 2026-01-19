@@ -22,11 +22,10 @@ return {
 				formatting.ruff,
 				diagnostics.ruff,
 
-				-- Bash
+				-- Bash (diagnostics provided by bashls)
 				formatting.shfmt.with({
 					extra_args = { "-i", "2", "-ci" }, -- 2-space indent, indent case statements
 				}),
-				diagnostics.shellcheck,
 
 				-- Rust (rustfmt is handled by rust-analyzer)
 

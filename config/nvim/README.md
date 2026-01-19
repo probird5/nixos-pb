@@ -2,13 +2,15 @@
 
 A Neovim IDE setup managed via NixOS/Home Manager with Lazy.nvim plugin management.
 
+Requires Neovim 0.11+.
+
 ## Supported Languages
 
 | Language | LSP Server | Formatter | Linter |
 |----------|------------|-----------|--------|
 | Go | gopls | gofumpt, goimports | golangci-lint |
 | Python | pyright | ruff | ruff |
-| Bash | bash-language-server | shfmt | shellcheck |
+| Bash | bash-language-server | shfmt | bash-language-server |
 | YAML | yaml-language-server | prettierd | - |
 | Rust | rust-analyzer | rustfmt | clippy |
 | C/C++ | clangd | clang-format | - |
