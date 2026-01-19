@@ -6,68 +6,71 @@ return {
 			"hrsh7th/cmp-nvim-lsp",
 		},
 		config = function()
-			local lspconfig = require("lspconfig")
 			local capabilities = require("cmp_nvim_lsp").default_capabilities()
 
-			-- Configure LSP servers with capabilities for better completion
-			local servers = {
-				"gopls",
-				"pyright",
-				"bashls",
-				"yamlls",
-				"rust_analyzer",
-				"clangd",
-				"ts_ls",
-				"nixd",
-				"lua_ls",
-				"marksman",
-				"html",
-				"cssls",
-				"jsonls",
-			}
+			-- Configure LSP servers using vim.lsp.config (Neovim 0.11+)
+			vim.lsp.config("*", {
+				capabilities = capabilities,
+			})
 
-			for _, server in ipairs(servers) do
-				local opts = { capabilities = capabilities }
+			-- Server-specific configurations
+			vim.lsp.config("lua_ls", {
+				capabilities = capabilities,
+				settings = {
+					Lua = {
+						runtime = { version = "LuaJIT" },
+						diagnostics = { globals = { "vim" } },
+						workspace = {
+							library = vim.api.nvim_get_runtime_file("", true),
+							checkThirdParty = false,
+						},
+						telemetry = { enable = false },
+					},
+				},
+			})
 
-				-- Server-specific settings
-				if server == "lua_ls" then
-					opts.settings = {
-						Lua = {
-							runtime = { version = "LuaJIT" },
-							diagnostics = { globals = { "vim" } },
-							workspace = {
-								library = vim.api.nvim_get_runtime_file("", true),
-								checkThirdParty = false,
-							},
-							telemetry = { enable = false },
+			vim.lsp.config("yamlls", {
+				capabilities = capabilities,
+				settings = {
+					yaml = {
+						schemas = {
+							["https://json.schemastore.org/github-workflow.json"] = "/.github/workflows/*",
+							["https://raw.githubusercontent.com/compose-spec/compose-spec/master/schema/compose-spec.json"] = "docker-compose*.yml",
 						},
-					}
-				elseif server == "yamlls" then
-					opts.settings = {
-						yaml = {
-							schemas = {
-								["https://json.schemastore.org/github-workflow.json"] = "/.github/workflows/*",
-								["https://raw.githubusercontent.com/compose-spec/compose-spec/master/schema/compose-spec.json"] = "docker-compose*.yml",
-							},
-							validate = true,
-							completion = true,
-						},
-					}
-				elseif server == "rust_analyzer" then
-					opts.settings = {
-						["rust-analyzer"] = {
-							checkOnSave = {
-								command = "clippy",
-							},
-							cargo = {
-								allFeatures = true,
-							},
-						},
-					}
-				end
+						validate = true,
+						completion = true,
+					},
+				},
+			})
 
-				lspconfig[server].setup(opts)
-			end
+			vim.lsp.config("rust_analyzer", {
+				capabilities = capabilities,
+				settings = {
+					["rust-analyzer"] = {
+						checkOnSave = {
+							command = "clippy",
+						},
+						cargo = {
+							allFeatures = true,
+						},
+					},
+				},
+			})
+
+			-- Enable all LSP servers
+			vim.lsp.enable("gopls")
+			vim.lsp.enable("pyright")
+			vim.lsp.enable("bashls")
+			vim.lsp.enable("yamlls")
+			vim.lsp.enable("rust_analyzer")
+			vim.lsp.enable("clangd")
+			vim.lsp.enable("ts_ls")
+			vim.lsp.enable("nixd")
+			vim.lsp.enable("lua_ls")
+			vim.lsp.enable("marksman")
+			vim.lsp.enable("html")
+			vim.lsp.enable("cssls")
+			vim.lsp.enable("jsonls")
 
 			-- Global LSP keymaps
 			vim.api.nvim_create_autocmd("LspAttach", {
