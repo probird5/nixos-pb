@@ -8,6 +8,7 @@
     defaultEditor = true;
 
     extraPackages = with pkgs; [
+      # Core utilities
       git
       curl
       wget
@@ -15,15 +16,36 @@
       gnumake
       gcc
       ripgrep
-      clang-tools
-      nixd
-      vscode-langservers-extracted
       fd
       tree-sitter
       nodejs
       python3
-      lua-language-server
-      stylua
+
+      # LSP servers
+      lua-language-server        # Lua
+      clang-tools                # C/C++ (clangd)
+      nixd                       # Nix
+      vscode-langservers-extracted # HTML/CSS/JSON/ESLint
+      gopls                      # Go
+      pyright                    # Python
+      bash-language-server       # Bash
+      yaml-language-server       # YAML
+      rust-analyzer              # Rust
+      typescript-language-server # JavaScript/TypeScript
+      marksman                   # Markdown
+
+      # Formatters and linters
+      stylua                     # Lua formatter
+      gofumpt                    # Go formatter
+      gotools                    # goimports
+      golangci-lint              # Go linter
+      ruff                       # Python linter/formatter
+      shfmt                      # Bash formatter
+      shellcheck                 # Bash linter
+      rustfmt                    # Rust formatter
+      prettierd                  # Fast prettier daemon
+      nodePackages.prettier      # JS/TS/JSON/YAML/MD formatter
+      nixfmt-rfc-style           # Nix formatter
     ];
   };
 
