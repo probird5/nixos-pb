@@ -19,7 +19,7 @@ return {
 				diagnostics.golangci_lint,
 
 				-- Python (diagnostics provided by pyright)
-				formatting.ruff,
+				formatting.black,
 
 				-- Bash (diagnostics provided by bashls)
 				formatting.shfmt.with({

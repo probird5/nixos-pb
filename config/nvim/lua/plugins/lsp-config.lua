@@ -47,7 +47,7 @@ return {
 				capabilities = capabilities,
 				settings = {
 					["rust-analyzer"] = {
-						checkOnSave = {
+						check = {
 							command = "clippy",
 						},
 						cargo = {

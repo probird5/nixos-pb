@@ -39,7 +39,7 @@
       gofumpt                    # Go formatter
       gotools                    # goimports
       golangci-lint              # Go linter
-      ruff                       # Python linter/formatter
+      black                      # Python formatter
       shfmt                      # Bash formatter
       shellcheck                 # Bash linter
       rustfmt                    # Rust formatter

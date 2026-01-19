@@ -34,6 +34,8 @@ nixos-pb/
 │   ├── ollama.nix           # Local LLM service
 │   ├── opencode.nix         # AI code assistant
 │   └── shares.nix           # SMB/CIFS mounts
+├── shells/
+│   └── rust/                # Rust development shell (flake with Windows cross-compile)
 ├── hosts/
 │   ├── bayle/               # ~130 lines (was ~430)
 │   ├── messmer/             # ~75 lines (was ~250)
@@ -51,10 +53,11 @@ nixos-pb/
 - **Theme**: Dracula GTK, Nordzy icons/cursors
 
 ### Development
-- **Editors**: Neovim (custom Lua config), VSCodium
+- **Editors**: Neovim (custom Lua config with LSP, see [config/nvim/README.md](config/nvim/README.md)), VSCodium
 - **Terminal**: Ghostty, Alacritty (Tokyo Night theme)
 - **Languages**: Go, Rust, Python, Node.js, Lua, Nix
 - **Tools**: Tmux, Git, ripgrep, fd, fzf, lazygit
+- **Dev Shells**: Rust (see `shells/rust.nix`)
 
 ### Gaming & Virtualization
 - Steam with Proton, Gamemode, Gamescope
@@ -90,6 +93,53 @@ sudo nixos-rebuild switch --flake .#framework
 
 ```bash
 nix flake update
+```
+
+### Development Shells
+
+Flake-based development environments with all necessary tools:
+
+```bash
+# Rust development (with Windows cross-compilation)
+nix develop ~/nixos-pb/shells/rust
+
+# Or copy flake to your project
+cp -r ~/nixos-pb/shells/rust/* ./
+nix develop
+```
+
+**Rust shell includes:**
+- Rust stable with `x86_64-pc-windows-gnu` target
+- rust-analyzer, rust-src
+- MinGW-w64 linker for Windows builds
+- Wine64 for testing Windows binaries
+
+```bash
+# Build for Windows
+cargo build --target x86_64-pc-windows-gnu
+
+# Test with Wine
+wine64 target/x86_64-pc-windows-gnu/debug/your_binary.exe
+```
+
+**For LSP support**, create `.cargo/config.toml` in your project:
+
+```toml
+[build]
+target = "x86_64-pc-windows-gnu"
+
+[target.x86_64-pc-windows-gnu]
+linker = "x86_64-w64-mingw32-gcc"
+```
+
+This tells rust-analyzer to analyze for Windows, resolving `winapi` imports.
+
+You can also use `direnv` with a `.envrc` file for automatic shell activation:
+
+```bash
+# In your project directory
+echo "use flake" > .envrc
+direnv allow
 ```
 
 ### Verify Configuration

@@ -9,7 +9,7 @@ Requires Neovim 0.11+.
 | Language | LSP Server | Formatter | Linter |
 |----------|------------|-----------|--------|
 | Go | gopls | gofumpt, goimports | golangci-lint |
-| Python | pyright | ruff | pyright |
+| Python | pyright | black | pyright |
 | Bash | bash-language-server | shfmt | bash-language-server |
 | YAML | yaml-language-server | prettierd | - |
 | Rust | rust-analyzer | rustfmt | clippy |
