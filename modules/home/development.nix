@@ -13,6 +13,12 @@
     # Go tools
     golangci-lint
 
+    # Tools
+    opencode
+    claude-code
+    lazydocker
+    lazygit
+
     # Nix
     nil
 

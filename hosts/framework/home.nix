@@ -18,10 +18,6 @@
   # Framework-specific packages
   home.packages = with pkgs; [
     # AI/Dev tools
-    opencode
-    claude-code
-    lazydocker
-    lazygit
 
     # Gaming
     bottles
