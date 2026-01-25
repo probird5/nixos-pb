@@ -1,5 +1,10 @@
 # Common application packages
-{ config, pkgs, lib, ... }:
+{
+  config,
+  pkgs,
+  lib,
+  ...
+}:
 
 {
   home.packages = with pkgs; [
@@ -30,6 +35,7 @@
 
     # Virtualization (user tools)
     docker
+    docker-compose
     spice-gtk
     spice
     virtiofsd

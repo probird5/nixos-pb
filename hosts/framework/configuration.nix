@@ -13,12 +13,15 @@
   # Host identity
   networking = {
     hostName = "nixos-framework";
-    nameservers = [ "192.168.5.18" "192.168.0.1" ];
+    nameservers = [
+      "192.168.5.18"
+      "192.168.0.1"
+    ];
   };
 
   # Desktop session (both compositors available)
   desktop = {
-    sessionCommand = "niri-session";
+    sessionCommand = "start-hyprland";
     enableHyprland = true;
     enableNiri = true;
   };
@@ -27,10 +30,12 @@
   boot.kernelParams = [ "resume=/swapfile" ];
 
   # Swap
-  swapDevices = [{
-    device = "/swapfile";
-    size = 64 * 1024;
-  }];
+  swapDevices = [
+    {
+      device = "/swapfile";
+      size = 64 * 1024;
+    }
+  ];
 
   # Framework-specific hardware
   hardware.framework.amd-7040.preventWakeOnAC = true;
@@ -40,13 +45,25 @@
     enable = true;
     libraries = with pkgs; [
       stdenv.cc.cc
-      libglvnd libdrm
-      xorg.libX11 xorg.libXext xorg.libXrandr xorg.libXrender
-      xorg.libXcursor xorg.libXi xorg.libXxf86vm xorg.libXinerama
-      libxkbcommon wayland
-      freetype fontconfig
-      zlib openssl curl
-      alsa-lib pulseaudio
+      libglvnd
+      libdrm
+      xorg.libX11
+      xorg.libXext
+      xorg.libXrandr
+      xorg.libXrender
+      xorg.libXcursor
+      xorg.libXi
+      xorg.libXxf86vm
+      xorg.libXinerama
+      libxkbcommon
+      wayland
+      freetype
+      fontconfig
+      zlib
+      openssl
+      curl
+      alsa-lib
+      pulseaudio
     ];
   };
 
@@ -71,8 +88,14 @@
     description = "probird5";
     shell = pkgs.zsh;
     extraGroups = [
-      "networkmanager" "audio" "wheel"
-      "libvirtd" "kvm" "qemu" "flatpak" "docker"
+      "networkmanager"
+      "audio"
+      "wheel"
+      "libvirtd"
+      "kvm"
+      "qemu"
+      "flatpak"
+      "docker"
     ];
     packages = with pkgs; [ kdePackages.kate ];
   };

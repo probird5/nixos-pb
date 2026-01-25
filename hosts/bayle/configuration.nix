@@ -1,5 +1,11 @@
 # Bayle - Custom Desktop PC (NVIDIA)
-{ config, pkgs, lib, inputs, ... }:
+{
+  config,
+  pkgs,
+  lib,
+  inputs,
+  ...
+}:
 
 {
   imports = [
@@ -14,20 +20,25 @@
 
   # Desktop session
   desktop = {
-    sessionCommand = "Hyprland";
+    sessionCommand = "start-hyprland";
     enableHyprland = true;
   };
 
   # Networking
-  networking.nameservers = [ "100.100.100.100" "1.1.1.1" ];
+  networking.nameservers = [
+    "100.100.100.100"
+    "1.1.1.1"
+  ];
   networking.search = [ "tail339015.ts.net" ];
   networking.firewall.allowedTCPPorts = [ 22 ];
 
   # Swap
-  swapDevices = [{
-    device = "/var/lib/swapfile";
-    size = 64 * 1024;
-  }];
+  swapDevices = [
+    {
+      device = "/var/lib/swapfile";
+      size = 64 * 1024;
+    }
+  ];
 
   # nix-ld for running unpatched binaries
   programs.nix-ld = {
@@ -78,8 +89,13 @@
     description = "probird5";
     shell = pkgs.zsh;
     extraGroups = [
-      "networkmanager" "audio" "wheel"
-      "libvirtd" "kvm" "qemu" "flatpak"
+      "networkmanager"
+      "audio"
+      "wheel"
+      "libvirtd"
+      "kvm"
+      "qemu"
+      "flatpak"
     ];
   };
 

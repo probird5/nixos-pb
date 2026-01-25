@@ -1,5 +1,10 @@
 # Desktop environment configuration
-{ config, pkgs, lib, ... }:
+{
+  config,
+  pkgs,
+  lib,
+  ...
+}:
 
 {
   options.desktop = {
