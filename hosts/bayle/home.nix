@@ -1,5 +1,10 @@
 # Bayle home-manager configuration
-{ config, pkgs, lib, ... }:
+{
+  config,
+  pkgs,
+  lib,
+  ...
+}:
 
 {
   imports = [
@@ -20,7 +25,6 @@
   # Bayle-specific packages
   home.packages = with pkgs; [
     # Browsers
-    librewolf
 
     # Development extras
     goimports-reviser
