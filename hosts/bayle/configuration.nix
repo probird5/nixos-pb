@@ -103,7 +103,6 @@
   environment.systemPackages = with pkgs; [
     # Terminals
     kitty
-    dunst
 
     # Media
     ffmpeg_7

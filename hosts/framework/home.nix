@@ -13,6 +13,7 @@
     ../../modules/tmux.nix
     ../../modules/btop.nix
     ../../modules/opencode.nix
+    ../../modules/firefox.nix
   ];
 
   # Framework-specific packages

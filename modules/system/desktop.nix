@@ -55,7 +55,7 @@
 
     # Desktop programs
     programs.dconf.enable = true;
-    programs.firefox.enable = true;
+    # Firefox is configured via home-manager in modules/firefox.nix
 
     # Compositors (conditional)
     programs.hyprland = lib.mkIf config.desktop.enableHyprland {

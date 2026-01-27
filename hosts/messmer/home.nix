@@ -11,6 +11,7 @@
     ../../modules/nvim.nix
     ../../modules/ghostty.nix
     ../../modules/tmux.nix
+    ../../modules/firefox.nix
   ];
 
   # Messmer-specific: btop config file instead of module
@@ -26,7 +27,6 @@
   # Messmer-specific packages
   home.packages = with pkgs; [
     # Niri desktop
-    mako
     niri
 
     # Theming

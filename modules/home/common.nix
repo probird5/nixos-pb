@@ -1,5 +1,10 @@
 # Common home-manager configuration
-{ config, pkgs, lib, ... }:
+{
+  config,
+  pkgs,
+  lib,
+  ...
+}:
 
 {
   home.username = "probird5";
@@ -46,6 +51,10 @@
     pciutils
     usbutils
     killall
+    wavemon
+    wpaperd
+    dillo
+    qutebrowser
 
     # Archives
     p7zip
@@ -64,6 +73,7 @@
     trash-cli
     yazi
     lf
+    bluetui
 
     # Shell
     tmux

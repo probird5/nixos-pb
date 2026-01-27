@@ -94,6 +94,7 @@
     # Desktop apps
     rofi
     waybar
+    swaynotificationcenter
     picom
     brightnessctl
     xprintidle

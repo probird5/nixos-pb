@@ -17,6 +17,7 @@
     ../../modules/ghostty.nix
     ../../modules/tmux.nix
     ../../modules/btop.nix
+    ../../modules/firefox.nix
   ];
 
   # Override bashrc
@@ -35,7 +36,6 @@
     luajitPackages.jsregexp
 
     # Desktop extras
-    swaynotificationcenter
     wlogout
     flameshot
 

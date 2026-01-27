@@ -9,7 +9,6 @@
 {
   home.packages = with pkgs; [
     # Browsers
-    firefox
     brave
 
     # Productivity
