@@ -1,5 +1,10 @@
 # Desktop configuration files and MIME applications
-{ config, pkgs, lib, ... }:
+{
+  config,
+  pkgs,
+  lib,
+  ...
+}:
 
 {
   # Hyprland helpers
@@ -14,6 +19,7 @@
     ".config/rofi".source = ../../config/rofi;
     ".config/starship".source = ../../config/starship;
     ".config/niri".source = ../../config/niri;
+    ".config/fastfetch".source = ../../config/fastfetch;
     ".zshrc".source = ../../config/zsh/.zshrc;
     "Pictures/backgrounds".source = ../../config/backgrounds;
   };
