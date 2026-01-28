@@ -59,7 +59,6 @@
         force = true;
         default = "ddg";
         engines = {
-          "google".metaData.hidden = true;
           "bing".metaData.hidden = true;
           "amazondotcom-us".metaData.hidden = true;
           "ebay".metaData.hidden = true;
@@ -289,6 +288,18 @@
         "ui.systemUsesDarkTheme" = 1;
         "browser.theme.content-theme" = 0;
         "browser.theme.toolbar-theme" = 0;
+
+        # Hardware acceleration (fixes flickering on Wayland)
+        "gfx.webrender.all" = true;
+        "media.ffmpeg.vaapi.enabled" = true;
+        "media.hardware-video-decoding.enabled" = true;
+        "media.hardware-video-decoding.force-enabled" = true;
+        "layers.acceleration.force-enabled" = true;
+        "gfx.canvas.accelerated" = true;
+
+        # Vertical tabs
+        "sidebar.verticalTabs" = true;
+        "sidebar.revamp" = true;
       };
     };
   };
