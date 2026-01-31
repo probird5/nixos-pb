@@ -106,6 +106,7 @@
     xprintidle
     wttrbar
     xarchiver
+    syspower
 
     # Media
     mpv
