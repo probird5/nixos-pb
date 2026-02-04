@@ -42,6 +42,19 @@
   # XDG user directories
   xdg.userDirs.enable = true;
 
+  # Image viewer
+  programs.swayimg = {
+    enable = true;
+    settings = {
+      "keys.viewer" = {
+        Delete = ''exec trash-put "%"; next_file'';
+      };
+      "keys.gallery" = {
+        Delete = ''exec trash-put "%"; next_file'';
+      };
+    };
+  };
+
   # Common CLI packages
   home.packages = with pkgs; [
     # System utilities
