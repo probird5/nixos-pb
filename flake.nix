@@ -14,6 +14,11 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
+    # MangoWC compositor
+    mangowc = {
+      url = "github:DreamMaoMao/mangowc";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
   outputs =
@@ -22,6 +27,7 @@
       home-manager,
       nixos-hardware,
       nvf,
+      mangowc,
       ...
     }:
     {
@@ -40,6 +46,7 @@
           system = "x86_64-linux";
           modules = [
             ./hosts/bayle/bayle.nix
+            mangowc.nixosModules.mango
             # make home-manager as a module of nixos
             # so that home-manager configuration will be deployed automatically when executing `nixos-rebuild switch`
             home-manager.nixosModules.home-manager

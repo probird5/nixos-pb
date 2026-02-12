@@ -13,21 +13,25 @@
   # Host identity
   networking.hostName = "messmer";
 
-  # Desktop session
+  # Desktop session (select compositor at login via tuigreet)
   desktop = {
-    sessionCommand = "niri-session";
     enableNiri = true;
   };
 
   # Kernel
   boot.kernelPackages = pkgs.linuxPackages_6_18;
-  boot.kernelParams = [ "resume=/swapfile" "mem_sleep_default=deep" ];
+  boot.kernelParams = [
+    "resume=/swapfile"
+    "mem_sleep_default=deep"
+  ];
 
   # Swap
-  swapDevices = [{
-    device = "/swapfile";
-    size = 64 * 1024;
-  }];
+  swapDevices = [
+    {
+      device = "/swapfile";
+      size = 64 * 1024;
+    }
+  ];
 
   # Services
   services.openssh = {
@@ -55,9 +59,15 @@
     description = "probird5";
     shell = pkgs.zsh;
     extraGroups = [
-      "networkmanager" "audio" "wheel"
-      "libvirtd" "kvm" "qemu" "flatpak"
-      "video" "render"
+      "networkmanager"
+      "audio"
+      "wheel"
+      "libvirtd"
+      "kvm"
+      "qemu"
+      "flatpak"
+      "video"
+      "render"
     ];
     packages = with pkgs; [ kdePackages.kate ];
   };

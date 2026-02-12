@@ -19,9 +19,8 @@
     ];
   };
 
-  # Desktop session (both compositors available)
+  # Desktop session (select compositor at login via tuigreet)
   desktop = {
-    sessionCommand = "start-hyprland";
     enableHyprland = true;
     enableNiri = true;
   };

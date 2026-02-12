@@ -8,11 +8,6 @@
 
 {
   options.desktop = {
-    sessionCommand = lib.mkOption {
-      type = lib.types.str;
-      default = "Hyprland";
-      description = "Command to launch the desktop session";
-    };
     enableHyprland = lib.mkOption {
       type = lib.types.bool;
       default = false;
@@ -23,14 +18,19 @@
       default = false;
       description = "Enable Niri compositor";
     };
+    enableMango = lib.mkOption {
+      type = lib.types.bool;
+      default = false;
+      description = "Enable MangoWC compositor";
+    };
   };
 
   config = {
-    # Login manager
+    # Login manager - session picker from installed compositors
     services.greetd = {
       enable = true;
       settings.default_session = {
-        command = "${pkgs.tuigreet}/bin/tuigreet --time --cmd ${config.desktop.sessionCommand}";
+        command = "${pkgs.tuigreet}/bin/tuigreet --time --sessions /usr/share/wayland-sessions --remember-session";
         user = "probird5";
       };
     };
@@ -63,6 +63,9 @@
       xwayland.enable = true;
     };
     programs.niri = lib.mkIf config.desktop.enableNiri {
+      enable = true;
+    };
+    programs.mango = lib.mkIf config.desktop.enableMango {
       enable = true;
     };
 

@@ -18,10 +18,10 @@
   # Host identity
   networking.hostName = "bayle";
 
-  # Desktop session
+  # Desktop session (select compositor at login via tuigreet)
   desktop = {
-    sessionCommand = "start-hyprland";
     enableHyprland = true;
+    enableMango = true;
   };
 
   # Networking
