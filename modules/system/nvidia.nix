@@ -1,5 +1,10 @@
 # NVIDIA GPU configuration
-{ config, pkgs, lib, ... }:
+{
+  config,
+  pkgs,
+  lib,
+  ...
+}:
 
 {
   # Video driver
@@ -25,12 +30,41 @@
     package = config.boot.kernelPackages.nvidiaPackages.production;
   };
 
-  # XDG portals for Hyprland
-  xdg.portal.extraPortals = with pkgs; [
-    xdg-desktop-portal-gtk
-    xdg-desktop-portal-gnome
-    xdg-desktop-portal-hyprland
-  ];
+  # XDG portals for compositors
+  xdg.portal = {
+    extraPortals = with pkgs; [
+      xdg-desktop-portal-gtk
+      xdg-desktop-portal-gnome
+      xdg-desktop-portal-hyprland
+      xdg-desktop-portal-wlr
+    ];
+    config = {
+      # Hyprland session: use hyprland portal for screencopy, gtk for file picker
+      Hyprland = {
+        default = [
+          "hyprland"
+          "gtk"
+        ];
+        "org.freedesktop.impl.portal.Screenshot" = "hyprland";
+        "org.freedesktop.impl.portal.ScreenCast" = "hyprland";
+        "org.freedesktop.impl.portal.FileChooser" = "gtk";
+      };
+      # MangoWC (wlroots) session: use wlr portal for screencopy, gtk for file picker
+      wlroots = {
+        default = [
+          "wlr"
+          "gtk"
+        ];
+        "org.freedesktop.impl.portal.Screenshot" = "wlr";
+        "org.freedesktop.impl.portal.ScreenCast" = "wlr";
+        "org.freedesktop.impl.portal.FileChooser" = "gtk";
+      };
+      # Fallback
+      common = {
+        default = [ "gtk" ];
+      };
+    };
+  };
 
   # NVIDIA-specific packages
   environment.systemPackages = with pkgs; [

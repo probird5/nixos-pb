@@ -20,7 +20,24 @@ window#waybar {
   border-bottom: 3px solid transparent;
 }
 
-#workspaces button.focused {
+#workspaces button.focused,
+#workspaces button.active {
+  background: #64727D;
+  border-bottom: 3px solid white;
+}
+
+#workspaces button.urgent {
+  background: #f53c3c;
+}
+
+#taskbar button {
+  padding: 0 4px;
+  background: transparent;
+  color: white;
+  border-bottom: 3px solid transparent;
+}
+
+#taskbar button.active {
   background: #64727D;
   border-bottom: 3px solid white;
 }

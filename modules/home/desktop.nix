@@ -89,6 +89,10 @@
     swaycons
     swww
 
+    # Clipboard
+    cliphist
+    wl-clip-persist
+
     # Screenshots
     grim
     slurp
