@@ -8,10 +8,7 @@
     // Choose the order of the modules
     "modules-left": [
         "hyprland/workspaces",
-        "niri/workspaces",
-        "ext/workspaces",
         "wlr/taskbar",
-        "niri/window",
         "network",
     ],
     "modules-center": [
@@ -35,6 +32,11 @@
         //   "TelegramDesktop": "$HOME/.local/share/icons/hicolor/16x16/apps/telegram.png"
         // }
      },
+    "hyprland/workspaces": {
+        "format": "{name}",
+        "all-outputs": false,
+        "active-only": false
+    },
     "niri/workspaces": {
     "format": "{icon}",
     "all-outputs": false,

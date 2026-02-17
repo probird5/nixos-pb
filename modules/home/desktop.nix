@@ -96,7 +96,7 @@
     # Screenshots
     grim
     slurp
-    swappy
+    satty
 
     # Terminals
     alacritty
