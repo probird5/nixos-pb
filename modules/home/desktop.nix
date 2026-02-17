@@ -85,7 +85,7 @@
     hyprlock
     hyprpaper
     swayidle
-    swaylock
+    swaylock-effects
     swaycons
     swww
 

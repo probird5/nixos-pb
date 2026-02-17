@@ -6,8 +6,8 @@ A flake-based NixOS configuration managing three machines with home-manager inte
 
 | Host | Description | GPU | Compositor |
 |------|-------------|-----|------------|
-| **bayle** | Custom Desktop PC | NVIDIA | Hyprland |
-| **messmer** | Framework Desktop | AMD | Niri / Hyprland |
+| **bayle** | Custom Desktop PC | NVIDIA | Hyprland / MangoWC |
+| **messmer** | Framework Desktop | AMD | Niri |
 | **framework** | Framework 13 (7040 AMD) | AMD | Niri / Hyprland |
 
 ## Repository Structure
@@ -40,13 +40,18 @@ nixos-pb/
 │   ├── bayle/               # ~130 lines (was ~430)
 │   ├── messmer/             # ~75 lines (was ~250)
 │   └── framework/           # ~90 lines (was ~280)
-└── config/                  # Application configs (hypr, waybar, nvim, etc.)
+└── config/                  # Application configs (hypr, mango, waybar, nvim, etc.)
+    ├── mango/               # MangoWC compositor config
+    │   ├── config.conf      # Main config (monitors, layouts, keybinds, theming)
+    │   ├── autostart.sh     # Startup script (swww wallpaper)
+    │   ├── change-wallpaper.sh  # Random wallpaper switcher
+    │   └── hypridle.conf    # Idle/lock/suspend config
 ```
 
 ## Features
 
 ### Desktop Environment
-- **Compositors**: Hyprland and Niri (Wayland)
+- **Compositors**: Hyprland, Niri, and [MangoWC](https://github.com/DreamMaoMao/mangowc) (Wayland)
 - **Panel**: Waybar with custom modules
 - **Launcher**: Rofi with Dracula theme
 - **File Manager**: Thunar with plugins
@@ -180,18 +185,20 @@ Each host only contains host-specific settings:
 | home-manager | nix-community (unstable) |
 | nixos-hardware | NixOS/nixos-hardware |
 | nvf | NotAShelf/nvf |
+| mangowc | DreamMaoMao/mangowc |
 
 ## Host Details
 
 ### bayle (Custom PC)
 - NVIDIA proprietary drivers (production)
-- Hyprland compositor
+- Hyprland + MangoWC compositors
 - Emacs server, Tailscale
 - SSH enabled
 
 ### messmer (Framework Desktop)
 - AMD GPU with ROCm tools
-- Niri compositor, Kernel 6.18
+- Niri compositor
+- Kernel 6.18
 - Podman (Docker-compatible)
 - Ollama LLM server
 
@@ -200,3 +207,66 @@ Each host only contains host-specific settings:
 - Niri + Hyprland (both enabled)
 - Fingerprint authentication
 - Printing support, Tailscale
+
+## MangoWC Configuration
+
+[MangoWC](https://github.com/DreamMaoMao/mangowc) is a wlroots-based Wayland compositor, added as a flake input and enabled on **bayle** alongside Hyprland. The configuration lives in `config/mango/` and is deployed to `~/.config/mango` via Home Manager.
+
+### Config Files
+
+| File | Purpose |
+|------|---------|
+| `config.conf` | Main config: monitors, layouts, keybinds, window rules, theming |
+| `autostart.sh` | Launches swww daemon and sets a random wallpaper on startup |
+| `change-wallpaper.sh` | Randomly picks a wallpaper with swww wipe transition (bound to `SUPER+w`) |
+| `hypridle.conf` | Idle management: hyprlock at 5min, DPMS off at 5.5min, suspend at 10min |
+
+### Monitor Setup
+
+- **DP-2**: Main landscape 4K (3840x2160) at 120Hz with VRR
+- **DP-3**: Vertical portrait 4K (3840x2160) at 60Hz, rotated 270 degrees
+- **eDP-1**: Laptop fallback (2880x1920) at 120Hz, scaled 1.6x
+
+### Layouts
+
+- **Tile** (master-stack): Used on DP-2 (tags 1-8) with 55/45 master ratio
+- **Vertical scroller**: Used on DP-3 for the portrait monitor, windows occupy 1/3 screen height
+- **Monocle**: Used on tag 9 (DP-2) for fullscreen gaming
+
+### Theming
+
+Dracula color scheme matching the rest of the desktop:
+- Focus border: `#bd93f9` (purple)
+- Inactive border: `#6272a4` (muted blue)
+- Urgent: `#ff5555` (red)
+- Background: `#1a1a2e`
+
+### Key Bindings
+
+| Binding | Action |
+|---------|--------|
+| `SUPER+Return` | Ghostty terminal |
+| `SUPER+q` | Close window |
+| `SUPER+p` | Rofi launcher |
+| `SUPER+h/j/k/l` | Focus direction (vim keys) |
+| `SUPER+SHIFT+h/j/k/l` | Swap windows |
+| `SUPER+CTRL+h/j/k/l` | Resize windows |
+| `SUPER+1-9` | Switch tag |
+| `SUPER+SHIFT+1-9` | Move window to tag |
+| `SUPER+ALT+h/l` | Focus monitor |
+| `SUPER+d` | Toggle fullscreen |
+| `SUPER+m` | Toggle maximize |
+| `SUPER+v` | Toggle floating |
+| `SUPER+Tab` | Overview |
+| `SUPER+w` | Random wallpaper |
+| `Print` | Screenshot (grim + slurp + swappy) |
+
+### Enabling MangoWC
+
+MangoWC is toggled per-host in `modules/system/desktop.nix` via the `desktop.enableMango` option. To enable it on a host, import the `mangowc.nixosModules.mango` flake module and set:
+
+```nix
+desktop.enableMango = true;
+```
+
+The compositor will appear as a session option in greetd/tuigreet.
