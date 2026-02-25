@@ -12,6 +12,7 @@
     ../../modules/ghostty.nix
     ../../modules/tmux.nix
     ../../modules/btop.nix
+    ../../modules/eza.nix
     ../../modules/opencode.nix
     ../../modules/firefox.nix
   ];

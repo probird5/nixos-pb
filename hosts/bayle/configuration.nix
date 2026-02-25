@@ -96,6 +96,7 @@
       "kvm"
       "qemu"
       "flatpak"
+      "docker"
     ];
   };
 
